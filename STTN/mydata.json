@@ -1,0 +1,47 @@
+{
+    "buildings" : [
+        {
+            "id": "b1",
+            "name": "Smith-Kettlewell Eye Research Institute",
+            "latitude": 37.7911666,
+            "longitude": -122.4344677
+        }
+    ],
+    "floors": [
+        {
+            "id": "f1_1",
+            "name": "floor 4",
+            "number": 0,
+            "building": "b1",
+            "maxWidth": 12.2,
+            "maxHeight": 29.62,
+            "floorMap": "floor4"
+        }
+    ],
+    "markers": [
+        {
+            "id": "M0",
+            "image": "M0",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 0.8,
+                "y": 0,
+                "heading": 0,
+                "floor": "f1_1"
+            }
+        },
+        {
+            "id": "M5",
+            "image": "M5",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 10.8,
+                "y": 1.6,
+                "heading": 3.14,
+                "floor": "f1_1"
+            }
+        }
+    ]
+}
+
+

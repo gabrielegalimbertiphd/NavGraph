@@ -1,0 +1,136 @@
+{
+    "buildings" : [
+        {
+            "id": "b1",
+            "name": "Smith-Kettlewell Eye Research Institute",
+            "latitude": 37.7911666,
+            "longitude": -122.4344677
+        }
+    ],
+    "floors": [
+        {
+            "id": "f1_1",
+            "name": "floor 4",
+            "number": 0,
+            "building": "b1",
+            "maxWidth": 12.2,
+            "maxHeight": 29.62,
+            "floorMap": "floor4_nodes_basic",
+            "__comment":"floor4_nodes_with_SA"
+        }
+    ],
+    "markers": [
+        {
+            "id": "M0",
+            "image": "M0",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 1.48,
+                "y": 1.70,
+                "heading": 1.57,
+                "floor": "f1_1"
+            }
+        },
+        {
+            "id": "M1",
+            "image": "M1",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 10.8,
+                "y": 1.6,
+                "heading": 3.14,
+                "floor": "f1_1"
+            }
+        },
+        {
+            "id": "M2",
+            "image": "M2",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 12.8,
+                "y": 1.8,
+                "heading": 1.57,
+                "floor": "f1_1"
+            }
+        },
+        {
+            "id": "M3",
+            "image": "M3",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 1.2,
+                "y": 21.02,
+                "heading": 3.14,
+                "floor": "f1_1"
+            }
+        },
+        {
+            "id": "M4",
+            "image": "M4",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 12,
+                "y": 23.30,
+                "heading": 3.14,
+                "floor": "f1_1"
+            }
+        },
+        {
+            "id": "M5",
+            "image": "M5",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 0,
+                "y": 19.02,
+                "heading": 4.71,
+                "floor": "f1_1"
+            }
+        },
+        {
+            "id": "M6",
+            "image": "M6",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 2.82,
+                "y": 29.62,
+                "heading": 3.14,
+                "floor": "f1_1"
+            }
+        },
+        {
+            "id": "M7",
+            "image": "M7",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 9.5,
+                "y": 28.0,
+                "heading": 1.57,
+                "floor": "f1_1"
+            }
+        },
+        {
+            "id": "M8",
+            "image": "M8",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 8.0,
+                "y": 23.0,
+                "heading": 4.71,
+                "floor": "f1_1"
+            }
+        },
+        {
+            "id": "M9",
+            "image": "M9",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 3.0,
+                "y": 28.0,
+                "heading": 1.57,
+                "floor": "f1_1"
+            }
+        }
+    ]
+}
+
+

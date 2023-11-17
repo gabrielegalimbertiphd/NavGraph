@@ -1,0 +1,104 @@
+{
+    "buildings" : [
+        {
+            "id": "u1",
+            "name": "UNIMI",
+            "latitude":45.476803,
+            "longitude":9.230293
+        }
+    ],
+    "floors" : [
+        {
+            "id": "cortile",
+            "name": "cortile",
+            "number": 0,
+            "building": "u1",
+            "maxWidth": 150,
+            "maxHeight": 140,
+            "floorMap": "cortile",
+            "__comment":"cortile"
+        }
+    ],
+    "markers" : [
+        {
+            "id": "init1",
+            "image": "init1",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 116.00125987752108 , "y": 58.54820329416543,
+                "heading": 1.57,
+                "floor": "cortile"
+            }
+        },
+        {
+            "id": "M1",
+            "image": "M1",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 115.19050738954684 , "y": 48.44066540617496,
+                "heading": 0,
+                "floor": "cortile"
+            }
+        },
+        {
+            "id": "M2",
+            "image": "M2",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 89.08876281412086 , "y": 49.73796122055501,
+                "heading": 4.71,
+                "floor": "cortile"
+            }
+        },
+        {
+            "id": "M3",
+            "image": "M3",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 90.46377929777373 , "y": 92.95094210468233,
+                "heading": 3.14,
+                "floor": "cortile"
+            }
+        },
+        {
+            "id": "M4",
+            "image": "M4",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 22.071206708904356 , "y": 92.25876097008586,
+                "heading": 4.71,
+                "floor": "cortile"
+            }
+        },
+        {
+            "id": "M5",
+            "image": "M5",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 22.441032722999807 , "y": 57.70636901538819,
+                "heading": 0,
+                "floor": "cortile"
+            }
+        },
+        {
+            "id": "M6",
+            "image": "M6",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 17.594819786550943 , "y": 57.60917443688959,
+                "heading": 4.71,
+                "floor": "cortile"
+            }
+        },
+        {
+            "id": "finish1",
+            "image": "finish1",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 18.158590089995414 , "y": 36.16573370527476,
+                "heading": 0,
+                "floor": "cortile"
+            }
+        }
+    ]
+}
