@@ -65,7 +65,7 @@ class Level4 {
         // 2- se cambia la direzione, sto svoltando e la sonificazione è stata attivata e non è maggiore di 160 gradi
         //let condition2 = (previous_direction != direction && message.contains("turn") && startSonification && abs(angular_difference ?? 0) >= range && abs(self.angleLength ?? 0) < 160)
         // abs(self.angleLength ?? 0) < 160) da tenere perchè evita che nell'alternanza tra 180 e -180 venga ripetuto "turn around"
-        let condition2 = (previous_direction != direction && message.contains("turn") && startSonification && abs(self.angleLength ?? 0) < 160)
+        let condition2 = false //(previous_direction != direction && message.contains("turn") && startSonification && abs(self.angleLength ?? 0) < 160) // condizione per identificare il cambio di direzione.
         // 3- se sono inside un istante prima ed outside un istante dopo e viceversa
         let condition3 = (previous_state=="inside" && state=="outside")
         // 4- se sono outside un istante prima ed inside un istante dopo e viceversa
@@ -80,11 +80,13 @@ class Level4 {
         //var condition7 = movement != nil && movement! >= 1 && message.contains("turn") // MARK: SPOSTAMENTO
         //var condition7=false
         // TURN AROUND CONDITION
-        let condition7 = (message.contains("turn") && startSonification && abs(self.angleLength ?? 0) < 160) && abs(angular_difference ?? 0 )>=160
+        let condition7 = false //(message.contains("turn") && startSonification && abs(self.angleLength ?? 0) < 160) && abs(angular_difference ?? 0 )>=160 // condizione per dire "girati indietro"
         // cambio del percorso
         var condition8 = false // changePath TODO just in case we use a different method
         
-        guard condition1 || condition2 || condition3 || condition4 || condition5 || condition6 || condition7 || condition8 else {
+        //var condition9 = self.angleLength != nil && (angular_difference ?? 30)-(self.angleLength ?? 0) > 30 && angular_difference ?? 30 < 145 // ripeto solo se sono a 160-30/2 ... se no c'è rischio che venga ripetuta una istruzione di svolta e subito dopo una istruzione di voltati indietro.
+        
+        guard condition1 || condition2 || condition3 || condition4 || condition5 || condition6 || condition7 || condition8  else {
             // TODO: Level3().alpha3 non sarebbe corretto
             if !startSonification{ // set angle and distance required again after wait 1.2s
                 
@@ -109,6 +111,7 @@ class Level4 {
                     //self.angleLength = abs(angular_difference!)
                     self.startSonification=false // permette di cambiare l'angolo target perchè lo imposto a riga 70!!!!
                     playUpdateTargetAngleSound()
+                    print(changeNode, message, angular_difference, distanceFromTarget, lateralDistance)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2){ // Per 0.2 secondi non sonifico.
                         //Synth.shared.volume = 0.8
                         self.startSonification=true
@@ -241,7 +244,7 @@ class Level4 {
             else if message.contains("turn")  {
                 var direzione : String = direction!=="Left" ? "sinistra" : "destra"
                 instruction = message.contains("turn") ? "Gira a \(direzione)" : ""
-                instruction = message.contains("turn") && abs(self.angleLength ?? 0) >= 160 ? "Voltati a \(direzione)" : instruction // era Girati
+                //instruction = message.contains("turn") && abs(self.angleLength ?? 0) >= 160 ? "Girati indietro" : instruction // era Girati
             }
             //instruction = changePath ? "Rerouting, \(instruction)" : instruction // TODO decide if use or not "Rerouting"
             // ANY OTHER INSTRUCTION
@@ -285,7 +288,7 @@ class Level4 {
             print("Beeping")
             return
         }*/
-        if message == self.lastText && (message.contains("turn")  || message.contains("turn")) && angleLength != nil { // if the instruction doesn't change you must ticking base on the angular error.
+        if message == self.lastText && (message.contains("turn")) && angleLength != nil { // if the instruction doesn't change you must ticking base on the angular error.
             let rotation : Float = abs(angular_difference!)//180-abs((angular_difference!-180).truncatingRemainder(dividingBy: 180))
             // if angular error is major than the initial angular error movement required, you must play a default frequency of 1 Hz, else the ticking rate must base on the angular error until 15 Hz (15 Hz to avoid wave definition earable).
             //print("angleLength",self.angleLength, "rotation",rotation)

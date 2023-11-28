@@ -1,0 +1,34 @@
+{
+    "buildings" : [
+        {
+            "id": "u3",
+            "name": "UNIMI",
+            "latitude":45.476860,
+            "longitude":9.230163
+        }
+    ],
+    "floors" : [
+        {
+            "id": "cortile",
+            "name": "cortile",
+            "number": 0,
+            "building": "u3",
+            "maxWidth": 150,
+            "maxHeight": 140,
+            "floorMap": "cortile",
+            "__comment":"cortile"
+        }
+    ],
+    "markers" : [
+        {
+            "id": "Prova",
+            "image": "Prova",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 100    , "y": 99,
+                "heading": 180,
+                "floor": "cortile"
+            }
+        }
+    ]
+}

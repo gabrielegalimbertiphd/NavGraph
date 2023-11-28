@@ -20,8 +20,8 @@ import Drops
 Sistemare bottone
 Mostrare i dati di log
 
-Preparare 8 task date le condizioni:
-- 4 percorsi
+Preparare 4 task date le condizioni:
+- 2 percorsi
 - 2 sistemi di navigazione
 
 Basic
@@ -105,8 +105,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     // MAP TEST FLOOR 4
     // MARK: OFFICIAL REFACTORED
     
-    public var vertexes : [String] = ["0", "1","2", "3","4","5","6","7"]
-    public var graph: WeightedGraph<String, Int> = WeightedGraph<String, Int>(vertices: ["0", "1","2", "3","4", "5","6","7"])
+    public var vertexes : [String] = ["0", "1","2", "3","4","5","6"]
+    public var graph: WeightedGraph<String, Int> = WeightedGraph<String, Int>(vertices: ["0", "1","2", "3","4", "5","6"])
     
     private let resolution: Float = 100.0
     
@@ -115,39 +115,56 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     var percorso = "Percorso1"
     
     public var position_vertexes : [String : [String: Float]]=[
-        "0":["x": 115.21966389066074 ,"y": -58.55045745335519 ],
-        "1":["x": 115.19371140288422 ,"y": -49.55163157265633 ],
-        "2":["x": 89.87035769526847 ,"y": -49.73571030981839 ],
-        "3":["x": 90.46057970222319 ,"y": -91.83997601363808 ],
-        "4":["x": 22.852806855982635 ,"y": -92.25651841331273 ],
-        "5":["x": 22.441032722999807 ,"y": -57.70636901538819 ],
-        "6":["x": 18.37641562242061 ,"y": -57.60693242587149 ],
-        "7":["x": 18.161776953318622 ,"y": -37.276699896901846 ]
-        ]
+        "0":["x": 61.05268927500583 ,"y": -87.40503094345331 ],
+        "1":["x": 61.10780490835896 ,"y": -93.00988889113069 ],
+        "2":["x": 92.2461984824622 ,"y": -93.87077672220767 ],
+        "3":["x": 93.33124991157092 ,"y": -100.60946055687964 ],
+        "4":["x": 149.334955506376 ,"y": -98.48757871426642 ],
+        "5":["x": 149.3386826463975 ,"y": -96.30665448587388 ]
+    ]
     
     public var coordinates_position_vertexes : [String : [String: [String: Float]]]=[
         "Percorso1":[
-            "0":["x": 115.21966389066074 ,"y": -58.55045745335519 ],
-            "1":["x": 115.19371140288422 ,"y": -49.55163157265633 ],
-            "2":["x": 89.87035769526847 ,"y": -49.73571030981839 ],
-            "3":["x": 90.46057970222319 ,"y": -91.83997601363808 ],
-            "4":["x": 22.852806855982635 ,"y": -92.25651841331273 ],
-            "5":["x": 22.441032722999807 ,"y": -57.70636901538819 ],
-            "6":["x": 18.37641562242061 ,"y": -57.60693242587149 ],
-            "7":["x": 18.161776953318622 ,"y": -37.276699896901846 ]
+            "0":["x": 61.05268927500583 ,"y": -87.40503094345331 ],
+            "1":["x": 61.10780490835896 ,"y": -93.00988889113069 ],
+            "2":["x": 92.2461984824622 ,"y": -93.87077672220767 ],
+            "3":["x": 93.33124991157092 ,"y": -100.60946055687964 ],
+            "4":["x": 149.334955506376 ,"y": -98.48757871426642 ],
+            "5":["x": 149.3386826463975 ,"y": -96.30665448587388 ]
         ],
         "Percorso2":[
-            "0":["x": 170.27095025312155 ,"y": -94.7203452065587 ],
-            "1":["x": 159.32854317157762 ,"y": -94.75198894739151 ],
-            "2":["x": 159.33914202137385 ,"y": -98.41817701980472 ],
-            "3":["x": 90.48073714470956 ,"y": -98.83906235452741 ],
-            "4":["x": 89.87003774190089 ,"y": -49.62461369391531 ],
-            "5":["x": 94.24696899222909 ,"y": -49.612006798386574 ],
-            "6":["x": 94.76791094109649 ,"y": -13.392707508057356 ],
-            "7":["x": 122.51276602200232 ,"y": -12.757231979630888 ]
+            "0":["x": 213.04729223815957 ,"y": -155.66430983599275 ],
+            "1":["x": 213.49196822976228 ,"y": -154.4162802444771 ],
+            "2":["x": 223.46639834909 ,"y": -153.85030070506036 ],
+            "3":["x": 222.8217324456782 ,"y": -93.71006935089827 ],
+            "4":["x": 203.12929557752796 ,"y": -94.45257009752095 ],
+            "5":["x": 200.24905982101336 ,"y": -86.69898427370936 ]
+        ],
+        "Percorso3":[
+            "0":["x": 102.6404510139837 ,"y": -60.14208863116801 ],
+          "1":["x": 88.64668009313755 ,"y": -59.07142744772136 ],
+          "2":["x": 88.01148574490799 ,"y": -55.62923298496753 ],
+          "3":["x": 114.7318031283794 ,"y": -51.997109580785036 ],
+          "4":["x": 114.33107357576955 ,"y": -48.554241485893726 ],
+          "5":["x": 141.2150449262699 ,"y": -47.47677667718381 ],
+          "6":["x": 141.25694681494497 ,"y": -34.92263310588896 ]
+        ],
+        "Percorso4":[
+            "0":["x": 59.439679035916924 ,"y": -94.92887321859598 ],
+          "1":["x": 58.94899937073933 ,"y": -87.37565205525607 ],
+          "2":["x": 21.433495770033915 ,"y": -87.92778716702014 ],
+          "3":["x": 23.428358036850113 ,"y": -74.92365301214159 ],
+          "4":["x": 17.48789463250432 ,"y": -74.82959797792137 ],
+          "5":["x": 16.8170478772372 ,"y": -58.94457573443651 ],
+          "6":["x": 22.83246818050975 ,"y": -57.927440950647 ]
+        ],
+        "Prova":[
+            "0":["x": 100 ,"y": -100 ],
+            "1":["x": 100 ,"y": -105 ],
+            "2":["x": 105 ,"y": -105 ]
         ]
     ]
-    public var destination_position : [String: Float] = [ "x": 18.161776953318622 ,"y": -37.276699896901846 ]
+    public var destination_position : [String: Float] = [ "x": 105 ,"y": -105 ]
     
     public var radius_destination : Float = 1.0
     /*var links: [Link] = [
@@ -160,32 +177,47 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     ]*/
     
     var links: [Link] = [
-        Link( node_u :"0", node_v :"1", radiusOfNavigationArea :1),
-        Link( node_u :"1", node_v :"2", radiusOfNavigationArea :1.5),
-        Link( node_u :"2", node_v :"3", radiusOfNavigationArea :2),
+        Link( node_u :"0", node_v :"1", radiusOfNavigationArea :1.5),
+        Link( node_u :"1", node_v :"2", radiusOfNavigationArea :2),
+        Link( node_u :"2", node_v :"3", radiusOfNavigationArea :1),
         Link( node_u :"3", node_v :"4", radiusOfNavigationArea :2),
-        Link( node_u :"4", node_v :"5", radiusOfNavigationArea :1.5),
-        Link( node_u :"5", node_v :"6", radiusOfNavigationArea :1),
-        Link( node_u :"6", node_v :"7", radiusOfNavigationArea :1.5)
+        Link( node_u :"4", node_v :"5", radiusOfNavigationArea :1)
     ]
+    
     var linksOfPaths:[String:[Link]] = [
         "Percorso1":[
+            Link( node_u :"0", node_v :"1", radiusOfNavigationArea :1.5),
+            Link( node_u :"1", node_v :"2", radiusOfNavigationArea :2),
+            Link( node_u :"2", node_v :"3", radiusOfNavigationArea :1),
+            Link( node_u :"3", node_v :"4", radiusOfNavigationArea :2),
+            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :1)
+        ],
+        "Percorso2":[
             Link( node_u :"0", node_v :"1", radiusOfNavigationArea :1),
             Link( node_u :"1", node_v :"2", radiusOfNavigationArea :1.5),
             Link( node_u :"2", node_v :"3", radiusOfNavigationArea :2),
-            Link( node_u :"3", node_v :"4", radiusOfNavigationArea :2),
-            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :1.5),
-            Link( node_u :"5", node_v :"6", radiusOfNavigationArea :1),
-            Link( node_u :"6", node_v :"7", radiusOfNavigationArea :1.5)
+            Link( node_u :"3", node_v :"4", radiusOfNavigationArea :1.5),
+            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :1)
         ],
-        "Percorso2":[
+        "Percorso3":[
             Link( node_u :"0", node_v :"1", radiusOfNavigationArea :1.5),
-            Link( node_u :"1", node_v :"2", radiusOfNavigationArea :1),
+            Link( node_u :"1", node_v :"2", radiusOfNavigationArea :1.5),
             Link( node_u :"2", node_v :"3", radiusOfNavigationArea :2),
-            Link( node_u :"3", node_v :"4", radiusOfNavigationArea :2),
-            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :1),
-            Link( node_u :"5", node_v :"6", radiusOfNavigationArea :1.5),
-            Link( node_u :"6", node_v :"7", radiusOfNavigationArea :1.5)
+            Link( node_u :"3", node_v :"4", radiusOfNavigationArea :1),
+            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :2),
+            Link( node_u :"5", node_v :"6", radiusOfNavigationArea :2)
+        ],
+        "Percorso4":[
+            Link( node_u :"0", node_v :"1", radiusOfNavigationArea :1),
+            Link( node_u :"1", node_v :"2", radiusOfNavigationArea :2),
+            Link( node_u :"2", node_v :"3", radiusOfNavigationArea :2),
+            Link( node_u :"3", node_v :"4", radiusOfNavigationArea :1.5),
+            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :2),
+            Link( node_u :"5", node_v :"6", radiusOfNavigationArea :1)
+        ],
+        "Prova":[
+            Link( node_u :"0", node_v :"1", radiusOfNavigationArea :1),
+            Link( node_u :"1", node_v :"2", radiusOfNavigationArea :1),
         ]
     ]
     
@@ -362,6 +394,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     public var dxFromCurrentEdge : Float = 0.0
     public var dyFromCurrentEdge : Float = 0.0
     
+    public var taskTest : Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -420,7 +454,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         
         position_vertexes = coordinates_position_vertexes[percorso] ?? position_vertexes
         print(position_vertexes)
-        destination_position = position_vertexes["7"] ?? [ "x": 18.161776953318622 ,"y": -37.276699896901846 ]
+        destination_position = position_vertexes["6"] ?? [ "x": 102.12050876254216 ,"y": -96.69467583857477 ]
+        print(destination_position)
         links = linksOfPaths[percorso] ?? links
         level1 = Level1(listOfVertexesCoordinates: position_vertexes, destination_position: destination_position, radius_destination: radius_destination, links: links, vertexes: vertexes)
         
@@ -429,6 +464,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         Toast.show(message: "START SESSION", bgColor: UIColor.yellow, textColor: .red,labelFont: .boldSystemFont(ofSize: 10),showIn: .top,controller: self)
         
         setupARConfiguration()
+        
+        log = Log()
         
         /*self.locationProvider = LocationProvider(arView: arView, jsonName: "test")
         self.locationProvider.addLocationObserver(locationObserver: self)
@@ -468,10 +505,83 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.startLog = true
             self.startBool = true
+            self.taskTest = true
+        }
+    }
+    
+    func startProva(){
+        print("PROvA")
+        position_vertexes = coordinates_position_vertexes["Prova"] ?? position_vertexes
+        print(position_vertexes)
+        destination_position = position_vertexes["2"] ?? [ "x": 105 ,"y": -105 ]
+        links = linksOfPaths["Prova"] ?? links
+        level1 = Level1(listOfVertexesCoordinates: position_vertexes, destination_position: destination_position, radius_destination: radius_destination, links: links, vertexes: vertexes)
+        
+        print(level1!.graph)
+        
+        Toast.show(message: "START PROVA", bgColor: UIColor.yellow, textColor: .red,labelFont: .boldSystemFont(ofSize: 10),showIn: .top,controller: self)
+        
+        setupARConfiguration()
+        
+        /*self.locationProvider = LocationProvider(arView: arView, jsonName: "test")
+        self.locationProvider.addLocationObserver(locationObserver: self)
+        self.locationProvider.start()
+        self.locationProvider.showFloorMap(CGRect(x: 5, y: 450, width: 230, height: 360)) //223))*/
+        
+        self.locationProvider = LocationProvider(arView: arView, jsonName: "Prova")
+        self.locationProvider.startFollowUser()
+        self.locationProvider.addLocationObserver(locationObserver: self)
+        self.locationProvider.start()
+        self.locationProvider.showFloorMap(CGRect(x: 5, y: 450, width: 230, height: 360))
+        
+        // TODO: customJsonParser = CustomJsonParser(forName: "\(percorso)")
+        /*markers = customJsonParser.getMarkers()
+        print(markers)
+        for k in markers {
+            print(k.id,k.location.coordinates.x,k.location.coordinates.y)
+        }*/
+        
+        closest_edge = links.first
+        
+        //createDirectory(self.log.sessionName) // TODO: insert and check directory creation.
+        render = Render()
+        // message: percorso
+        level4.speak(message: "inizio prova",state: "",changeNode: changeNode, changePath: changePath, repeatInstructionFlag: repeatInstructionFlag)
+        
+        bubble_placed = true
+        isStarted = false
+        if bubble_placed {
+            print(position_vertexes)
+            render.renderNodeVirtualSpheres(position_vertexes: position_vertexes, arView: arView)
+            render.renderDestinationVirtualSphere(destination_position: destination_position, arView: arView)
+            // renderLinkLines(position_vertexes: position_vertexes, links: links) // TODO: It doesn't work
+            bubble_placed = false
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.startLog = true
+            self.startBool = true
+            self.taskTest = false
         }
     }
     
     func resetTest(){
+        
+        Toast.show(message: "RESET SESSION", bgColor: UIColor.yellow, textColor: .red,labelFont: .boldSystemFont(ofSize: 10),showIn: .top,controller: self)
+        
+        setupARConfiguration()
+        
+        /*self.locationProvider = LocationProvider(arView: arView, jsonName: "test")
+        self.locationProvider.addLocationObserver(locationObserver: self)
+        self.locationProvider.start()
+        self.locationProvider.showFloorMap(CGRect(x: 5, y: 450, width: 230, height: 360)) //223))*/
+        
+        self.locationProvider = nil
+        bubble_placed = false
+        isStarted = false
+        self.startLog = false
+        self.startBool = false
+        self.taskTest = false
         
     }
     
@@ -557,8 +667,9 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                 level4.feedback(setup_message)
             }*/
             resetTest()
-        } else if imgname=="prova" {
-            startTest()
+        } else if imgname=="Prova" {
+            startProva()
+            print("PRoVA")
         } else {
             //self.sceneView.session.remove(anchor: imgAnchor)
             self.arView.session.remove(anchor: imgAnchor)
@@ -606,8 +717,42 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         return distance>radius*percentage
     }*/
     
-    fileprivate func checkDistanceFromSnap(_ edges_user: [Edge], _ currentX: Float, _ currentY: Float, _ flag: inout Bool) {
-        for edge in edges_user {
+    fileprivate func checkDistanceFromSnap(_ edges_user: [Edge], _ currentX: Float, _ currentY: Float, _ closestEdge: Link, _ distanceFromCurrentEdge: Float, _ flag: inout Bool) {
+        print("IN FUNCTION CHECKDISTANCEFROMSNAP")
+        print("distance > closestEdge.radiusOfNavigationArea","\(distance) > \(closestEdge.radiusOfNavigationArea)")
+        if distance > closestEdge.radiusOfNavigationArea {
+            flag = true
+        } else {
+            for edge in edges_user {
+                let vertex_u = position_vertexes["\(edge.u)"]!
+                let vertex_v = position_vertexes["\(edge.v)"]!
+                let p1X:Float = vertex_u["x"] ?? 0
+                let p1Y:Float = vertex_u["y"] ?? 0
+                let p2X:Float = vertex_v["x"] ?? 0
+                let p2Y:Float = vertex_v["y"] ?? 0
+                let data = level2.getClosestPointOnEdge(position: (px:currentX,py:currentY), p1X: p1X, p1Y: p1Y, p2X: p2X, p2Y: p2Y)
+                var k : Link? = level2.edgeToLink(links: links,edge: edge)
+                
+                print(closestEdge, k!)
+                var checkuseredge : Bool = closestEdge.node_u==k!.node_u && closestEdge.node_v==k!.node_v
+                
+                print("checkuseredge", checkuseredge, "distanceFromCurrentEdge<closestEdge.radiusOfNavigationArea = \(distanceFromCurrentEdge)<\(closestEdge.radiusOfNavigationArea)", "distanceFromCurrentEdge>closestEdge.radiusOfNavigationArea*percentage","\(distanceFromCurrentEdge)>\(closestEdge.radiusOfNavigationArea*percentage)", "distance<closestEdge.radiusOfNavigationArea","\(distance)<\(closestEdge.radiusOfNavigationArea)")
+                
+                if checkuseredge==true && distanceFromCurrentEdge<closestEdge.radiusOfNavigationArea && distanceFromCurrentEdge>closestEdge.radiusOfNavigationArea*percentage && distance < closestEdge.radiusOfNavigationArea {
+                    flag = false
+                    print("false")
+                    break
+                } else if checkuseredge==false && data!.distance < k!.radiusOfNavigationArea*percentage {
+                    flag = false
+                    break
+                } else {
+                    flag = true
+                    print("false")
+                }
+            }
+        }
+        
+        /*for edge in edges_user {
             let vertex_u = position_vertexes["\(edge.u)"]!
             let vertex_v = position_vertexes["\(edge.v)"]!
             let p1X:Float = vertex_u["x"] ?? 0
@@ -628,17 +773,18 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
             if (data!.distance < k!.radiusOfNavigationArea*percentage && distance > k!.radiusOfNavigationArea*percentage && distance < k!.radiusOfNavigationArea ) {
                 flag = true
             }
-        }
+        }*/
     }
     
     func outputLevel2(currentX: Float, currentY: Float, previous_state: String, edges_user: inout [any Edge], edges_destination: inout [any Edge] , num_shared_edges_user_destination: Int){
         // GET USER EDGE
         
         // there's the need to find the width of the closest edge everytime to understand if the user is entered enough. This is because the width of the edge can change from a setup version (based and advanced). one code for both cases.
-        
+        print(edges_user.count, edges_user)
          if edges_user.count != 0{
              (closest_edge,distanceFromCurrentEdge, _, _) = level2.getClosestEdge(position_u: (px:currentX,py:currentY), edges: edges_user, percentage: percentage, position_vertexes: level1!.position_vertexes, links: links)
         }
+        print(closest_edge,distanceFromCurrentEdge)
         
         let vertex_u = position_vertexes["\(closest_edge!.node_u)"]!
         let vertex_v = position_vertexes["\(closest_edge!.node_v)"]!
@@ -658,22 +804,26 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         dxFromCurrentEdge = pointOnEdge!.dx
         dyFromCurrentEdge = pointOnEdge!.dy
         
+        print(pointOnEdge)
         
         // IN TEORIA FUNZIONA!
+        
         var flag : Bool = false
-        if edges_user.count != 0 || num_shared_edges_user_destination == 1 {
-            checkDistanceFromSnap(edges_user, currentX, currentY, &flag)
+        if edges_user.count != 0 {
+            checkDistanceFromSnap(edges_user, currentX, currentY, closest_edge ?? links[0], distanceFromCurrentEdge, &flag)
         }
         if flag {
             print("ENTER HERE")
             flag=false
+            
             // MARK: TARGET REMAIN THE SAME
-            /*if nextNode != previous_node {
+            if nextNode != previous_node {
                 changeNode = true
             } else {
                 changeNode = false
             }
-            previous_node = nextNode*/
+            previous_node = nextNode
+            
             state = "inside"
             state_user.text=state
             nextTargetLabel.text = "T: \(nextNode)"
@@ -798,6 +948,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
             lastNodeLabel.text = "L: \(lastNode)"
             //print("nextNode \(nextNode) , lastNode \(lastNode)")
             
+            print("DEBUG1","previous_node",previous_node,"actual_node",nextNode)
             // check if the node change
             if nextNode != previous_node {
                 changeNode = true
@@ -805,6 +956,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                 changeNode = false
             }
             previous_node = nextNode
+            print("DEBUG2","previous_node",previous_node,"actual_node",nextNode)
             
             // COMPUTE RUOTE AND SEE IF THE ROUTE IS CONTAINED INTO THE PATH THAT I'M FOLLOWING
             if nextNode != lastNode{
@@ -959,14 +1111,22 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                 var t = CFAbsoluteTimeGetCurrent() - timerRepeatInstruction
                 
                 // TODO: CHECK JUMP
-                if (abs(previous_currentX_map - currentX_map)>0.8 || abs(previous_currentY_map - currentY_map)>0.8) && previous_currentX_map != 0 && previous_currentY_map != 0 {
+                if (abs(previous_currentX_map - currentX_map)>1 || abs(previous_currentY_map - currentY_map)>1) && previous_currentX_map != 0 && previous_currentY_map != 0 {
                     //level4.speak(message: "update", state: state, changeNode: false, changePath: false, repeatInstructionFlag: false)
                     //level4.playUpdateSound()
                     // BIG JUMP
-                    JUMPDEBUG.text = "JUMP X:\(reduceResolution(value: currentX_map, 100)),Y:\(reduceResolution(value: currentY_map, 100))"
+                    JUMPDEBUG.text = "JUMP X:\(reduceResolution(value: currentX_map, 100)),Y:\(reduceResolution(value: currentY_map, 100)), J: \(reduceResolution(value: distanceBetweenTwoPoints2D(p1x: currentX_map, p1y: previous_currentX_map, p2x: currentY_map, p2y: previous_currentY_map), 100))"
                     // TODO: inserire earcon? forse troppo
                     level4.jumpSound()
+                    level4.emergencySound()
                     
+                } else if (abs(previous_currentX_map - currentX_map)>0.3 || abs(previous_currentY_map - currentY_map)>0.3) && previous_currentX_map != 0 && previous_currentY_map != 0 {
+                    //level4.speak(message: "update", state: state, changeNode: false, changePath: false, repeatInstructionFlag: false)
+                    //level4.playUpdateSound()
+                    // BIG JUMP
+                    JUMPDEBUG.text = "JUMP X:\(reduceResolution(value: currentX_map, 100)),Y:\(reduceResolution(value: currentY_map, 100)), J: \(reduceResolution(value: distanceBetweenTwoPoints2D(p1x: currentX_map, p1y: previous_currentX_map, p2x: currentY_map, p2y: previous_currentY_map), 100))"
+                    // TODO: inserire earcon? forse troppo
+                    level4.jumpSound()
                 }
                 previous_currentX_map = currentX_map
                 previous_currentY_map = currentY_map
@@ -1078,8 +1238,6 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                         render.renderTarget(x:target_x_map, y:target_y_map, arView: arView)
                     }
                     
-                    
-                    // MARK: compute range of directions
                     if version_setup == "advanced" {
                         var cateto1 = num_shared_edges_user_destination>=1 ? radius_destination : closest_edge!.radiusOfNavigationArea
                         var alpha = rad2degree(asin(cateto1/abs(distance)))
@@ -1135,41 +1293,45 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                     
                     level4debug.text="LV4: \(level4.debugConditions)"
                     
-                    if level4.startSonification{ //message != new_message || message=="" {
-                        angtarget = "\(angular_difference)"
-                        distTarget = "\(distance)"
-                    } else {
-                        angtarget = ""
-                        distTarget = ""
+                    if taskTest {
+                        if level4.startSonification{ //message != new_message || message=="" {
+                            angtarget = "\(angular_difference)"
+                            distTarget = "\(distance)"
+                        } else {
+                            angtarget = ""
+                            distTarget = ""
+                        }
+                        
+                        /*guard level4.angleLength==nil else {
+                            targetAngleLabel.text = "t ang: \(reduceResolution(value: level4.angleLength!, 1000)),  \(level4.startSonification)"
+                            return // TODO: PERCHÈ
+                        }*/
+                        targetAngleLabel.text = "t ang: \(reduceResolution(value: level4.angleLength ?? 0 , 1000)),  \(level4.startSonification)"
+                        var yaw_fixing_gap_map = 0.0
+                        var rototraslFix : simd_float4x4 = matrix_identity_float4x4
+                        if locationProvider.fixPosition {
+                            var yaw_fixing_gap_map = locationProvider.alpha
+                            var rototraslFix = locationProvider.newWorldTransform
+                            x_fixing_gap_map = locationProvider.x_t
+                            y_fixing_gap_map = locationProvider.y_t
+                        } else {
+                            x_fixing_gap_map = 0.0
+                            y_fixing_gap_map = 0.0
+                        }
+                        
+                        sonification_rate.text="sonif rate: \(reduceResolution(value: level4.sonif_rate, 100))"
+                        let dato = distanceFromCurrentEdge-closest_edge!.radiusOfNavigationArea*percentage
+                        calcolo_lateral_offset.text = "lat off: \(reduceResolution(value: dato, 100))  \(reduceResolution(value: level4.stretchLength ?? 0, 100))"
+                    
+                        // LOG DATA
+                        // which data: x, y, z, roll, pitch, yaw, ang error, ang target, dist next target, dist target, x_gap_correction, y_gap_correction, next node, direction, state, message, start log, start sonification
+                        
+                        var timestamp:String = "\(NSDate().timeIntervalSince1970 * 1000)"
+                        let text="\(timestamp);\(currentX_map);\(currentY_map);\(currentZ_map);\(currentROLL);\(currentPITCH);\(currentYAW);\(lastMarkerSeen);\(locationProvider.fixPosition);\(x_fixing_gap_map);\(y_fixing_gap_map);\(yaw_fixing_gap_map);\(rototraslFix);\(anglePath);\(rad2degree(currentYAW));\(angular_difference);\(direction);\(range);\(nextNode);\(target_x_map);\(target_y_map);\(distance);\(closest_edge!.node_v);\(closest_edge!.node_u);\(closest_edge!.radiusOfNavigationArea);\(length_closest_edge);\(distanceFromCurrentEdge);\(dxFromCurrentEdge);\(dyFromCurrentEdge);\(state);\(message);\(previous_message_label.text);\(startLog);\(level4.startSonification);\(level4.readInstruction);\(version_setup);\(percorso);\(level4.num_turn);\(level4.num_walk);\(level4.num_lateral)"
+                        // TODO lastMarkerSeen--> Check se puoi migliorare questo dato
+                        log.logAsync(logDescription: text)
                     }
                     
-                    /*guard level4.angleLength==nil else {
-                        targetAngleLabel.text = "t ang: \(reduceResolution(value: level4.angleLength!, 1000)),  \(level4.startSonification)"
-                        return // TODO: PERCHÈ
-                    }*/
-                    targetAngleLabel.text = "t ang: \(reduceResolution(value: level4.angleLength ?? 0 , 1000)),  \(level4.startSonification)"
-                    var yaw_fixing_gap_map = 0.0
-                    var rototraslFix : simd_float4x4 = matrix_identity_float4x4
-                    if locationProvider.fixPosition {
-                        var yaw_fixing_gap_map = locationProvider.alpha
-                        var rototraslFix = locationProvider.newWorldTransform
-                        x_fixing_gap_map = locationProvider.x_t
-                        y_fixing_gap_map = locationProvider.y_t
-                    } else {
-                        x_fixing_gap_map = 0.0
-                        y_fixing_gap_map = 0.0
-                    }
-                    
-                    sonification_rate.text="sonif rate: \(reduceResolution(value: level4.sonif_rate, 100))"
-                    let dato = distanceFromCurrentEdge-closest_edge!.radiusOfNavigationArea*percentage
-                    calcolo_lateral_offset.text = "lat off: \(reduceResolution(value: dato, 100))  \(reduceResolution(value: level4.stretchLength ?? 0, 100))"
-                
-                    // LOG DATA
-                    // which data: x, y, z, roll, pitch, yaw, ang error, ang target, dist next target, dist target, x_gap_correction, y_gap_correction, next node, direction, state, message, start log, start sonification
-                    var timestamp:String = "\(NSDate().timeIntervalSince1970 * 1000)"
-                    let text="\(timestamp);\(currentX_map);\(currentY_map);\(currentZ_map);\(currentROLL);\(currentPITCH);\(currentYAW);\(lastMarkerSeen);\(locationProvider.fixPosition);\(x_fixing_gap_map);\(y_fixing_gap_map);\(yaw_fixing_gap_map);\(rototraslFix);\(anglePath);\(rad2degree(currentYAW));\(angular_difference);\(direction);\(range);\(nextNode);\(target_x_map);\(target_y_map);\(distance);\(closest_edge!.node_v);\(closest_edge!.node_u);\(closest_edge!.radiusOfNavigationArea);\(length_closest_edge);\(distanceFromCurrentEdge);\(dxFromCurrentEdge);\(dyFromCurrentEdge);\(state);\(message);\(previous_message_label.text);\(startLog);\(level4.startSonification);\(level4.readInstruction);\(version_setup);\(percorso);\(level4.num_turn);\(level4.num_walk);\(level4.num_lateral)"
-                    // TODO lastMarkerSeen--> Check se puoi migliorare questo dato
-                    log.logAsync(logDescription: text)
                 }
                 else {
                     if !saidArrived {
@@ -1179,7 +1341,11 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                     Synth.shared.volume = 0
                     Synth.shared.frequency = 0
                     saidArrived = true
-                    saveData()
+                    if taskTest{
+                        saveData()
+                    } else {
+                        resetTest()
+                    }
                 }
             } else {
                 repeat_pose_evaluation = false
@@ -1188,8 +1354,11 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                 if message != "destinazione raggiunta" { //}"Destination Reached"{
                     message = "destinazione raggiunta"//"Destination Reached"
                     level4.speak(message: message, state: state,changeNode: changeNode, changePath: changePath, repeatInstructionFlag: repeatInstructionFlag)
-                    saveData()
-                    
+                    if taskTest{
+                        saveData()
+                    } else {
+                        resetTest()
+                    }
                 }
             }
         }
@@ -1307,7 +1476,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
             destination_position = ["x": 8.4,"y":-22.00]
             level4.feedback("DES \(destination)")
         }*/
-        /*if percorso == "Percorso1"{
+        if percorso == "Percorso1"{
             percorso = "Percorso2"
         }
         else if percorso == "Percorso2"{
@@ -1317,13 +1486,13 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
             percorso = "Percorso4"
         } else if percorso == "Percorso4"{
             percorso = "Percorso1"
-        }*/
-        if percorso == "Percorso1"{
+        }
+        /*if percorso == "Percorso1"{
             percorso = "Percorso2"
         }
         else if percorso == "Percorso2"{
             percorso = "Percorso1"
-        }
+        }*/
         level4.feedback("\(percorso)")
         setupARConfiguration()
     }

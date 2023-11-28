@@ -3,8 +3,8 @@
         {
             "id": "u4",
             "name": "UNIMI",
-            "latitude":45.476860,
-            "longitude":9.230163
+            "latitude":45.476803,
+            "longitude":9.230293
         }
     ],
     "floors" : [
@@ -21,12 +21,12 @@
     ],
     "markers" : [
         {
-            "id": "M0",
-            "image": "M0",
+            "id": "init4",
+            "image": "init4",
             "physicalWidth": 0.19,
             "location":  {
-                "x":  93.07019789557671    , "y": 129.60576954577118,
-                "heading": 3.14,
+                "x": 60.2212795302039 , "y": 94.92662601359189      ,
+                "heading": 1.57,
                 "floor": "cortile"
             }
         },
@@ -35,8 +35,8 @@
             "image": "M1",
             "physicalWidth": 0.19,
             "location":  {
-                "x": 101.67200191604206     , "y": 131.02526879217476,
-                "heading": 1.57,
+                "x": 58.94580534362467 , "y": 86.26468595303595      ,
+                "heading": 0,
                 "floor": "cortile"
             }
         },
@@ -45,8 +45,8 @@
             "image": "M2",
             "physicalWidth": 0.19,
             "location":  {
-                "x": 101.73008946713526     , "y": 96.91816038638353,
-                "heading": 0.00,
+                "x": 20.651896160154138 , "y": 87.93002954870462      ,
+                "heading": 4.71,
                 "floor": "cortile"
             }
         },
@@ -55,8 +55,8 @@
             "image": "M3",
             "physicalWidth": 0.19,
             "location":  {
-                "x": 104.86032974853879     , "y": 98.24231430329382,
-                "heading": 1.57,
+                "x": 23.42517027980648 , "y": 73.81268688943237      ,
+                "heading": 3.14,
                 "floor": "cortile"
             }
         },
@@ -65,8 +65,8 @@
             "image": "M4",
             "physicalWidth": 0.19,
             "location":  {
-                "x": 106.92398125608452     , "y": 54.90833053551614,
-                "heading": 0,
+                "x": 16.706296653836034 , "y": 74.83183987252414      ,
+                "heading": 4.71,
                 "floor": "cortile"
             }
         },
@@ -75,18 +75,18 @@
             "image": "M5",
             "physicalWidth": 1.57,
             "location":  {
-                "x": 110.128839829762     , "y": 55.01019389368594,
-                "heading": 1.57,
+                "x": 16.81386127352016 , "y": 57.8336095828563       ,
+                "heading": 0,
                 "floor": "cortile"
             }
         },
         {
-            "id": "M6",
-            "image": "M6",
+            "id": "finish4",
+            "image": "finish4",
             "physicalWidth": 0.19,
             "location":  {
-                "x": 110.64234127383679     , "y": 43.3434724509716,
-                "heading": 0.00,
+                "x": 23.614064055727795 , "y": 57.9251982877031     ,
+                "heading": 1.57,
                 "floor": "cortile"
             }
         }

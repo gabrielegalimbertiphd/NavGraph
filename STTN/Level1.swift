@@ -17,6 +17,15 @@ struct Link : Equatable {
         radiusOfNavigationArea = new_radius
     }
     
+    mutating func compare(_ link1: Link, _ link2: Link) -> Bool{
+        if link1.node_u==link2.node_u && link1.node_v==link2.node_v{
+            return false
+        } else {
+            return true
+        }
+        return false
+    }
+    
 }
 
 class Level1 {
