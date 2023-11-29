@@ -106,7 +106,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     // MARK: OFFICIAL REFACTORED
     
     public var vertexes : [String] = ["0", "1","2", "3","4","5","6"]
-    public var graph: WeightedGraph<String, Int> = WeightedGraph<String, Int>(vertices: ["0", "1","2", "3","4", "5","6"])
+    public var graph: WeightedGraph<String, Int> = WeightedGraph<String, Int>(vertices: ["0", "1", "2", "3", "4", "5"])
     
     private let resolution: Float = 100.0
     
@@ -204,16 +204,14 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
             Link( node_u :"1", node_v :"2", radiusOfNavigationArea :1.5),
             Link( node_u :"2", node_v :"3", radiusOfNavigationArea :2),
             Link( node_u :"3", node_v :"4", radiusOfNavigationArea :1),
-            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :2),
-            Link( node_u :"5", node_v :"6", radiusOfNavigationArea :2)
+            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :2)
         ],
         "Percorso4":[
             Link( node_u :"0", node_v :"1", radiusOfNavigationArea :1),
             Link( node_u :"1", node_v :"2", radiusOfNavigationArea :2),
             Link( node_u :"2", node_v :"3", radiusOfNavigationArea :2),
             Link( node_u :"3", node_v :"4", radiusOfNavigationArea :1.5),
-            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :2),
-            Link( node_u :"5", node_v :"6", radiusOfNavigationArea :1)
+            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :2)
         ],
         "Prova":[
             Link( node_u :"0", node_v :"1", radiusOfNavigationArea :1),
@@ -454,7 +452,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         
         position_vertexes = coordinates_position_vertexes[percorso] ?? position_vertexes
         print(position_vertexes)
-        destination_position = position_vertexes["6"] ?? [ "x": 102.12050876254216 ,"y": -96.69467583857477 ]
+        print(position_vertexes.count)
+        destination_position = position_vertexes["\(position_vertexes.count-1)"] ?? [ "x": 102.12050876254216 ,"y": -96.69467583857477 ]
         print(destination_position)
         links = linksOfPaths[percorso] ?? links
         level1 = Level1(listOfVertexesCoordinates: position_vertexes, destination_position: destination_position, radius_destination: radius_destination, links: links, vertexes: vertexes)
@@ -510,7 +509,6 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     }
     
     func startProva(){
-        print("PROvA")
         position_vertexes = coordinates_position_vertexes["Prova"] ?? position_vertexes
         print(position_vertexes)
         destination_position = position_vertexes["2"] ?? [ "x": 105 ,"y": -105 ]
@@ -736,23 +734,27 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                 print(closestEdge, k!)
                 var checkuseredge : Bool = closestEdge.node_u==k!.node_u && closestEdge.node_v==k!.node_v
                 
-                print("checkuseredge", checkuseredge, "distanceFromCurrentEdge<closestEdge.radiusOfNavigationArea = \(distanceFromCurrentEdge)<\(closestEdge.radiusOfNavigationArea)", "distanceFromCurrentEdge>closestEdge.radiusOfNavigationArea*percentage","\(distanceFromCurrentEdge)>\(closestEdge.radiusOfNavigationArea*percentage)", "distance<closestEdge.radiusOfNavigationArea","\(distance)<\(closestEdge.radiusOfNavigationArea)")
+                //print("checkuseredge", checkuseredge, "distanceFromCurrentEdge<closestEdge.radiusOfNavigationArea = \(distanceFromCurrentEdge)<\(closestEdge.radiusOfNavigationArea)", "distanceFromCurrentEdge>closestEdge.radiusOfNavigationArea*percentage","\(distanceFromCurrentEdge)>\(closestEdge.radiusOfNavigationArea*percentage)", "distance<closestEdge.radiusOfNavigationArea*percentage","\(distance)<\(closestEdge.radiusOfNavigationArea*percentage)")
                 
-                if checkuseredge==true && distanceFromCurrentEdge<closestEdge.radiusOfNavigationArea && distanceFromCurrentEdge>closestEdge.radiusOfNavigationArea*percentage && distance < closestEdge.radiusOfNavigationArea {
+                if checkuseredge==true && ((distanceFromCurrentEdge<closestEdge.radiusOfNavigationArea && distanceFromCurrentEdge>closestEdge.radiusOfNavigationArea*percentage) || distance < closestEdge.radiusOfNavigationArea*percentage) {
                     flag = false
+                    print("checkuseredge",true ,"\ndistanceFromCurrentEdge<closestEdge.radiusOfNavigationArea","\(distanceFromCurrentEdge)<\(closestEdge.radiusOfNavigationArea)", "distanceFromCurrentEdge>closestEdge.radiusOfNavigationArea*percentage","\(distanceFromCurrentEdge)>\(closestEdge.radiusOfNavigationArea*percentage)",  "distance < closestEdge.radiusOfNavigationArea*percentage","\(distance) < \(closestEdge.radiusOfNavigationArea*percentage)" )
                     print("false")
                     break
                 } else if checkuseredge==false && data!.distance < k!.radiusOfNavigationArea*percentage {
                     flag = false
+                    print("checkuseredge",false, "data!.distance < k!.radiusOfNavigationArea*percentage","\(data!.distance) < \(k!.radiusOfNavigationArea*percentage)")
+                    print("false")
                     break
                 } else {
                     flag = true
-                    print("false")
+                    print("true")
                 }
             }
         }
         
-        /*for edge in edges_user {
+        /*
+        for edge in edges_user {
             let vertex_u = position_vertexes["\(edge.u)"]!
             let vertex_v = position_vertexes["\(edge.v)"]!
             let p1X:Float = vertex_u["x"] ?? 0
@@ -761,15 +763,6 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
             let p2Y:Float = vertex_v["y"] ?? 0
             let data = level2.getClosestPointOnEdge(position: (px:currentX,py:currentY), p1X: p1X, p1Y: p1Y, p2X: p2X, p2Y: p2Y)
             var k : Link? = level2.edgeToLink(links: links,edge: edge)
-            // IN THIS CASE I CHECK IF THE TARGET CAN CHANGE
-            // if there is only one edge, the target will not change. Indeed,
-            // CONDITIONS:
-            // k = for recovering the link related to the "edge" and know how much is the radius of the "edge"
-            // data!.distance = perpendicular distance from the edge k.
-            // distance = distance to the actual target.
-            // k!.radiusOfSafeArea*percentage = D1 limit of edge k.
-            // data!.distance < k!.radiusOfSafeArea*percentage = here I check if the user is D2 with respect to the edge k (not in D1).
-            // k!.radiusOfSafeArea*percentage < distance < k!.radiusOfSafeArea = check if the user is actually arrived near the current target point at least in D2 of the edge k.
             if (data!.distance < k!.radiusOfNavigationArea*percentage && distance > k!.radiusOfNavigationArea*percentage && distance < k!.radiusOfNavigationArea ) {
                 flag = true
             }
@@ -804,7 +797,6 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         dxFromCurrentEdge = pointOnEdge!.dx
         dyFromCurrentEdge = pointOnEdge!.dy
         
-        print(pointOnEdge)
         
         // IN TEORIA FUNZIONA!
         
@@ -812,6 +804,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         if edges_user.count != 0 {
             checkDistanceFromSnap(edges_user, currentX, currentY, closest_edge ?? links[0], distanceFromCurrentEdge, &flag)
         }
+        print("post if ",flag)
         if flag {
             print("ENTER HERE")
             flag=false
@@ -881,18 +874,20 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
             // PROCEDURE: Finding next node and the route
             // finding the next node
             // but this algorithm compute only the next node and not the route. For this reason the code check later which is the most close node in E_d that lead to the destination passing from the nextnode. the code then save the route from next node to last node
+            print("Procedura di calcolo del prossimo nodo")
             var path_distances: [String: Float] = [:]
             var last_nodes: [String: String] = [:]
             for e_u in edges_user {
+                print(e_u)
                 var node1_user = level1!.position_vertexes["\(e_u.u)"]
                 var distance_user_node1 = distanceBetweenTwoPoints2D(p1x:currentX, p1y:currentY, p2x:node1_user!["x"]!, p2y:node1_user!["y"]!)*100.0
                 //print(distance_user_node1)
                 var node2_user = level1!.position_vertexes["\(e_u.v)"]
                 var distance_user_node2 = distanceBetweenTwoPoints2D(p1x:currentX, p1y:currentY, p2x:node2_user!["x"]!, p2y:node2_user!["y"]!)*100.0
                 //print(distance_user_node2)
-                
+                print("edges_destination",edges_destination)
                 for e_d in edges_destination {
-                    
+                    print(e_d)
                     let node1_destination = level1!.position_vertexes["\(e_d.u)"]
                     let distance_destination_node1 = distanceBetweenTwoPoints2D(p1x:currentX, p1y:currentY, p2x:node1_destination!["x"]!, p2y:node1_destination!["y"]!)*100.0
                     //print(distance_destination_node1)
@@ -934,11 +929,13 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
             }
             var min:Float=Float(Int.max)
             for ptdist in path_distances {
+                print(ptdist.key,ptdist.value)
                 if ptdist.value<min {
                     nextNode = ptdist.key
                     min = ptdist.value
                 }
             }
+            print("nextNode",nextNode,"min",min)
             
             if nextNode == "" {
                 nextNode="0"
@@ -1166,6 +1163,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                 E_u = level2.getEdgesAtPosition(position: (px:currentX_map,py:currentY_map), input_Graph: level1!.graph, position_vertexes: level1!.position_vertexes, links: links)
                 //print(E_u)
                 // GET DESTINATION EDGE
+                print("dest:", destination_position["x"]!,destination_position["y"]!)
                 E_d = level2.getEdgesAtPosition(position: (px:destination_position["x"]!,py:destination_position["y"]!), input_Graph: level1!.graph, position_vertexes: level1!.position_vertexes, links: links)
                 //print(E_d)
                 var user_edges_description="E_u: "
