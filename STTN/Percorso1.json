@@ -79,6 +79,60 @@
                 "heading": 0,
                 "floor": "cortile"
             }
+        },
+        {
+            "id": "M5",
+            "image": "M5",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 82.18978842179058 , "y": 94.67587963677943      , "heading": 2.355,
+                "floor": "cortile"
+            }
+        },,
+        {
+            "id": "M6",
+            "image": "M6",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 88.27949802222429 , "y": 88.73973657935858      , "heading": 0.785,
+                "floor": "cortile"
+            }
+        }
+        {
+            "id": "M7",
+            "image": "M7",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 96.35626717109699 , "y": 101.2505065118894      , "heading": 2.355,
+                "floor": "cortile"
+            }
+        },
+        {
+            "id": "M8",
+            "image": "M8",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 105.38238758628722 , "y": 97.95709220506251      , "heading": 0.785,
+                "floor": "cortile"
+            }
+        },
+        {
+            "id": "M9",
+            "image": "M9",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 113.82073745765956 , "y": 97.76674815267324      , "heading": 0.785,
+                "floor": "cortile"
+            }
+        },
+        {
+            "id": "M10",
+            "image": "M10",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 134.59276455634972 , "y": 97.7140047531575      , "heading": 0.785,
+                "floor": "cortile"
+            }
         }
     ]
 }
