@@ -37,7 +37,7 @@ class Level4 {
     
     public var other10meters:Bool = false
     
-    public var previous_direction:String = ""
+    public var previous_direction_turn:String = ""
     public var previous_state:String = ""
     
     public var timerRepeatInstruction: Double = 0.0
@@ -56,16 +56,16 @@ class Level4 {
     public var sonif_rate : Float = 0.0
     
     // se è già stato comunicato il messaggio e ha già finito di parlare dopo 1.2 secondi. altrimenti sonifico
-    func speak(message: String, angular_difference: Float? = nil, range: Float = 30.0, distanceFromTarget: Float? = nil, safeAreaRadius: Float? = nil, lateralDistance:Float? = nil, direction: String? = nil, movement : Float? = nil, state: String, changeNode: Bool, changePath:Bool, repeatInstructionFlag:Bool) {
+    func speak(message: String, angular_difference: Float? = nil, range: Float = 30.0, distanceFromTarget: Float? = nil, safeAreaRadius: Float? = nil, lateralDistance:Float? = nil, direction_turn: String? = nil, direction_lateral: String? = nil, movement : Float? = nil, state: String, changeNode: Bool, changePath:Bool, repeatInstructionFlag:Bool) {
         readInstruction = false
         t = CFAbsoluteTimeGetCurrent() - timerRepeatInstruction
         // se si verifica una di queste condizioni allora non usare la sonificazione e devi dire il messaggio:
         // 1- se il messaggio cambia serve che dico il nuovo messaggio. se sto svoltando/camminando voglio continuare eccetto in casi particolari trattati in seguito.
         let condition1 = self.lastText != message
         // 2- se cambia la direzione, sto svoltando e la sonificazione è stata attivata e non è maggiore di 160 gradi
-        //let condition2 = (previous_direction != direction && message.contains("turn") && startSonification && abs(angular_difference ?? 0) >= range && abs(self.angleLength ?? 0) < 160)
+        //let condition2 = (previous_direction_turn != direction_turn && message.contains("turn") && startSonification && abs(angular_difference ?? 0) >= range && abs(self.angleLength ?? 0) < 160)
         // abs(self.angleLength ?? 0) < 160) da tenere perchè evita che nell'alternanza tra 180 e -180 venga ripetuto "turn around"
-        let condition2 = false //(previous_direction != direction && message.contains("turn") && startSonification && abs(self.angleLength ?? 0) < 160) // condizione per identificare il cambio di direzione.
+        let condition2 = false //(previous_direction_turn != direction_turn && message.contains("turn") && startSonification && abs(self.angleLength ?? 0) < 160) // condizione per identificare il cambio di direzione.
         // 3- se sono inside un istante prima ed outside un istante dopo e viceversa
         let condition3 = (previous_state=="inside" && state=="outside")
         // 4- se sono outside un istante prima ed inside un istante dopo e viceversa
@@ -232,9 +232,9 @@ class Level4 {
             // LATERAL STRIDE INSTRUCTION
             //instruction = message.contains("lateral") ? "lateral" : ""
             else if message.contains("lateral"){
-                if direction! == "Left"{
+                if direction_lateral! == "Left"{
                     instruction = "Spostati a sinistra"
-                } else if direction! == "Right"{ // era "right"
+                } else if direction_lateral! == "Right"{ // era "right"
                     instruction = "Spostati a destra"
                 }
                 print("QUI")
@@ -242,7 +242,7 @@ class Level4 {
             // TURN AROUND INSTRUCTION + TURN INSTRUCTION
             //instruction = message.contains("turn") && abs(self.angleLength ?? 0) >= 160 ? "\(message) around" : instruction
             else if message.contains("turn")  {
-                var direzione : String = direction!=="Left" ? "sinistra" : "destra"
+                var direzione : String = direction_turn!=="Left" ? "sinistra" : "destra"
                 instruction = message.contains("turn") ? "Gira a \(direzione)" : ""
                 //instruction = message.contains("turn") && abs(self.angleLength ?? 0) >= 160 ? "Girati indietro" : instruction // era Girati
             }
@@ -276,7 +276,7 @@ class Level4 {
             utterance.voice = self.voice
             self.speech_synthesizer.speak(utterance)
         }
-        previous_direction = direction ?? ""
+        previous_direction_turn = direction_turn ?? ""
         previous_state = state
         //print("EVALUATION")
         print()

@@ -56,7 +56,13 @@ class Level3 {
         } else if (current_state == "inside") { // MARK: INSIDE
             
             // if (angular_error <= alpha1 && previous_message=="turn") || (angular_error <= alpha2 && t>=5 && previous_message=="turn") || changeTargetNode(changeNode: changeNode, previous_message: previous_message, current_state: current_state, angular_error: angular_error) { // MY PROPOSAL
-            if ((angular_error <= alpha1 && previous_message=="turn") || previous_message=="lateral") || changeTargetNode(changeNode: changeNode, previous_message: previous_message, current_state: current_state, angular_error: angular_error) {
+            print("(angular_error <= alpha1 && previous_message==turn)","\(angular_error) <= \(alpha1) && \(previous_message)==turn")
+            print("\(previous_message)==lateral")
+            
+            print("changeTargetNode",changeTargetNode(changeNode: changeNode, previous_message: previous_message, current_state: current_state, angular_error: angular_error))
+            if ((angular_error <= alpha1 && previous_message=="turn") ||
+                previous_message=="lateral") ||
+                changeTargetNode(changeNode: changeNode, previous_message: previous_message, current_state: current_state, angular_error: angular_error) {
                 message = "walk" // TODO: MESSAGGIO?
                 //previous_state = "N_NR"
                 print("WALK")

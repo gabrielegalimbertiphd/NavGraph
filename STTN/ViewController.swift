@@ -134,7 +134,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         ],
         "Percorso2":[
             "0":["x": 213.04729223815957 ,"y": -155.66430983599275 ],
-            "1":["x": 213.49196822976228 ,"y": -154.4162802444771 ],
+            "1":["x": 213.48552564281272 ,"y": -152.19434828031808 ],
             "2":["x": 223.46639834909 ,"y": -153.85030070506036 ],
             "3":["x": 222.8217324456782 ,"y": -93.71006935089827 ],
             "4":["x": 203.12929557752796 ,"y": -94.45257009752095 ],
@@ -389,6 +389,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     public var distanceFromCurrentEdge : Float = 0.0
     public var dxFromCurrentEdge : Float = 0.0
     public var dyFromCurrentEdge : Float = 0.0
+    
+    private var direction_lateral : String = ""
     
     public var taskTest : Bool = false
     
@@ -716,7 +718,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     fileprivate func checkDistanceFromSnap(_ edges_user: [Edge], _ currentX: Float, _ currentY: Float, _ closestEdge: Link, _ distanceFromCurrentEdge: Float, _ flag: inout Bool) {
         print("IN FUNCTION CHECKDISTANCEFROMSNAP")
         print("distance > closestEdge.radiusOfNavigationArea","\(distance) > \(closestEdge.radiusOfNavigationArea)")
-        if distance > closestEdge.radiusOfNavigationArea {
+        if distance > closestEdge.radiusOfNavigationArea && false {
             flag = true
         } else {
             for edge in edges_user {
@@ -744,7 +746,10 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                     print("checkuseredge",false, "data!.distance < k!.radiusOfNavigationArea*percentage","\(data!.distance) < \(k!.radiusOfNavigationArea*percentage)")
                     print("false")
                     break
-                } else {
+                } else if distance > closestEdge.radiusOfNavigationArea && edges_user.count==1 {
+                    flag=false
+                }
+                else {
                     flag = true
                     print("true")
                 }
@@ -795,7 +800,13 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         dxFromCurrentEdge = pointOnEdge!.dx
         dyFromCurrentEdge = pointOnEdge!.dy
         
-        
+        print("dxFromCurrentEdge",dxFromCurrentEdge,"dyFromCurrentEdge",dyFromCurrentEdge)
+        if dxFromCurrentEdge>0 && dyFromCurrentEdge>0{
+            direction_lateral="Left"
+        }
+        else {
+            direction_lateral="Right"
+        }
         // IN TEORIA FUNZIONA!
         
         var flag : Bool = false
@@ -815,7 +826,11 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
             }
             previous_node = nextNode
             
-            state = "inside"
+            if distanceFromCurrentEdge>closest_edge!.radiusOfNavigationArea*percentage && state=="outside"{
+                state = "outside"
+            } else {
+                state = "inside"
+            }
             state_user.text=state
             nextTargetLabel.text = "T: \(nextNode)"
             inside_outside.text = "I/O: inside DEBUG POINT"
@@ -1222,9 +1237,9 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                     angular_error_label.text = "ang err: \(reduceResolution(value: angular_difference,100))"
                     lateralDistanceLabel.text = "lateral dist: \(reduceResolution(value: distanceFromCurrentEdge, 100))"
                     
-                    let direction = angular_difference>0 && angular_difference < 180 ? "Right":"Left" // TODO: quando sono fuori dalla safe area la prima volta mi dice la direzione sbagliata.... le volte successive è corretta. devi capire perchè.
+                    let direction_turn = angular_difference>0 && angular_difference < 180 ? "Right":"Left" // TODO: quando sono fuori dalla safe area la prima volta mi dice la direzione sbagliata.... le volte successive è corretta. devi capire perchè.
                     distance = distanceBetweenTwoPoints2D(p1x: target_x_map, p1y: target_y_map, p2x: currentX_map, p2y: currentY_map)
-                    let distanceFromPath = direction == "Left" ? -distance:distance
+                    let distanceFromPath = direction_turn == "Left" ? -distance:distance
                     
                     distance_from_next_target_label.text = "dist target: \(reduceResolution(value: distance,100))"
                     
@@ -1282,9 +1297,9 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                     print("level4")
                     //print(direction)
                     
-                    directionLabel.text = "Dir: \(direction)"
+                    directionLabel.text = "Dir: \(direction_turn)"
                     
-                    level4.speak(message: message, angular_difference: angular_difference, range: range, distanceFromTarget: distance, safeAreaRadius: closest_edge!.radiusOfNavigationArea*percentage, lateralDistance: max(distanceFromCurrentEdge-closest_edge!.radiusOfNavigationArea*percentage,0), direction: direction, movement: movement, state: state, changeNode: changeNode, changePath: changePath, repeatInstructionFlag: repeatInstructionFlag) // max(abs(distanceFromCurrentEdge)-closest_edge!.radiusOfNavigationArea*percentage,0) cambio distanceFromCurrentEdge
+                    level4.speak(message: message, angular_difference: angular_difference, range: range, distanceFromTarget: distance, safeAreaRadius: closest_edge!.radiusOfNavigationArea*percentage, lateralDistance: max(distanceFromCurrentEdge-closest_edge!.radiusOfNavigationArea*percentage,0), direction_turn: direction_turn, direction_lateral: direction_lateral, movement: movement, state: state, changeNode: changeNode, changePath: changePath, repeatInstructionFlag: repeatInstructionFlag) // max(abs(distanceFromCurrentEdge)-closest_edge!.radiusOfNavigationArea*percentage,0) cambio distanceFromCurrentEdge
                     // TODO: DARE IN INPUT L'ANGOLO DI ISTRUZIONE PER CONTROLLO ANGOLO.
                     
                     level4debug.text="LV4: \(level4.debugConditions)"
@@ -1323,7 +1338,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                         // which data: x, y, z, roll, pitch, yaw, ang error, ang target, dist next target, dist target, x_gap_correction, y_gap_correction, next node, direction, state, message, start log, start sonification
                         
                         var timestamp:String = "\(NSDate().timeIntervalSince1970 * 1000)"
-                        let text="\(timestamp);\(currentX_map);\(currentY_map);\(currentZ_map);\(currentROLL);\(currentPITCH);\(currentYAW);\(lastMarkerSeen);\(locationProvider.fixPosition);\(x_fixing_gap_map);\(y_fixing_gap_map);\(yaw_fixing_gap_map);\(rototraslFix);\(anglePath);\(rad2degree(currentYAW));\(angular_difference);\(direction);\(range);\(nextNode);\(target_x_map);\(target_y_map);\(distance);\(closest_edge!.node_v);\(closest_edge!.node_u);\(closest_edge!.radiusOfNavigationArea);\(length_closest_edge);\(distanceFromCurrentEdge);\(dxFromCurrentEdge);\(dyFromCurrentEdge);\(state);\(message);\(previous_message_label.text);\(startLog);\(level4.startSonification);\(level4.readInstruction);\(version_setup);\(percorso);\(level4.num_turn);\(level4.num_walk);\(level4.num_lateral)"
+                        let text="\(timestamp);\(currentX_map);\(currentY_map);\(currentZ_map);\(currentROLL);\(currentPITCH);\(currentYAW);\(lastMarkerSeen);\(locationProvider.fixPosition);\(x_fixing_gap_map);\(y_fixing_gap_map);\(yaw_fixing_gap_map);\(rototraslFix);\(anglePath);\(rad2degree(currentYAW));\(angular_difference);\(direction_turn);\(range);\(nextNode);\(target_x_map);\(target_y_map);\(distance);\(closest_edge!.node_v);\(closest_edge!.node_u);\(closest_edge!.radiusOfNavigationArea);\(length_closest_edge);\(distanceFromCurrentEdge);\(dxFromCurrentEdge);\(dyFromCurrentEdge);\(direction_lateral);\(state);\(message);\(previous_message_label.text);\(startLog);\(level4.startSonification);\(level4.readInstruction);\(version_setup);\(percorso);\(level4.num_turn);\(level4.num_walk);\(level4.num_lateral)"
                         // TODO lastMarkerSeen--> Check se puoi migliorare questo dato
                         log.logAsync(logDescription: text)
                     }
