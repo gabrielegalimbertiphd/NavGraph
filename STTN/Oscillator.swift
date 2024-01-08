@@ -57,7 +57,7 @@ struct Oscillator {
         let period = 1.0 / Double(frequency)
         let currentTime = fmod(Double(time), period)
         //return ((currentTime / period) < 0.2) ? Oscillator.amplitude * sin(2.0 * Float.pi * 440 * time) : 0.00005 * Oscillator.amplitude * sin(2.0 * Float.pi * 440 * time)
-        return Oscillator.amplitude * sin(2.0 * Float.pi * 528 * time) * pow(0.9999998-Float(currentTime / period),4)+0.0000001
+        return Oscillator.amplitude * sin(2.0 * Float.pi * 1056 * time) * pow(0.9999998-Float(currentTime / period),4)+0.0000001
     }
     
     static let IS_Lateral: Signal = { frequency, time in

@@ -801,12 +801,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         dyFromCurrentEdge = pointOnEdge!.dy
         
         print("dxFromCurrentEdge",dxFromCurrentEdge,"dyFromCurrentEdge",dyFromCurrentEdge)
-        if dxFromCurrentEdge>0 && dyFromCurrentEdge>0{
-            direction_lateral="Left"
-        }
-        else {
-            direction_lateral="Right"
-        }
+        
         // IN TEORIA FUNZIONA!
         
         var flag : Bool = false
@@ -1128,7 +1123,6 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                     JUMPDEBUG.text = "JUMP X:\(reduceResolution(value: currentX_map, 100)),Y:\(reduceResolution(value: currentY_map, 100)), J: \(reduceResolution(value: distanceBetweenTwoPoints2D(p1x: currentX_map, p1y: previous_currentX_map, p2x: currentY_map, p2y: previous_currentY_map), 100))"
                     // TODO: inserire earcon? forse troppo
                     level4.jumpSound()
-                    level4.emergencySound()
                     
                 } else if (abs(previous_currentX_map - currentX_map)>0.3 || abs(previous_currentY_map - currentY_map)>0.3) && previous_currentX_map != 0 && previous_currentY_map != 0 {
                     //level4.speak(message: "update", state: state, changeNode: false, changePath: false, repeatInstructionFlag: false)
@@ -1136,7 +1130,6 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                     // BIG JUMP
                     JUMPDEBUG.text = "JUMP X:\(reduceResolution(value: currentX_map, 100)),Y:\(reduceResolution(value: currentY_map, 100)), J: \(reduceResolution(value: distanceBetweenTwoPoints2D(p1x: currentX_map, p1y: previous_currentX_map, p2x: currentY_map, p2y: previous_currentY_map), 100))"
                     // TODO: inserire earcon? forse troppo
-                    level4.jumpSound()
                 }
                 previous_currentX_map = currentX_map
                 previous_currentY_map = currentY_map
@@ -1241,6 +1234,13 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                     distance = distanceBetweenTwoPoints2D(p1x: target_x_map, p1y: target_y_map, p2x: currentX_map, p2y: currentY_map)
                     let distanceFromPath = direction_turn == "Left" ? -distance:distance
                     
+                    if anglePath > 0 {
+                        direction_lateral="Left"
+                    }
+                    else {
+                        direction_lateral="Right"
+                    }
+                    
                     distance_from_next_target_label.text = "dist target: \(reduceResolution(value: distance,100))"
                     
                     if state=="outside"{
@@ -1250,15 +1250,29 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                     }
                     
                     if version_setup == "advanced" {
-                        var cateto1 = num_shared_edges_user_destination>=1 ? radius_destination : closest_edge!.radiusOfNavigationArea
+                        //var cateto1 = num_shared_edges_user_destination>=1 ? radius_destination : closest_edge!.radiusOfNavigationArea
+                        
+                        var radiusInCurrentTarget : Float = Float(Int.max)
+                        if E_u.count > 1 {
+                            for e in links{
+                                if (e.node_u==nextNode || e.node_v==nextNode) && e.radiusOfNavigationArea<radiusInCurrentTarget{
+                                    radiusInCurrentTarget = e.radiusOfNavigationArea
+                                }
+                            }
+                        } else {
+                            radiusInCurrentTarget = closest_edge!.radiusOfNavigationArea
+                        }
+                        
+                        var cateto1 = num_shared_edges_user_destination>=1 ? radius_destination : radiusInCurrentTarget
+                        
                         var alpha = rad2degree(asin(cateto1/abs(distance)))
                         if alpha.isNaN {
                             alpha = 90.0
                         }
                         print("alpha",alpha)
-                        range = max(alpha,level3.alpha3)
+                        range = max(alpha,level3.alpha2_inside)
                     } else {
-                        range=level3.alpha3
+                        range=level3.alpha2_inside
                     }
                     range_of_directions_debug.text="range: \(reduceResolution(value: range, 1000))"
                     
