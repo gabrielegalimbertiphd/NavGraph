@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D5036C212AB84D4500DA501B /* Render.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5036C202AB84D4500DA501B /* Render.swift */; };
+		D506158B2B4C2629009A5C34 /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D506158A2B4C2629009A5C34 /* Geometry.swift */; };
 		D514C7E82AE026F80092F4F4 /* Percorso1.json in Resources */ = {isa = PBXBuildFile; fileRef = D514C7E42AE026F80092F4F4 /* Percorso1.json */; };
 		D5226C452A44C28B00C9C880 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5226C442A44C28B00C9C880 /* Log.swift */; };
 		D529CFF12A2830CA00ED6E4A /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529CFF02A2830CA00ED6E4A /* Toast.swift */; };
@@ -58,6 +59,7 @@
 
 /* Begin PBXFileReference section */
 		D5036C202AB84D4500DA501B /* Render.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Render.swift; sourceTree = "<group>"; };
+		D506158A2B4C2629009A5C34 /* Geometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
 		D50D74A02B07767D00631267 /* PositioningLibrary */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PositioningLibrary; sourceTree = "<group>"; };
 		D514C7E42AE026F80092F4F4 /* Percorso1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Percorso1.json; sourceTree = "<group>"; };
 		D5226C442A44C28B00C9C880 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 			children = (
 				D5B9731F2A40D2760046AC55 /* Sounds */,
 				D56E46772A24113A000703A1 /* AppDelegate.swift */,
+				D506158A2B4C2629009A5C34 /* Geometry.swift */,
 				D551B61E2A4CB65000EDCE88 /* Level1.swift */,
 				D57AAA542A2FFB78006EAE6A /* Level4.swift */,
 				D529CFF02A2830CA00ED6E4A /* Toast.swift */,
@@ -363,6 +366,7 @@
 				D56E467C2A24113A000703A1 /* ViewController.swift in Sources */,
 				D529CFF12A2830CA00ED6E4A /* Toast.swift in Sources */,
 				D57AAA4F2A2FE555006EAE6A /* Level3.swift in Sources */,
+				D506158B2B4C2629009A5C34 /* Geometry.swift in Sources */,
 				D57AAA512A2FFA08006EAE6A /* Synth.swift in Sources */,
 				D56E46782A24113A000703A1 /* AppDelegate.swift in Sources */,
 			);

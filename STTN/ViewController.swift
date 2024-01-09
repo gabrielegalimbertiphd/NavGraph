@@ -87,6 +87,9 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     // location provider
     private var locationProvider: LocationProvider!
     
+    // Calcolo intersezioni
+    private var geometry: Geometry!
+    
     // JSON reader
     private var customJsonParser: CustomJsonParser!
     private var markers : [Marker] = []
@@ -298,6 +301,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     public var changeNode : Bool = false // if the node change the software must repeat the instruction.
     public var changePath : Bool = false // until the subpath is contained into the path of the route, else the path is change and the variable becomes true
     public var previous_node: String = "0"
+    public var following_node: String = "0"
     
     /*var E_u : [any Edge] = []
     //print(E_u)
@@ -465,6 +469,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         setupARConfiguration()
         
         log = Log()
+        geometry = Geometry()
         
         /*self.locationProvider = LocationProvider(arView: arView, jsonName: "test")
         self.locationProvider.addLocationObserver(locationObserver: self)
@@ -968,7 +973,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                 let (distances, pathDict) = level1!.graph.dijkstra(root: Int(nextNode) ?? 0, startDistance: 0)
                 //print("pathDict",pathDict)
                 //let nameDistance: [String: Int?] =  distanceArrayToVertexDict(distances: distances, graph: level1!.graph)
-                let stops: [String] = level1!.graph.edgesToVertices(edges: pathDictToPath(from: level1!.graph.indexOfVertex("\(nextNode)")!, to: level1!.graph.indexOfVertex("\(lastNode)")!, pathDict: pathDict))
+                var stops: [String] = level1!.graph.edgesToVertices(edges: pathDictToPath(from: level1!.graph.indexOfVertex("\(nextNode)")!, to: level1!.graph.indexOfVertex("\(lastNode)")!, pathDict: pathDict))
+                stops.append("destination")
                 //print("stops",stops)
                 // check if the subroute is changed
                 if route.count==0{
@@ -1182,7 +1188,6 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                 print("level2")
                 var num_shared_edges_user_destination : Int = level2.checkSharedEdgesDestination(E_u: &E_u,E_d: &E_d)
                 
-                
                 outputLevel2(currentX: currentX_map, currentY: currentY_map, previous_state: state, edges_user: &E_u,edges_destination: &E_d, num_shared_edges_user_destination: num_shared_edges_user_destination)
                 
                 if state != "arrived" {
@@ -1252,6 +1257,198 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                     if version_setup == "advanced" {
                         //var cateto1 = num_shared_edges_user_destination>=1 ? radius_destination : closest_edge!.radiusOfNavigationArea
                         
+                        // trovo il prossimo edge
+                        // se prossimo edge è D allora evito di fare calcoli
+                        print(route)
+                        print(nextNode)
+                        
+                        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        
+                        if following_node != "" && state=="inside" && distance < distance {
+                            if nextNode != "destination"{
+                                following_node = "\(Int(nextNode)!+1)"
+                                var currentEdge : Link = level2.getEdgeGivenTwoNodesIfExist(links: links, nodeA: nextNode, nodeB: previous_node) ?? links[0]
+                                var nextEdge : Link = level2.getEdgeGivenTwoNodesIfExist(links: links, nodeA: nextNode, nodeB: following_node) ?? links[1]
+                                
+                                var radius_currentEdge:Float = currentEdge.radiusOfNavigationArea// TODO: CHANGE
+                                var radius_nextEdge:Float = nextEdge.radiusOfNavigationArea// TODO: CHANGE
+                                
+                                //level1!.position_vertexes["\(nextNode)"]! // TODO: CHECK IT OUT!
+                                
+                                var x_n1:Float = level1!.position_vertexes["\(previous_node)"]!["x"] ?? 0.0// TODO: CHANGE x punto precedente
+                                var y_n1:Float = level1!.position_vertexes["\(previous_node)"]!["y"] ?? 0.0// TODO: CHANGE y punto precedente
+
+                                var x_n2:Float = level1!.position_vertexes["\(nextNode)"]!["x"] ?? 0.0// TODO: CHANGE x punto target
+                                var y_n2:Float = level1!.position_vertexes["\(nextNode)"]!["y"] ?? 0.0// TODO: CHANGE y punto target
+
+                                var x_n3:Float = level1!.position_vertexes["\(following_node)"]!["x"] ?? 0.0// TODO: CHANGE x prossimo target
+                                var y_n3:Float = level1!.position_vertexes["\(following_node)"]!["y"] ?? 0.0// TODO: CHANGE y prossimo target
+
+                                var x_user : Float = currentX_map
+                                var y_user : Float = currentY_map
+                                
+                                var angleCurrentEdge:Float = geometry.angleBetweenTwoPoints(x_n1: x_n1,x_n2: x_n2,y_n1: y_n1,y_n2: y_n2)
+                                var angleNextEdge:Float = geometry.angleBetweenTwoPoints(x_n1: x_n2,x_n2: x_n3,y_n1: y_n2,y_n2: y_n3)
+                                var angleBetweenEdges:Float = angleCurrentEdge-angleNextEdge
+
+                                var dx1:Float = radius_nextEdge * cos(angleNextEdge)
+                                var dy2:Float = radius_nextEdge * sin(angleNextEdge)
+                                var p1x:Float = x_n2+dx1
+                                var p1y:Float = y_n2+dy2
+                                var p2x:Float = x_n2-dx1
+                                var p2y:Float = y_n2-dy2
+                                var p3x:Float = x_n3+dx1
+                                var p3y:Float = y_n3+dy2
+                                var p4x:Float = x_n3-dx1
+                                var p4y:Float = y_n3-dy2
+
+
+                                var dx3:Float = radius_currentEdge * cos(angleCurrentEdge)
+                                var dy4:Float = radius_currentEdge * sin(angleCurrentEdge)
+                                var p5x:Float = x_n1+dx3
+                                var p5y:Float = y_n1+dy4
+                                var p6x:Float = x_n1-dx3
+                                var p6y:Float = y_n1-dy4
+                                var p7x:Float = x_n2+dx3
+                                var p7y:Float = y_n2+dy4
+                                var p8x:Float = x_n2-dx3
+                                var p8y:Float = y_n2-dy4
+                                
+                                
+                                var intersezione1 = geometry.trova_intersezione(p1x, p1y, p3x, p3y, p5x, p5y, p7x, p7y)
+                                var intersezione2 = geometry.trova_intersezione(p2x, p2y, p4x, p4y, p6x, p6y, p8x, p8y)
+                                var intersezione3 = geometry.trova_intersezione(p1x, p1y, p3x, p3y, p6x, p6y, p8x, p8y)
+                                var intersezione4 = geometry.trova_intersezione(p2x, p2y, p4x, p4y, p5x, p5y, p7x, p7y)
+                                
+                                let center: (Float, Float) = (x_n2, y_n2)
+                                
+                                var punti_intersezione1:[(Float, Float)?] = []
+                                var punti_intersezione2:[(Float, Float)?] = []
+                                
+                                if radius_nextEdge < radius_currentEdge{
+                                    var line1 = geometry.computeMQline(x1: p1x,y1: p1y,x2: p3x,y2: p3y)
+                                    //m = line1[0]
+                                    //q = line1[1]
+                                    //center = (x_n2,y_n2)
+                                    punti_intersezione1 = geometry.intersezione_retta_cerchio(m: line1[0] ?? 0, q: line1[1] ?? 0, center: center, radius: radius_currentEdge)
+                                    
+                                    var line2 = geometry.computeMQline(x1: p2x,y1: p2y,x2: p4x,y2: p4y)
+                                    //m = line1[0]
+                                    //q = line1[1]
+                                    //center = (x_n2,y_n2)
+                                    punti_intersezione2 = geometry.intersezione_retta_cerchio(m: line2[0] ?? 0, q: line2[1] ?? 0, center: center, radius: radius_currentEdge)
+                                }
+                                else{
+                                    var line1 = geometry.computeMQline(x1: p5x,y1: p5y,x2: p7x,y2: p7y)
+                                    //m = line1[0]
+                                    //q = line1[1]
+                                    //center = (x_n2,y_n2)
+                                    punti_intersezione1 = geometry.intersezione_retta_cerchio(m: line1[0] ?? 0, q: line1[1] ?? 0, center: center, radius: radius_nextEdge)
+                                    
+                                    var line2 = geometry.computeMQline(x1: p6x,y1: p6y,x2: p8x,y2: p8y)
+                                    //m = line1[0]
+                                    //q = line1[1]
+                                    //center = (x_n2,y_n2)
+                                    punti_intersezione2 = geometry.intersezione_retta_cerchio(m: line2[0] ?? 0, q: line2[1] ?? 0, center: center, radius: radius_nextEdge)
+                                }
+                                    
+                                var angleCurrentEdgeUser = geometry.angleBetweenTwoPoints(x_n1: x_user,x_n2: x_n2,y_n1: y_user,y_n2: y_n2)
+                                    
+                                var cateto1 = min(radius_currentEdge,radius_nextEdge)
+                                var distance = sqrt((x_user-x_n2)*(x_user-x_n2)+(y_user-y_n2)*(y_user-y_n2))
+                                var alpha1 = asin(cateto1/abs(distance))
+                                if alpha1.isNaN{
+                                    alpha1 = 90.0*Float.pi/180
+                                }
+                                var a1 = angleCurrentEdgeUser + alpha1
+                                var dxPN1 = distance * sin(a1)
+                                var dyPN1 = distance * cos(a1)
+                                var x_PN1 = x_user - dxPN1
+                                var y_PN1 = y_user + dyPN1
+                                var a2 = angleCurrentEdgeUser - alpha1
+                                var dxPN2 = distance * sin(a2)
+                                var dyPN2 = distance * cos(a2)
+                                var x_PN2 = x_user - dxPN2
+                                var y_PN2 = y_user + dyPN2
+                                    
+                                var limit:Float = 0.15
+                                
+                                var points:[(Float, Float)] = []
+
+                                var PN1: (Float, Float) = (x_PN1,y_PN1)
+                                var distancePN1_edge1 = geometry.getDistanceOnPointOnEdge(position: PN1,p1X: x_n1,p1Y: y_n1,p2X: x_n2,p2Y: y_n2)
+                                var distancePN1_edge2 = geometry.getDistanceOnPointOnEdge(position: PN1,p1X: x_n2,p1Y: y_n2,p2X: x_n3,p2Y: y_n3)
+                                if (distancePN1_edge1-radius_currentEdge)<limit && (distancePN1_edge2-radius_nextEdge)<limit{
+                                    points.append(PN1)
+                                }
+
+                                var PN2: (Float, Float) = (x_PN2,y_PN2)
+                                var distancePN2_edge1 = geometry.getDistanceOnPointOnEdge(position: PN2,p1X: x_n1,p1Y: y_n1,p2X: x_n2,p2Y: y_n2)
+                                var distancePN2_edge2 = geometry.getDistanceOnPointOnEdge(position: PN2,p1X: x_n2,p1Y: y_n2,p2X: x_n3,p2Y: y_n3)
+                                if (distancePN2_edge1-radius_currentEdge)<limit && (distancePN2_edge2-radius_nextEdge)<limit{
+                                    points.append(PN2)
+                                }
+
+                                var pointsIntersection:[(Float, Float)] = []
+                                pointsIntersection.append(intersezione1 ?? (0,0))
+                                pointsIntersection.append(intersezione2 ?? (0,0))
+                                pointsIntersection.append(intersezione3 ?? (0,0))
+                                pointsIntersection.append(intersezione4 ?? (0,0))
+                                    
+                                    
+                                if 180-abs(angleBetweenEdges)*180/Float.pi < 90{
+                                    for i in pointsIntersection{
+                                        var distancei_edge1 = geometry.getDistanceOnPointOnEdge(position: i ,p1X: x_n1,p1Y: y_n1,p2X: x_n2,p2Y: y_n2)
+                                        var distancei_edge2 = geometry.getDistanceOnPointOnEdge(position: i ,p1X: x_n2,p1Y: y_n2,p2X: x_n3,p2Y: y_n3)
+                                        if (distancei_edge1-radius_currentEdge)<limit && (distancei_edge2-radius_nextEdge)<limit{
+                                            points.append(i ?? (0.0,0.0))
+                                        }
+                                    }
+                                }
+                                else{
+                                    for i in punti_intersezione1{
+                                        var distancei_edge1 = geometry.getDistanceOnPointOnEdge(position: i ?? (0.0,0.0),p1X: x_n1,p1Y: y_n1,p2X: x_n2,p2Y: y_n2)
+                                        var distancei_edge2 = geometry.getDistanceOnPointOnEdge(position: i ?? (0.0,0.0),p1X: x_n2,p1Y: y_n2,p2X: x_n3,p2Y: y_n3)
+                                        if (distancei_edge1-radius_currentEdge)<limit && (distancei_edge2-radius_nextEdge)<limit{
+                                            points.append(i ?? (0.0,0.0))
+                                        }
+                                    }
+                                    for i in punti_intersezione2{
+                                        var distancei_edge1 = geometry.getDistanceOnPointOnEdge(position: i ?? (0.0,0.0),p1X: x_n1,p1Y: y_n1,p2X: x_n2,p2Y: y_n2)
+                                        var distancei_edge2 = geometry.getDistanceOnPointOnEdge(position: i ?? (0.0,0.0),p1X: x_n2,p1Y: y_n2,p2X: x_n3,p2Y: y_n3)
+                                        if (distancei_edge1-radius_currentEdge)<limit && (distancei_edge2-radius_nextEdge)<limit{
+                                            points.append(i ?? (0.0,0.0))
+                                        }
+                                    }
+                                }
+
+                                var p_user=(currentX_map,currentY_map)
+                                
+
+                                var maxAngle:Float = 0
+                                var p1scelto: (Float, Float) = (0.0,0.0)
+                                var p2scelto: (Float, Float) = (0.0,0.0)
+                                for p1 in points{
+                                    for p2 in points{
+                                        var kAngle = geometry.cosineTheorem(P1: p_user, P2: p1, P3: p2)*180/Float.pi
+                                        if p1 != p2 && kAngle>maxAngle{
+                                            maxAngle = kAngle
+                                            p1scelto=p1
+                                            p2scelto=p2
+                                        }
+                                    }
+                                }
+                                                    
+                                print(maxAngle,p1scelto,p2scelto)
+                            }
+                        }
+                            
+                        
+                        
+                        
+                        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        
+                        
                         var radiusInCurrentTarget : Float = Float(Int.max)
                         if E_u.count > 1 {
                             for e in links{
@@ -1263,9 +1460,9 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                             radiusInCurrentTarget = closest_edge!.radiusOfNavigationArea
                         }
                         
-                        var cateto1 = num_shared_edges_user_destination>=1 ? radius_destination : radiusInCurrentTarget
+                        var cateto = num_shared_edges_user_destination>=1 ? radius_destination : radiusInCurrentTarget
                         
-                        var alpha = rad2degree(asin(cateto1/abs(distance)))
+                        var alpha = rad2degree(asin(cateto/abs(distance)))
                         if alpha.isNaN {
                             alpha = 90.0
                         }

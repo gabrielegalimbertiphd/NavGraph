@@ -14,6 +14,17 @@ class Level2 {
     
     var beta: Float = 0.0
     
+    func getEdgeGivenTwoNodesIfExist(links: [Link], nodeA:String, nodeB:String) -> Link? {
+        var link_of_e : Link = nil
+        for l in links {
+            if (l.node_u == "\(nodeA)" && l.node_v == "\(nodeB)") || (l.node_u == "\(nodeB)" && l.node_v == "\(nodeA)"){
+                link_of_e = l
+                break
+            }
+        }
+        return link_of_e
+    }
+    
     func getEdgesAtPosition(position: (px:Float,py:Float), input_Graph: any Graph, position_vertexes: [String : [String: Float]], links: [Link]) -> [any Edge] {
         var result : [Edge]  = []
         var link_of_e : Link = Link(node_u: "0", node_v: "1", radiusOfNavigationArea: 1.0)
@@ -133,9 +144,6 @@ class Level2 {
         
         return (d, closestX, closestY, dx, dy, t)
     }
-    
-    
-    
     
     func getDistanceOnPointOnEdge(position: (px:Float,py:Float), p1X: Float, p1Y: Float, p2X: Float, p2Y: Float) -> Float {
         
