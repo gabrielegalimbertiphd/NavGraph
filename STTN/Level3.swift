@@ -15,11 +15,11 @@ class Level3 {
     public var previous_state = "start"
     private var previous_message = ""
     
-    func generateMessage(angular_error: Float, current_state: String, changeNode: Bool, version_setup: String, range: Float? = 30.0, lateralDistance: Float, timerRepeatInstruction: Double ) -> String{ // SERVE LA DISTANZA
+    func generateMessage(angular_error: Float, current_state: String, changeNode: Bool, version_setup: String, range: Float? = 30.0, rangeL: Float? = 30.0, rangeR: Float? = 30.0, lateralDistance: Float, timerRepeatInstruction: Double ) -> String{ // SERVE LA DISTANZA
         var message = previous_message
         var t : Double = CFAbsoluteTimeGetCurrent() - timerRepeatInstruction
         
-        if (current_state == "arrived") {
+        if (current_state == "arrived") {// MARK: ARRIVED
             if(previous_state != current_state){
                 message = "destination reached"
                 previous_state = "arrived"
@@ -30,22 +30,28 @@ class Level3 {
         }
         else if (current_state == "outside") { // MARK: OUTSIDE
 
-            /*if (angular_error >= alpha4 && version_setup=="basic") || (angular_error >= alpha4 && version_setup=="advanced") {
+            /*if (abs(angular_error) >= alpha4 && version_setup=="basic") || (abs(angular_error) >= alpha4 && version_setup=="advanced") {
                 message = "turn"
             } else {
                 message = "lateral"
             }*/
             
-            if (angular_error >= alpha3_outside) {
+            if (abs(angular_error) >= alpha3_outside) {
                 message = "turn"
-            } else if (angular_error > alpha2_outside && angular_error < alpha3_outside && previous_message != "turn") {
+                print("abs(angular_error)",angular_error,"previous_message",previous_message,"message",message,1)
+            } else if (abs(angular_error) > alpha2_outside && abs(angular_error) < alpha3_outside && previous_message != "turn") {
                 message = "lateral"
-            } else if (angular_error <= alpha2_inside) {
+                print("abs(angular_error)",angular_error,"previous_message",previous_message,"message",message,2)
+            } else if (abs(angular_error) <= alpha2_outside && (previous_message != "turn"||previous_message != "lateral")) {
                 message = "walk"
+                print("abs(angular_error)",angular_error,"previous_message",previous_message,"message",message,3)
             }
             else {
-                message = "lateral"
+                message = "walk"
+                print("abs(angular_error)",angular_error,"previous_message",previous_message,"message",message,4)
             }
+            
+            
             
             if previous_state != current_state{
                 Level4().flag_repeat_message=true
@@ -56,13 +62,18 @@ class Level3 {
             previous_state = "outside"
             print("outside")
         } else if (current_state == "inside") { // MARK: INSIDE
+            let evaluateRangeL : Bool = angular_error<0.0 && (abs(angular_error) >= rangeL ?? alpha2_inside)
+            let evaluateRangeR : Bool = angular_error>0.0 && (abs(angular_error) >= rangeR ?? alpha2_inside)
             
-            if ((angular_error <= alpha1 && previous_message=="turn") ||
+            if ((abs(angular_error) <= alpha1 && previous_message=="turn") ||
                 previous_message=="lateral") ||
-                changeTargetNode(changeNode: changeNode, previous_message: previous_message, current_state: current_state, angular_error: angular_error) {
+                changeTargetNode(changeNode: changeNode, previous_message: previous_message, current_state: current_state, angular_error: abs(angular_error)) {
                 message = "walk"
             }
-            else if (angular_error >= alpha2_inside && version_setup=="basic") || (angular_error >= range ?? alpha2_inside && version_setup=="advanced") {
+            /*else if (abs(angular_error) >= alpha2_inside && version_setup=="basic") || (abs(angular_error) >= range ?? alpha2_inside && version_setup=="advanced") {*/
+            else if (abs(angular_error) >= alpha2_inside && version_setup=="basic")
+                        ||
+                       (((evaluateRangeL) || (evaluateRangeR))  && version_setup=="advanced") {
                 message = "turn"
 
             } 

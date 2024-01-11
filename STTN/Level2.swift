@@ -15,7 +15,7 @@ class Level2 {
     var beta: Float = 0.0
     
     func getEdgeGivenTwoNodesIfExist(links: [Link], nodeA:String, nodeB:String) -> Link? {
-        var link_of_e : Link = nil
+        var link_of_e : Link? = nil
         for l in links {
             if (l.node_u == "\(nodeA)" && l.node_v == "\(nodeB)") || (l.node_u == "\(nodeB)" && l.node_v == "\(nodeA)"){
                 link_of_e = l
@@ -25,7 +25,7 @@ class Level2 {
         return link_of_e
     }
     
-    func getEdgesAtPosition(position: (px:Float,py:Float), input_Graph: any Graph, position_vertexes: [String : [String: Float]], links: [Link]) -> [any Edge] {
+    func getEdgesAtPosition(position: (px:Float,py:Float), input_Graph: any Graph, position_vertexes: [String : [String: Float]], links: [Link], strict: Bool) -> [any Edge] {
         var result : [Edge]  = []
         var link_of_e : Link = Link(node_u: "0", node_v: "1", radiusOfNavigationArea: 1.0)
         for e in input_Graph.edgeList() {
@@ -35,7 +35,8 @@ class Level2 {
                     break
                 }
             }
-            if(isInSafeAreaEdge(edge: e, position_u: position, radius: link_of_e.radiusOfNavigationArea, position_vertexes: position_vertexes)){ // CAMBIA IN BASE ALLA RADIUS DELL'EDGE.
+            var r : Float = strict ? link_of_e.radiusOfNavigationArea/2 : link_of_e.radiusOfNavigationArea
+            if(isInSafeAreaEdge(edge: e, position_u: position, radius: r, position_vertexes: position_vertexes)){ // CAMBIA IN BASE ALLA RADIUS DELL'EDGE.
                 result.append(e)
             }
         }
@@ -252,7 +253,7 @@ class Level2 {
         return (closestEdge: result! ,distanceFromEdge: distance_result, x: x_point, y: y_point)
     }
     
-    
+
 
     func checkIfUserIsEnteredAtLeastPercentageOfRadius(distance: Float, radius: Float, percentage: Float) -> Bool {
         return distance > radius*percentage

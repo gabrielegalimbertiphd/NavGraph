@@ -114,8 +114,9 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     private let resolution: Float = 100.0
     
     var destination: String = "A"
-    
     var percorso = "Percorso1"
+    
+    public var currentEdge : Link? = nil
     
     public var position_vertexes : [String : [String: Float]]=[
         "0":["x": 61.05268927500583 ,"y": -87.40503094345331 ],
@@ -267,6 +268,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     var percentage: Float = 0.5
     var distance : Float = 0.0
     var range : Float = 30.0
+    var rangeL : Float = 30.0
+    var rangeR : Float = 30.0
     var length_closest_edge : Float = 0.0
     
     public var timerRepeatInstruction: Double = 0.0
@@ -289,6 +292,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     public var lastNode : String = ""
     public var route : [String] = []
     
+    public var E_u_strict : [any Edge] = []
     public var E_u : [any Edge] = []
     public var E_d : [any Edge] = []
     
@@ -301,7 +305,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     public var changeNode : Bool = false // if the node change the software must repeat the instruction.
     public var changePath : Bool = false // until the subpath is contained into the path of the route, else the path is change and the variable becomes true
     public var previous_node: String = "0"
-    public var following_node: String = "0"
+    public var following_node: String = "1"
     
     /*var E_u : [any Edge] = []
     //print(E_u)
@@ -777,13 +781,15 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         }*/
     }
     
-    func outputLevel2(currentX: Float, currentY: Float, previous_state: String, edges_user: inout [any Edge], edges_destination: inout [any Edge] , num_shared_edges_user_destination: Int){
+    
+    
+    func outputLevel2(currentX: Float, currentY: Float, previous_state: String, edges_user: inout [any Edge], edges_user_strict: inout [any Edge], edges_destination: inout [any Edge] , num_shared_edges_user_destination: Int){
         // GET USER EDGE
         
         // there's the need to find the width of the closest edge everytime to understand if the user is entered enough. This is because the width of the edge can change from a setup version (based and advanced). one code for both cases.
-        print(edges_user.count, edges_user)
-         if edges_user.count != 0{
-             (closest_edge,distanceFromCurrentEdge, _, _) = level2.getClosestEdge(position_u: (px:currentX,py:currentY), edges: edges_user, percentage: percentage, position_vertexes: level1!.position_vertexes, links: links)
+        //print(edges_user.count, edges_user)
+        if edges_user.count != 0{
+             (closest_edge,distanceFromCurrentEdge, _, _) = level2.getClosestEdge(position_u: (px:currentX,py:currentY), edges: edges_user, percentage: percentage, position_vertexes: level1!.position_vertexes, links: links)// MODIFICA USANDO STRICT NA
         }
         print(closest_edge,distanceFromCurrentEdge)
         
@@ -805,7 +811,11 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         dxFromCurrentEdge = pointOnEdge!.dx
         dyFromCurrentEdge = pointOnEdge!.dy
         
-        print("dxFromCurrentEdge",dxFromCurrentEdge,"dyFromCurrentEdge",dyFromCurrentEdge)
+        x_return_map = pointOnEdge!.x_point
+        y_return_map = pointOnEdge!.y_point
+        
+        
+        //print("dxFromCurrentEdge",dxFromCurrentEdge,"dyFromCurrentEdge",dyFromCurrentEdge)
         
         // IN TEORIA FUNZIONA!
         
@@ -813,7 +823,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         if edges_user.count != 0 {
             checkDistanceFromSnap(edges_user, currentX, currentY, closest_edge ?? links[0], distanceFromCurrentEdge, &flag)
         }
-        print("post if ",flag)
+        //print("post if ",flag)
         if flag {
             print("ENTER HERE")
             flag=false
@@ -838,12 +848,10 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         } else
         // OUTSIDE NAVIGATION AREA
         if(edges_user.count==0 || (previous_state=="outside" && level2.checkIfUserIsEnteredAtLeastPercentageOfRadius(distance: abs(distanceFromCurrentEdge), radius: closest_edge!.radiusOfNavigationArea, percentage: percentage))){ // level2.checkIfUserIsEnteredAtLeastPercentageOfRadius(distance: abs(distance), radius: closest_edge!.radiusOfSafeArea, percentage: percentage))){
-            print("if outside")
             
             //(target_x_map, target_y_map, x_return_map, y_return_map, closest_edge) = level2.getClosestPointInSafeArea(position_u: (px:currentX,py:currentY), input_Graph: level1!.graph, percentage: percentage, position_vertexes: level1!.position_vertexes, links: links) // MARK: TARGET IS A POINT IN THE SAFE AREA OF THE CLOSEST EDGE THAT LEAD TO THE DESTINATION IN LESS TIME.
         
-            //TODO DEFINIRE UN EDGE OUTSIDE CHE DEVE ESSERE COSTANTE A QUELLO PRECEDENTE
-            
+            // MARK: CASE OUTSIDE
             var target_on_edge_description = "u=\(closest_edge!.node_u)-v=\(closest_edge!.node_v)"
             debug_point_of_return.text = "t_x: \(reduceResolution(value:target_x_map,100)) t_y: \(reduceResolution(value:target_y_map,100)) edge: \(target_on_edge_description)"
             state_user.text="OUTSIDE"
@@ -853,6 +861,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
             
         } else if(num_shared_edges_user_destination > 0){ // DESTINATION ON THE SAME EDGE OF THE USER POSITION
             if (distanceBetweenTwoPoints2D(p1x: currentX, p1y: currentY, p2x: level1!.destination_position["x"]!, p2y: level1!.destination_position["y"]!) < level1!.radius_destination) {
+                // MARK: CASE USER IS ARRIVED
                 state = "arrived"
                 state_user.text=state
                 nextTargetLabel.text="T: arrived"
@@ -868,6 +877,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                 previous_node = nextNode
             }
             else {
+                // MARK: CASE INSIDE AND THE DESTINATION IS IN THE EDGE
                 target_x_map = level1!.destination_position["x"]!
                 target_y_map = level1!.destination_position["y"]! // MARK: TARGET IS THE DESTINATION
                 state = "inside"
@@ -887,16 +897,16 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
             // PROCEDURE: Finding next node and the route
             // finding the next node
             // but this algorithm compute only the next node and not the route. For this reason the code check later which is the most close node in E_d that lead to the destination passing from the nextnode. the code then save the route from next node to last node
-            print("Procedura di calcolo del prossimo nodo")
+            // MARK: Procedura di calcolo del prossimo nodo
             var path_distances: [String: Float] = [:]
             var last_nodes: [String: String] = [:]
-            for e_u in edges_user {
+            for e_u in edges_user_strict {
                 print(e_u)
-                var node1_user = level1!.position_vertexes["\(e_u.u)"]
-                var distance_user_node1 = distanceBetweenTwoPoints2D(p1x:currentX, p1y:currentY, p2x:node1_user!["x"]!, p2y:node1_user!["y"]!)*100.0
+                let node1_user = level1!.position_vertexes["\(e_u.u)"]
+                let distance_user_node1 = distanceBetweenTwoPoints2D(p1x:currentX, p1y:currentY, p2x:node1_user!["x"]!, p2y:node1_user!["y"]!)*100
                 //print(distance_user_node1)
-                var node2_user = level1!.position_vertexes["\(e_u.v)"]
-                var distance_user_node2 = distanceBetweenTwoPoints2D(p1x:currentX, p1y:currentY, p2x:node2_user!["x"]!, p2y:node2_user!["y"]!)*100.0
+                let node2_user = level1!.position_vertexes["\(e_u.v)"]
+                let distance_user_node2 = distanceBetweenTwoPoints2D(p1x:currentX, p1y:currentY, p2x:node2_user!["x"]!, p2y:node2_user!["y"]!)*100
                 //print(distance_user_node2)
                 print("edges_destination",edges_destination)
                 for e_d in edges_destination {
@@ -940,15 +950,22 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                     }
                 }
             }
+            var nextTarget:String = ""
             var min:Float=Float(Int.max)
             for ptdist in path_distances {
                 print(ptdist.key,ptdist.value)
                 if ptdist.value<min {
-                    nextNode = ptdist.key
+                    nextTarget = ptdist.key
                     min = ptdist.value
                 }
             }
-            print("nextNode",nextNode,"min",min)
+            //print("nextNode",nextNode,"min",min)
+            
+            for e in edges_user{
+                if (nextTarget=="\(e.v)" || nextTarget=="\(e.u)") && Int(nextTarget) ?? 1 > Int(previous_node) ?? 0 {
+                    nextNode = nextTarget
+                }
+            }
             
             if nextNode == "" {
                 nextNode="0"
@@ -958,15 +975,15 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
             lastNodeLabel.text = "L: \(lastNode)"
             //print("nextNode \(nextNode) , lastNode \(lastNode)")
             
-            print("DEBUG1","previous_node",previous_node,"actual_node",nextNode)
+            //print("DEBUG1","previous_node",previous_node,"actual_node",nextNode)
             // check if the node change
             if nextNode != previous_node {
                 changeNode = true
             } else {
                 changeNode = false
             }
+            //print("DEBUG2","previous_node",previous_node,"actual_node",nextNode)
             previous_node = nextNode
-            print("DEBUG2","previous_node",previous_node,"actual_node",nextNode)
             
             // COMPUTE RUOTE AND SEE IF THE ROUTE IS CONTAINED INTO THE PATH THAT I'M FOLLOWING
             if nextNode != lastNode{
@@ -1170,13 +1187,22 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                 numMarkersLabel.text = "# Mark: \(numMarker)"
                 markerNameLabel.text = whichMarkersWereDetected
                 
+                // MARK: FINISH LEVEL 1
+                
+                // MARK: LEVEL 2
+                
+                // MARK: define edges
+                
                 var previous_state = state
                 
-                E_u = level2.getEdgesAtPosition(position: (px:currentX_map,py:currentY_map), input_Graph: level1!.graph, position_vertexes: level1!.position_vertexes, links: links)
+                
+                
+                E_u = level2.getEdgesAtPosition(position: (px:currentX_map,py:currentY_map), input_Graph: level1!.graph, position_vertexes: level1!.position_vertexes, links: links, strict: false)
+                E_u_strict = level2.getEdgesAtPosition(position: (px:currentX_map,py:currentY_map), input_Graph: level1!.graph, position_vertexes: level1!.position_vertexes, links: links, strict: true)
                 //print(E_u)
                 // GET DESTINATION EDGE
                 print("dest:", destination_position["x"]!,destination_position["y"]!)
-                E_d = level2.getEdgesAtPosition(position: (px:destination_position["x"]!,py:destination_position["y"]!), input_Graph: level1!.graph, position_vertexes: level1!.position_vertexes, links: links)
+                E_d = level2.getEdgesAtPosition(position: (px:destination_position["x"]!,py:destination_position["y"]!), input_Graph: level1!.graph, position_vertexes: level1!.position_vertexes, links: links, strict: false)
                 //print(E_d)
                 var user_edges_description="E_u: "
                 for e in E_u {
@@ -1184,69 +1210,50 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                 }
                 user_edges.text = user_edges_description
                 
-                // MARK: LEVEL 2
                 print("level2")
                 var num_shared_edges_user_destination : Int = level2.checkSharedEdgesDestination(E_u: &E_u,E_d: &E_d)
                 
-                outputLevel2(currentX: currentX_map, currentY: currentY_map, previous_state: state, edges_user: &E_u,edges_destination: &E_d, num_shared_edges_user_destination: num_shared_edges_user_destination)
+                // MARK: output level 2
+                outputLevel2(currentX: currentX_map, currentY: currentY_map, previous_state: state, edges_user: &E_u, edges_user_strict: &E_u_strict, edges_destination: &E_d, num_shared_edges_user_destination: num_shared_edges_user_destination)
                 
                 if state != "arrived" {
                     
+                    // MARK: dist & angles inside
+                    
                     let dx = (target_x_map-currentX_map)
                     let dy = (target_y_map-currentY_map) // TODO: GIUSTO? oppure aggiungere il - davanti?
-                    
-                    debug_dx_dy_point_of_return.text = "dx: \(reduceResolution(value: dx, 100)) dy: \(reduceResolution(value: dy, 100))"
-                    
-                    // TODO: ... SUCCEDE CHE angle path
-                    /*var anglePath = atan2(dy,dx)-(Float.pi/2)
-                    
-                    //anglePath = ((anglePath+900).truncatingRemainder(dividingBy: 360))-180 // ? TODO: SI O NO
-                    
-                    let debugAngle = reduceResolution(value: rad2degree(anglePath), resolution)
-                    anglePathLabel.text = "ang path: \(debugAngle)"
-                    
-                    // ANGLE DEBUG
-                    //var angular_difference = rad2degree(currentYAW_arkit-anglePath)
-                    var angular_difference = rad2degree(currentYAW-anglePath)
-                    
-                    angular_difference = ((angular_difference+900).truncatingRemainder(dividingBy: 360))-180 // TODO: FUNZIONA MA NON È EFFICIENTE*/
-                    
                     var anglePath = atan2(dy,dx)-(Float.pi/2)
-                    
                     anglePath = ((rad2degree(anglePath)+900).truncatingRemainder(dividingBy: 360))-180 // ? TODO: SI O NO
-                    
                     let debugAngle = reduceResolution(value: anglePath, resolution)
                     anglePathLabel.text = "ang path: \(debugAngle)"
-                    
                     // ANGLE DEBUG
                     //var angular_difference = rad2degree(currentYAW_arkit-anglePath)
                     var angular_difference = rad2degree(currentYAW)-anglePath
-                    
                     angular_difference = ((angular_difference+900).truncatingRemainder(dividingBy: 360))-180
-                    
-                    //angular_difference = doit(a:angular_difference) // DOESN'T WORK
-                    
-                    
-                    // TODO: CHECK
-                    /*if abs(angular_difference) > 180{
-                        angular_difference = -min(360-abs(angular_difference), abs(angular_difference))
-                    }*/
-                    
-                    angular_error_label.text = "ang err: \(reduceResolution(value: angular_difference,100))"
-                    lateralDistanceLabel.text = "lateral dist: \(reduceResolution(value: distanceFromCurrentEdge, 100))"
-                    
                     let direction_turn = angular_difference>0 && angular_difference < 180 ? "Right":"Left" // TODO: quando sono fuori dalla safe area la prima volta mi dice la direzione sbagliata.... le volte successive è corretta. devi capire perchè.
                     distance = distanceBetweenTwoPoints2D(p1x: target_x_map, p1y: target_y_map, p2x: currentX_map, p2y: currentY_map)
                     let distanceFromPath = direction_turn == "Left" ? -distance:distance
                     
-                    if anglePath > 0 {
-                        direction_lateral="Left"
-                    }
-                    else {
-                        direction_lateral="Right"
+                    angular_error_label.text = "ang err: \(reduceResolution(value: angular_difference,100))"
+                    lateralDistanceLabel.text = "lateral dist: \(reduceResolution(value: distanceFromCurrentEdge, 100))"
+                    debug_dx_dy_point_of_return.text = "dx: \(reduceResolution(value: dx, 100)) dy: \(reduceResolution(value: dy, 100))"
+                    distance_from_next_target_label.text = "dist target: \(reduceResolution(value: distance,100))"
+                    
+                    // MARK: dist & angles outside
+                    if state=="outside"{
+                        var angleRientro = ((rad2degree(atan2(y_return_map-currentY_map,x_return_map-currentX_map)-(Float.pi/2))+900).truncatingRemainder(dividingBy: 360))-180
+                        anglePathLabel.text = "ang path: \(reduceResolution(value: angleRientro, resolution))"
+                        // ANGLE DEBUG
+                        angular_difference = rad2degree(currentYAW)-angleRientro
+                        //var angular_difference_return_inside = rad2degree(currentYAW)-angleRientro
+                        angular_difference = ((angular_difference+900).truncatingRemainder(dividingBy: 360))-180
+                        if angular_difference > 0 {
+                            direction_lateral="Right"
+                        } else {
+                            direction_lateral="Left"
+                        }
                     }
                     
-                    distance_from_next_target_label.text = "dist target: \(reduceResolution(value: distance,100))"
                     
                     if state=="outside"{
                         render.renderTarget(x:x_return_map, y:y_return_map, arView: arView)
@@ -1254,6 +1261,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                         render.renderTarget(x:target_x_map, y:target_y_map, arView: arView)
                     }
                     
+                    // MARK: compute ranges
                     if version_setup == "advanced" {
                         //var cateto1 = num_shared_edges_user_destination>=1 ? radius_destination : closest_edge!.radiusOfNavigationArea
                         
@@ -1263,33 +1271,38 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                         print(nextNode)
                         
                         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        var p1scelto: (Float, Float) = (0.0,0.0)
+                        var p2scelto: (Float, Float) = (0.0,0.0)
+                        var maxAngle:Float = 0
+                        let p_user = (currentX_map,currentY_map)
                         
-                        if following_node != "" && state=="inside" && distance < distance {
+                        var currentEdge : Link = level2.getEdgeGivenTwoNodesIfExist(links: links, nodeA: nextNode, nodeB: "\((Int(nextNode) ?? 1)-1)") ?? links[0]
+                        let radius_currentEdge:Float = currentEdge.radiusOfNavigationArea
+                        
+                        if following_node != "" && state=="inside" { // && distance > radius_currentEdge {
                             if nextNode != "destination"{
-                                following_node = "\(Int(nextNode)!+1)"
-                                var currentEdge : Link = level2.getEdgeGivenTwoNodesIfExist(links: links, nodeA: nextNode, nodeB: previous_node) ?? links[0]
-                                var nextEdge : Link = level2.getEdgeGivenTwoNodesIfExist(links: links, nodeA: nextNode, nodeB: following_node) ?? links[1]
+                                following_node = "\((Int(nextNode) ?? 1)+1)"
                                 
-                                var radius_currentEdge:Float = currentEdge.radiusOfNavigationArea// TODO: CHANGE
-                                var radius_nextEdge:Float = nextEdge.radiusOfNavigationArea// TODO: CHANGE
+                                let nextEdge : Link = level2.getEdgeGivenTwoNodesIfExist(links: links, nodeA: nextNode, nodeB: following_node) ?? links[1]
+                                var radius_nextEdge:Float = nextEdge.radiusOfNavigationArea
                                 
                                 //level1!.position_vertexes["\(nextNode)"]! // TODO: CHECK IT OUT!
                                 
-                                var x_n1:Float = level1!.position_vertexes["\(previous_node)"]!["x"] ?? 0.0// TODO: CHANGE x punto precedente
-                                var y_n1:Float = level1!.position_vertexes["\(previous_node)"]!["y"] ?? 0.0// TODO: CHANGE y punto precedente
-
+                                var x_n1:Float = level1!.position_vertexes["\(Int(nextNode)!-1)"]!["x"] ?? 0.0// TODO: CHANGE x punto precedente
+                                var y_n1:Float = level1!.position_vertexes["\(Int(nextNode)!-1)"]!["y"] ?? 0.0// TODO: CHANGE y punto precedente
+                                
                                 var x_n2:Float = level1!.position_vertexes["\(nextNode)"]!["x"] ?? 0.0// TODO: CHANGE x punto target
                                 var y_n2:Float = level1!.position_vertexes["\(nextNode)"]!["y"] ?? 0.0// TODO: CHANGE y punto target
 
                                 var x_n3:Float = level1!.position_vertexes["\(following_node)"]!["x"] ?? 0.0// TODO: CHANGE x prossimo target
                                 var y_n3:Float = level1!.position_vertexes["\(following_node)"]!["y"] ?? 0.0// TODO: CHANGE y prossimo target
-
-                                var x_user : Float = currentX_map
-                                var y_user : Float = currentY_map
+                                
+                                
                                 
                                 var angleCurrentEdge:Float = geometry.angleBetweenTwoPoints(x_n1: x_n1,x_n2: x_n2,y_n1: y_n1,y_n2: y_n2)
                                 var angleNextEdge:Float = geometry.angleBetweenTwoPoints(x_n1: x_n2,x_n2: x_n3,y_n1: y_n2,y_n2: y_n3)
                                 var angleBetweenEdges:Float = angleCurrentEdge-angleNextEdge
+                                
 
                                 var dx1:Float = radius_nextEdge * cos(angleNextEdge)
                                 var dy2:Float = radius_nextEdge * sin(angleNextEdge)
@@ -1315,10 +1328,10 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                                 var p8y:Float = y_n2-dy4
                                 
                                 
-                                var intersezione1 = geometry.trova_intersezione(p1x, p1y, p3x, p3y, p5x, p5y, p7x, p7y)
-                                var intersezione2 = geometry.trova_intersezione(p2x, p2y, p4x, p4y, p6x, p6y, p8x, p8y)
-                                var intersezione3 = geometry.trova_intersezione(p1x, p1y, p3x, p3y, p6x, p6y, p8x, p8y)
-                                var intersezione4 = geometry.trova_intersezione(p2x, p2y, p4x, p4y, p5x, p5y, p7x, p7y)
+                                let intersezione1 = geometry.trova_intersezione(p1x, p1y, p3x, p3y, p5x, p5y, p7x, p7y)
+                                let intersezione2 = geometry.trova_intersezione(p2x, p2y, p4x, p4y, p6x, p6y, p8x, p8y)
+                                let intersezione3 = geometry.trova_intersezione(p1x, p1y, p3x, p3y, p6x, p6y, p8x, p8y)
+                                let intersezione4 = geometry.trova_intersezione(p2x, p2y, p4x, p4y, p5x, p5y, p7x, p7y)
                                 
                                 let center: (Float, Float) = (x_n2, y_n2)
                                 
@@ -1326,36 +1339,36 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                                 var punti_intersezione2:[(Float, Float)?] = []
                                 
                                 if radius_nextEdge < radius_currentEdge{
-                                    var line1 = geometry.computeMQline(x1: p1x,y1: p1y,x2: p3x,y2: p3y)
+                                    let line1 = geometry.computeMQline(x1: p1x,y1: p1y,x2: p3x,y2: p3y)
                                     //m = line1[0]
                                     //q = line1[1]
                                     //center = (x_n2,y_n2)
                                     punti_intersezione1 = geometry.intersezione_retta_cerchio(m: line1[0] ?? 0, q: line1[1] ?? 0, center: center, radius: radius_currentEdge)
                                     
-                                    var line2 = geometry.computeMQline(x1: p2x,y1: p2y,x2: p4x,y2: p4y)
+                                    let line2 = geometry.computeMQline(x1: p2x,y1: p2y,x2: p4x,y2: p4y)
                                     //m = line1[0]
                                     //q = line1[1]
                                     //center = (x_n2,y_n2)
                                     punti_intersezione2 = geometry.intersezione_retta_cerchio(m: line2[0] ?? 0, q: line2[1] ?? 0, center: center, radius: radius_currentEdge)
                                 }
                                 else{
-                                    var line1 = geometry.computeMQline(x1: p5x,y1: p5y,x2: p7x,y2: p7y)
+                                    let line1 = geometry.computeMQline(x1: p5x,y1: p5y,x2: p7x,y2: p7y)
                                     //m = line1[0]
                                     //q = line1[1]
                                     //center = (x_n2,y_n2)
                                     punti_intersezione1 = geometry.intersezione_retta_cerchio(m: line1[0] ?? 0, q: line1[1] ?? 0, center: center, radius: radius_nextEdge)
                                     
-                                    var line2 = geometry.computeMQline(x1: p6x,y1: p6y,x2: p8x,y2: p8y)
+                                    let line2 = geometry.computeMQline(x1: p6x,y1: p6y,x2: p8x,y2: p8y)
                                     //m = line1[0]
                                     //q = line1[1]
                                     //center = (x_n2,y_n2)
                                     punti_intersezione2 = geometry.intersezione_retta_cerchio(m: line2[0] ?? 0, q: line2[1] ?? 0, center: center, radius: radius_nextEdge)
                                 }
                                     
-                                var angleCurrentEdgeUser = geometry.angleBetweenTwoPoints(x_n1: x_user,x_n2: x_n2,y_n1: y_user,y_n2: y_n2)
+                                var angleCurrentEdgeUser = geometry.angleBetweenTwoPoints(x_n1: currentX_map,x_n2: x_n2,y_n1: currentY_map,y_n2: y_n2)
                                     
                                 var cateto1 = min(radius_currentEdge,radius_nextEdge)
-                                var distance = sqrt((x_user-x_n2)*(x_user-x_n2)+(y_user-y_n2)*(y_user-y_n2))
+                                var distance = sqrt((currentX_map-x_n2)*(currentX_map-x_n2)+(currentY_map-y_n2)*(currentY_map-y_n2))
                                 var alpha1 = asin(cateto1/abs(distance))
                                 if alpha1.isNaN{
                                     alpha1 = 90.0*Float.pi/180
@@ -1363,28 +1376,28 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                                 var a1 = angleCurrentEdgeUser + alpha1
                                 var dxPN1 = distance * sin(a1)
                                 var dyPN1 = distance * cos(a1)
-                                var x_PN1 = x_user - dxPN1
-                                var y_PN1 = y_user + dyPN1
+                                var x_PN1 = currentX_map - dxPN1
+                                var y_PN1 = currentY_map + dyPN1
                                 var a2 = angleCurrentEdgeUser - alpha1
                                 var dxPN2 = distance * sin(a2)
                                 var dyPN2 = distance * cos(a2)
-                                var x_PN2 = x_user - dxPN2
-                                var y_PN2 = y_user + dyPN2
+                                var x_PN2 = currentX_map - dxPN2
+                                var y_PN2 = currentY_map + dyPN2
                                     
                                 var limit:Float = 0.15
                                 
                                 var points:[(Float, Float)] = []
 
-                                var PN1: (Float, Float) = (x_PN1,y_PN1)
-                                var distancePN1_edge1 = geometry.getDistanceOnPointOnEdge(position: PN1,p1X: x_n1,p1Y: y_n1,p2X: x_n2,p2Y: y_n2)
-                                var distancePN1_edge2 = geometry.getDistanceOnPointOnEdge(position: PN1,p1X: x_n2,p1Y: y_n2,p2X: x_n3,p2Y: y_n3)
+                                let PN1: (Float, Float) = (x_PN1,y_PN1)
+                                let distancePN1_edge1 = geometry.getDistanceOnPointOnEdge(position: PN1,p1X: x_n1,p1Y: y_n1,p2X: x_n2,p2Y: y_n2)
+                                let distancePN1_edge2 = geometry.getDistanceOnPointOnEdge(position: PN1,p1X: x_n2,p1Y: y_n2,p2X: x_n3,p2Y: y_n3)
                                 if (distancePN1_edge1-radius_currentEdge)<limit && (distancePN1_edge2-radius_nextEdge)<limit{
                                     points.append(PN1)
                                 }
 
-                                var PN2: (Float, Float) = (x_PN2,y_PN2)
-                                var distancePN2_edge1 = geometry.getDistanceOnPointOnEdge(position: PN2,p1X: x_n1,p1Y: y_n1,p2X: x_n2,p2Y: y_n2)
-                                var distancePN2_edge2 = geometry.getDistanceOnPointOnEdge(position: PN2,p1X: x_n2,p1Y: y_n2,p2X: x_n3,p2Y: y_n3)
+                                let PN2: (Float, Float) = (x_PN2,y_PN2)
+                                let distancePN2_edge1 = geometry.getDistanceOnPointOnEdge(position: PN2,p1X: x_n1,p1Y: y_n1,p2X: x_n2,p2Y: y_n2)
+                                let distancePN2_edge2 = geometry.getDistanceOnPointOnEdge(position: PN2,p1X: x_n2,p1Y: y_n2,p2X: x_n3,p2Y: y_n3)
                                 if (distancePN2_edge1-radius_currentEdge)<limit && (distancePN2_edge2-radius_nextEdge)<limit{
                                     points.append(PN2)
                                 }
@@ -1398,36 +1411,30 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                                     
                                 if 180-abs(angleBetweenEdges)*180/Float.pi < 90{
                                     for i in pointsIntersection{
-                                        var distancei_edge1 = geometry.getDistanceOnPointOnEdge(position: i ,p1X: x_n1,p1Y: y_n1,p2X: x_n2,p2Y: y_n2)
-                                        var distancei_edge2 = geometry.getDistanceOnPointOnEdge(position: i ,p1X: x_n2,p1Y: y_n2,p2X: x_n3,p2Y: y_n3)
+                                        let distancei_edge1 = geometry.getDistanceOnPointOnEdge(position: i ,p1X: x_n1,p1Y: y_n1,p2X: x_n2,p2Y: y_n2)
+                                        let distancei_edge2 = geometry.getDistanceOnPointOnEdge(position: i ,p1X: x_n2,p1Y: y_n2,p2X: x_n3,p2Y: y_n3)
                                         if (distancei_edge1-radius_currentEdge)<limit && (distancei_edge2-radius_nextEdge)<limit{
-                                            points.append(i ?? (0.0,0.0))
+                                            points.append(i)
                                         }
                                     }
                                 }
                                 else{
                                     for i in punti_intersezione1{
-                                        var distancei_edge1 = geometry.getDistanceOnPointOnEdge(position: i ?? (0.0,0.0),p1X: x_n1,p1Y: y_n1,p2X: x_n2,p2Y: y_n2)
-                                        var distancei_edge2 = geometry.getDistanceOnPointOnEdge(position: i ?? (0.0,0.0),p1X: x_n2,p1Y: y_n2,p2X: x_n3,p2Y: y_n3)
+                                        let distancei_edge1 = geometry.getDistanceOnPointOnEdge(position: i ?? (0.0,0.0),p1X: x_n1,p1Y: y_n1,p2X: x_n2,p2Y: y_n2)
+                                        let distancei_edge2 = geometry.getDistanceOnPointOnEdge(position: i ?? (0.0,0.0),p1X: x_n2,p1Y: y_n2,p2X: x_n3,p2Y: y_n3)
                                         if (distancei_edge1-radius_currentEdge)<limit && (distancei_edge2-radius_nextEdge)<limit{
                                             points.append(i ?? (0.0,0.0))
                                         }
                                     }
                                     for i in punti_intersezione2{
-                                        var distancei_edge1 = geometry.getDistanceOnPointOnEdge(position: i ?? (0.0,0.0),p1X: x_n1,p1Y: y_n1,p2X: x_n2,p2Y: y_n2)
-                                        var distancei_edge2 = geometry.getDistanceOnPointOnEdge(position: i ?? (0.0,0.0),p1X: x_n2,p1Y: y_n2,p2X: x_n3,p2Y: y_n3)
+                                        let distancei_edge1 = geometry.getDistanceOnPointOnEdge(position: i ?? (0.0,0.0),p1X: x_n1,p1Y: y_n1,p2X: x_n2,p2Y: y_n2)
+                                        let distancei_edge2 = geometry.getDistanceOnPointOnEdge(position: i ?? (0.0,0.0),p1X: x_n2,p1Y: y_n2,p2X: x_n3,p2Y: y_n3)
                                         if (distancei_edge1-radius_currentEdge)<limit && (distancei_edge2-radius_nextEdge)<limit{
                                             points.append(i ?? (0.0,0.0))
                                         }
                                     }
                                 }
-
-                                var p_user=(currentX_map,currentY_map)
                                 
-
-                                var maxAngle:Float = 0
-                                var p1scelto: (Float, Float) = (0.0,0.0)
-                                var p2scelto: (Float, Float) = (0.0,0.0)
                                 for p1 in points{
                                     for p2 in points{
                                         var kAngle = geometry.cosineTheorem(P1: p_user, P2: p1, P3: p2)*180/Float.pi
@@ -1438,19 +1445,29 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                                         }
                                     }
                                 }
-                                                    
-                                print(maxAngle,p1scelto,p2scelto)
+                                
+                                
+                                rangeR = max(rangeL,geometry.cosineTheorem(P1: (x_n2,y_n2), P2: p_user, P3: p1scelto),30.0)
+                                rangeL = max(rangeL,geometry.cosineTheorem(P1: (x_n2,y_n2), P2: p_user, P3: p2scelto),30.0)
+                                
+                            } else {
+                                //rangeL = 30.0
+                                //rangeR = 30.0
                             }
+                        }else {
+                            //rangeL = 30.0
+                            //rangeR = 30.0
                         }
-                            
                         
+                        print("maxAngle",maxAngle,"p1scelto",p1scelto,"p2scelto",p2scelto)
+                        render.renderLimit1(x:p1scelto.0,y:p1scelto.1, arView: arView)
+                        render.renderLimit2(x:p2scelto.0,y:p2scelto.1, arView: arView)
                         
                         
                         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         
-                        
                         var radiusInCurrentTarget : Float = Float(Int.max)
-                        if E_u.count > 1 {
+                        /*if E_u.count > 1 {
                             for e in links{
                                 if (e.node_u==nextNode || e.node_v==nextNode) && e.radiusOfNavigationArea<radiusInCurrentTarget{
                                     radiusInCurrentTarget = e.radiusOfNavigationArea
@@ -1458,8 +1475,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                             }
                         } else {
                             radiusInCurrentTarget = closest_edge!.radiusOfNavigationArea
-                        }
-                        
+                        }*/
+                        radiusInCurrentTarget = closest_edge!.radiusOfNavigationArea
                         var cateto = num_shared_edges_user_destination>=1 ? radius_destination : radiusInCurrentTarget
                         
                         var alpha = rad2degree(asin(cateto/abs(distance)))
@@ -1468,17 +1485,23 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                         }
                         print("alpha",alpha)
                         range = max(alpha,level3.alpha2_inside)
+                        
+                        rangeL = num_shared_edges_user_destination>=1 ? range : rangeL
+                        rangeR = num_shared_edges_user_destination>=1 ? range : rangeR
                     } else {
+                        // BASIC VERSION
                         range=level3.alpha2_inside
                     }
-                    range_of_directions_debug.text="range: \(reduceResolution(value: range, 1000))"
+                    range_of_directions_debug.text="range: C\(reduceResolution(value: range, 1)), L\(reduceResolution(value: rangeL, 1)), R\(reduceResolution(value: rangeR, 1))"
                     
                     timerLabel.text = "timer: \(Int(CFAbsoluteTimeGetCurrent()-level4.timerRepeatInstruction))"
+                    
+                    // MARK: FINISH LEVEL 2
 
                     // MARK: LEVEL 3
                     print("level3")
                     // GENERATE MESSAGE
-                    let new_message = level3.generateMessage(angular_error: abs(angular_difference), current_state: state, changeNode: changeNode, version_setup: version_setup, range: range, lateralDistance: distanceFromCurrentEdge, timerRepeatInstruction: level4.timerRepeatInstruction)
+                    let new_message = level3.generateMessage(angular_error: angular_difference, current_state: state, changeNode: changeNode, version_setup: version_setup, range: range, rangeL:rangeL, rangeR:rangeR, lateralDistance: distanceFromCurrentEdge, timerRepeatInstruction: level4.timerRepeatInstruction)
                     
                     previous_message_label.text = message
                     
@@ -1493,7 +1516,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                     movementLabel.text = "Move: \(reduceResolution(value: movement, 100))"
                     
                     // Se sono outside, sto camminando e devo rientrare, allora ti do la nuova istruzione solo quando ho passato la percentuale di safe area necessaria a rimanere nella safe area.
-                    if state == "outside" && message.contains("walk") {  // return to radius*percentage from boundaries of the safe area.
+                    if state == "outside" && (message.contains("walk") || message.contains("lateral")) {  // return to radius*percentage from boundaries of the safe area.
                         if abs(distance)>closest_edge!.radiusOfNavigationArea*percentage {
                             message = new_message
                         }
@@ -1503,11 +1526,11 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                     
                     message_label.text = message
                     
+                    // MARK: FINISH LEVEL 3
                     
-                    // MARK: LEVEL 4
                     print("level4")
                     //print(direction)
-                    
+                    // MARK: LEVEL 4
                     directionLabel.text = "Dir: \(direction_turn)"
                     
                     level4.speak(message: message, angular_difference: angular_difference, range: range, distanceFromTarget: distance, safeAreaRadius: closest_edge!.radiusOfNavigationArea*percentage, lateralDistance: max(distanceFromCurrentEdge-closest_edge!.radiusOfNavigationArea*percentage,0), direction_turn: direction_turn, direction_lateral: direction_lateral, movement: movement, state: state, changeNode: changeNode, changePath: changePath, repeatInstructionFlag: repeatInstructionFlag) // max(abs(distanceFromCurrentEdge)-closest_edge!.radiusOfNavigationArea*percentage,0) cambio distanceFromCurrentEdge
@@ -1916,7 +1939,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         JUMPDEBUG.textColor = UIColor.black
         view.addSubview(JUMPDEBUG)
         
-        range_of_directions_debug.frame = CGRect(x: 240, y: 0, width: 300, height: 1050)
+        range_of_directions_debug.frame = CGRect(x: 0, y: 0, width: 300, height: 650)
         range_of_directions_debug.text = "range"
         range_of_directions_debug.textColor = UIColor.black
         view.addSubview(range_of_directions_debug)

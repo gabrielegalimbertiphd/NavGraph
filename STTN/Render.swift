@@ -17,6 +17,16 @@ class Render {
     var targetSpherez:Float = 0.0
     let model_03: ModelEntity = ModelEntity(mesh: .generateSphere(radius: 0.08))
     
+    var limit1Entity = AnchorEntity()
+    var limit1Spherex:Float = 0.0
+    var limit1Spherez:Float = 0.0
+    let model_04: ModelEntity = ModelEntity(mesh: .generateSphere(radius: 0.08))
+    
+    var limit2Entity = AnchorEntity()
+    var limit2Spherex:Float = 0.0
+    var limit2Spherez:Float = 0.0
+    let model_05: ModelEntity = ModelEntity(mesh: .generateSphere(radius: 0.08))
+    
     let virtualSphere_radius : Float = 0.15
     //var circleEntity = AnchorEntity()
     //let model_04: ModelEntity = ModelEntity(mesh: .generateSphere(radius: 0.08))
@@ -72,6 +82,24 @@ class Render {
             
             renderText("\(index-1)", x, z, color: UIColor.blue, arView: arView)
         }
+    }
+    
+    func renderLimit1(x:Float,y:Float, arView: ARView){
+        limit1Entity.removeFromParent()
+        limit1Spherex = x
+        limit1Spherez = y
+        limit1Entity.position = SIMD3<Float>(limit1Spherex, 0, -limit1Spherez)
+        limit1Entity.addChild(model_04)
+        arView.scene.anchors.append(limit1Entity)
+    }
+    
+    func renderLimit2(x:Float,y:Float, arView: ARView){
+        limit2Entity.removeFromParent()
+        limit2Spherex = x
+        limit2Spherez = y
+        limit2Entity.position = SIMD3<Float>(limit2Spherex, 0, -limit2Spherez)
+        limit2Entity.addChild(model_05)
+        arView.scene.anchors.append(limit2Entity)
     }
     
     func renderDestinationVirtualSphere(destination_position: [String: Float], arView: ARView) {

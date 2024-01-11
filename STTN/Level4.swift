@@ -227,17 +227,21 @@ class Level4 {
             // WALK INSTRUCTION
             //instruction = message.contains("walk") ? "walk" : ""
             if message.contains("walk") {
-                instruction = distanceFromTarget ?? 1<2 ? "Prosegui dritto per circa un metro":"Prosegui dritto per \(Int(distanceFromTarget ?? 1)) metri"
+                if state == "inside"{
+                    instruction = distanceFromTarget ?? 1<2 ? "Prosegui dritto per circa un metro":"Prosegui dritto per \(Int(distanceFromTarget ?? 1)) metri"
+                }
+                else if state == "outside"{
+                    instruction = lateralDistance ?? 1 < 2 ? "Prosegui dritto per circa un metro":"Prosegui dritto per \(Int(lateralDistance ?? 1)) metri"
+                }
             }
             // LATERAL STRIDE INSTRUCTION
             //instruction = message.contains("lateral") ? "lateral" : ""
-            else if message.contains("lateral"){
-                if direction_lateral! == "Left"{
+            else if message.contains("lateral"){ // C'è SOLO OUTSIDE
+                if direction_lateral! == "Left" {
                     instruction = "Spostati a sinistra"
                 } else if direction_lateral! == "Right"{ // era "right"
                     instruction = "Spostati a destra"
                 }
-                print("QUI")
             }
             // TURN AROUND INSTRUCTION + TURN INSTRUCTION
             //instruction = message.contains("turn") && abs(self.angleLength ?? 0) >= 160 ? "\(message) around" : instruction
