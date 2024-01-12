@@ -71,21 +71,20 @@
             }
         },
         {
-            "id": "finish2",
-            "image": "finish2",
-            "physicalWidth": 0.19,
-            "location":  {
-                "x": 200.24584080133354 , "y": 85.58801817242056      ,
-                "heading": 0,
-                "floor": "cortile"
-            }
-        },
-        {
             "id": "M5",
             "image": "M5",
             "physicalWidth": 0.19,
             "location":  {
-                "x": 220.6546250420506 , "y": 148.35502920951694      , "heading": 5.495,
+                "x": 200.24584080133354 , "y": 85.58801817242056  , "heading": 0.0,
+                "floor": "cortile"
+            }
+        },
+        {
+            "id": "finish2",
+            "image": "finish2",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 210.42073803162202 , "y": 86.1606616973877  , "heading": 1.57,
                 "floor": "cortile"
             }
         },
@@ -94,7 +93,7 @@
             "image": "M6",
             "physicalWidth": 0.19,
             "location":  {
-                "x": 220.24890518473694 , "y": 127.59183760825545      , "heading": 5.495,
+                "x": 220.6546250420506 , "y": 148.35502920951694  , "heading": 5.495,
                 "floor": "cortile"
             }
         },
@@ -103,13 +102,22 @@
             "image": "M7",
             "physicalWidth": 0.19,
             "location":  {
-                "x": 226.69885558908572 , "y": 118.96190146822482      , "heading": 0.785,
+                "x": 220.24890518473694 , "y": 127.59183760825545      , "heading": 5.495,
                 "floor": "cortile"
             }
         },
         {
             "id": "M8",
             "image": "M8",
+            "physicalWidth": 0.19,
+            "location":  {
+                "x": 226.69885558908572 , "y": 118.96190146822482      , "heading": 0.785,
+                "floor": "cortile"
+            }
+        },
+        {
+            "id": "M9",
+            "image": "M9",
             "physicalWidth": 0.19,
             "location":  {
                 "x": 219.86289623909397 , "y": 95.84278446435928      , "heading": 5.495,

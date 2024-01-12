@@ -38,19 +38,15 @@ class Level3 {
             
             if (abs(angular_error) >= alpha3_outside) {
                 message = "turn"
-                print("abs(angular_error)",angular_error,"previous_message",previous_message,"message",message,1)
             } else if (abs(angular_error) > alpha2_outside && abs(angular_error) < alpha3_outside && previous_message != "turn") {
                 message = "lateral"
-                print("abs(angular_error)",angular_error,"previous_message",previous_message,"message",message,2)
-            } else if (abs(angular_error) <= alpha2_outside && (previous_message != "turn"||previous_message != "lateral")) {
+            } else if
+                (abs(angular_error) <= alpha2_outside && (previous_message == "walk")) || (abs(angular_error) <= alpha1 && (previous_message == "lateral")) {
                 message = "walk"
-                print("abs(angular_error)",angular_error,"previous_message",previous_message,"message",message,3)
             }
             else {
                 message = "walk"
-                print("abs(angular_error)",angular_error,"previous_message",previous_message,"message",message,4)
             }
-            
             
             
             if previous_state != current_state{

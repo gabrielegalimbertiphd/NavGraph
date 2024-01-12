@@ -109,7 +109,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     // MARK: OFFICIAL REFACTORED
     
     public var vertexes : [String] = ["0", "1","2", "3","4","5","6"]
-    public var graph: WeightedGraph<String, Int> = WeightedGraph<String, Int>(vertices: ["0", "1", "2", "3", "4", "5"])
+    public var graph: WeightedGraph<String, Int> = WeightedGraph<String, Int>(vertices: ["0", "1", "2", "3", "4", "5","6"])
     
     private let resolution: Float = 100.0
     
@@ -119,46 +119,56 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     public var currentEdge : Link? = nil
     
     public var position_vertexes : [String : [String: Float]]=[
-        "0":["x": 61.05268927500583 ,"y": -87.40503094345331 ],
-        "1":["x": 61.10780490835896 ,"y": -93.00988889113069 ],
-        "2":["x": 92.2461984824622 ,"y": -93.87077672220767 ],
-        "3":["x": 93.33124991157092 ,"y": -100.60946055687964 ],
-        "4":["x": 149.334955506376 ,"y": -98.48757871426642 ],
-        "5":["x": 149.3386826463975 ,"y": -96.30665448587388 ]
+    
+        "0": ["x": 61.05268927500583 ,"y": -87.40503094345331 ],
+        "1": ["x": 61.10780490835896 ,"y": -93.00988889113069 ],
+        "2": ["x": 92.2461984824622 ,"y": -93.87077672220767 ],
+        "3": ["x": 93.32804981659865 ,"y": -99.49849448073655 ],
+        "4": ["x": 149.334955506376 ,"y": -98.48757871426642 ],
+        "5": ["x": 149.3386826463975 ,"y": -96.30665448587388 ],
+        "6": ["x": 154.56880740838824 ,"y": -97.54318582266569 ]
+    
     ]
     
     public var coordinates_position_vertexes : [String : [String: [String: Float]]]=[
         "Percorso1":[
-            "0":["x": 61.05268927500583 ,"y": -87.40503094345331 ],
-            "1":["x": 61.10780490835896 ,"y": -93.00988889113069 ],
-            "2":["x": 92.2461984824622 ,"y": -93.87077672220767 ],
-            "3":["x": 93.33124991157092 ,"y": -100.60946055687964 ],
-            "4":["x": 149.334955506376 ,"y": -98.48757871426642 ],
-            "5":["x": 149.3386826463975 ,"y": -96.30665448587388 ]
+            "0": ["x": 61.05268927500583 ,"y": -87.40503094345331 ],
+            "1": ["x": 61.10780490835896 ,"y": -93.00988889113069 ],
+            "2": ["x": 92.2461984824622 ,"y": -93.87077672220767 ],
+            "3": ["x": 93.32804981659865 ,"y": -99.49849448073655 ],
+            "4": ["x": 149.334955506376 ,"y": -98.48757871426642 ],
+            "5": ["x": 149.3386826463975 ,"y": -96.30665448587388 ],
+            "6": ["x": 154.56880740838824 ,"y": -97.54318582266569 ]
         ],
+
         "Percorso2":[
-            "0":["x": 213.04729223815957 ,"y": -155.66430983599275 ],
-            "1":["x": 213.48552564281272 ,"y": -152.19434828031808 ],
-            "2":["x": 223.46639834909 ,"y": -153.85030070506036 ],
-            "3":["x": 222.8217324456782 ,"y": -93.71006935089827 ],
-            "4":["x": 203.12929557752796 ,"y": -94.45257009752095 ],
-            "5":["x": 200.24905982101336 ,"y": -86.69898427370936 ]
+            "0": ["x": 213.04729223815957 ,"y": -155.66430983599275 ],
+            "1": ["x": 213.48552564281272 ,"y": -152.19434828031808 ],
+            "2": ["x": 223.46639834909 ,"y": -153.85030070506036 ],
+            "3": ["x": 222.8217324456782 ,"y": -93.71006935089827 ],
+            "4": ["x": 203.12929557752796 ,"y": -94.45257009752095 ],
+            "5": ["x": 200.24905982101336 ,"y": -86.69898427370936 ],
+            "6": ["x": 209.63913857779698 ,"y": -86.16292759589851 ]
         ],
+
         "Percorso3":[
-          "0":["x": 95.52459793473827 ,"y": -49.106199827976525 ],
-          "1":["x": 133.57879047567258 ,"y": -51.84501117374748 ],
-          "2":["x": 136.4444538061507 ,"y": -34.84616987872869 ],
-          "3":["x": 148.41477569681592 ,"y": -35.612271051853895 ],
-          "4":["x": 146.68309496709844 ,"y": -18.303379280492663 ],
-          "5":["x": 158.33749596460257 ,"y": -20.262729676440358 ]
+            "0": ["x": 95.52459793473827 ,"y": -49.106199827976525 ],
+            "1": ["x": 133.57879047567258 ,"y": -51.84501117374748 ],
+            "2": ["x": 136.4444538061507 ,"y": -34.84616987872869 ],
+            "3": ["x": 148.41477569681592 ,"y": -35.612271051853895 ],
+            "4": ["x": 145.7670785524533 ,"y": -26.91058216430247 ],
+            "5": ["x": 155.45753562415484 ,"y": -26.438189966604114 ],
+            "6": ["x": 155.20379131438676 ,"y": -19.77307043131441 ]
         ],
+
         "Percorso4":[
-          "0":["x": 268.44119424402015 ,"y": -263.5061126789078 ],
-          "1":["x": 258.8044029310695 ,"y": -263.36662252806127 ],
-          "2":["x": 259.03487276198575 ,"y": -248.28616621159017 ],
-          "3":["x": 229.20075805281522 ,"y": -248.26711270678788 ],
-          "4":["x": 229.96533631626517 ,"y": -225.87337458319962 ],
-          "5":["x": 261.94596492208075 ,"y": -227.0954265166074 ]
+            "0": ["x": 268.44119424402015 ,"y": -263.5061126789078 ],
+            "1": ["x": 258.8044029310695 ,"y": -263.36662252806127 ],
+            "2": ["x": 259.03487276198575 ,"y": -248.28616621159017 ],
+            "3": ["x": 229.20075805281522 ,"y": -248.26711270678788 ],
+            "4": ["x": 229.96533631626517 ,"y": -225.87337458319962 ],
+            "5": ["x": 257.6415326591232 ,"y": -224.67331095878035 ],
+            "6": ["x": 257.4771368094953 ,"y": -221.89635066594929 ]
         ],
         "Prova":[
             "0":["x": 100 ,"y": -100 ],
@@ -183,7 +193,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         Link( node_u :"1", node_v :"2", radiusOfNavigationArea :2),
         Link( node_u :"2", node_v :"3", radiusOfNavigationArea :1),
         Link( node_u :"3", node_v :"4", radiusOfNavigationArea :2),
-        Link( node_u :"4", node_v :"5", radiusOfNavigationArea :1)
+        Link( node_u :"4", node_v :"5", radiusOfNavigationArea :1.5),
+        Link( node_u :"5", node_v :"6", radiusOfNavigationArea :1)
     ]
     
     var linksOfPaths:[String:[Link]] = [
@@ -192,28 +203,32 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
             Link( node_u :"1", node_v :"2", radiusOfNavigationArea :2),
             Link( node_u :"2", node_v :"3", radiusOfNavigationArea :1),
             Link( node_u :"3", node_v :"4", radiusOfNavigationArea :2),
-            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :1)
+            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :1.5),
+            Link( node_u :"5", node_v :"6", radiusOfNavigationArea :1)
         ],
         "Percorso2":[
             Link( node_u :"0", node_v :"1", radiusOfNavigationArea :1),
             Link( node_u :"1", node_v :"2", radiusOfNavigationArea :1.5),
             Link( node_u :"2", node_v :"3", radiusOfNavigationArea :2),
-            Link( node_u :"3", node_v :"4", radiusOfNavigationArea :1.5),
-            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :1)
+            Link( node_u :"3", node_v :"4", radiusOfNavigationArea :2),
+            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :1),
+            Link( node_u :"5", node_v :"6", radiusOfNavigationArea :1.5)
         ],
         "Percorso3":[
-            Link( node_u :"0", node_v :"1", radiusOfNavigationArea :1.5),
+            Link( node_u :"0", node_v :"1", radiusOfNavigationArea :2),
             Link( node_u :"1", node_v :"2", radiusOfNavigationArea :1.5),
-            Link( node_u :"2", node_v :"3", radiusOfNavigationArea :2),
-            Link( node_u :"3", node_v :"4", radiusOfNavigationArea :1),
-            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :2)
+            Link( node_u :"2", node_v :"3", radiusOfNavigationArea :1),
+            Link( node_u :"3", node_v :"4", radiusOfNavigationArea :1.5),
+            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :2),
+            Link( node_u :"5", node_v :"6", radiusOfNavigationArea :1)
         ],
         "Percorso4":[
             Link( node_u :"0", node_v :"1", radiusOfNavigationArea :1),
             Link( node_u :"1", node_v :"2", radiusOfNavigationArea :2),
             Link( node_u :"2", node_v :"3", radiusOfNavigationArea :2),
             Link( node_u :"3", node_v :"4", radiusOfNavigationArea :1.5),
-            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :2)
+            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :1.5),
+            Link( node_u :"5", node_v :"6", radiusOfNavigationArea :1)
         ],
         "Prova":[
             Link( node_u :"0", node_v :"1", radiusOfNavigationArea :1),
@@ -221,7 +236,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         ]
     ]
     
-    public var fixedWidthSafeArea: [Float] = [1.0,1.5,1.5,1.5,1.5,1.0]
+    public var fixedWidthSafeArea: [Float] = [1.0,1.5,1.5,1.5,1.5,1.0,1.5]
     /*
     // JAMES FLOOR 4 SKERI
      
@@ -821,10 +836,24 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         
         var flag : Bool = false
         if edges_user.count != 0 {
-            checkDistanceFromSnap(edges_user, currentX, currentY, closest_edge ?? links[0], distanceFromCurrentEdge, &flag)
+            checkDistanceFromSnap(edges_user_strict, currentX, currentY, closest_edge ?? links[0], distanceFromCurrentEdge, &flag)
         }
         //print("post if ",flag)
-        if flag {
+        // OUTSIDE NAVIGATION AREA
+        if(edges_user.count==0 || (previous_state=="outside" && level2.checkIfUserIsEnteredAtLeastPercentageOfRadius(distance: abs(distanceFromCurrentEdge), radius: closest_edge!.radiusOfNavigationArea, percentage: percentage))){ // level2.checkIfUserIsEnteredAtLeastPercentageOfRadius(distance: abs(distance), radius: closest_edge!.radiusOfSafeArea, percentage: percentage))){
+            
+            //(target_x_map, target_y_map, x_return_map, y_return_map, closest_edge) = level2.getClosestPointInSafeArea(position_u: (px:currentX,py:currentY), input_Graph: level1!.graph, percentage: percentage, position_vertexes: level1!.position_vertexes, links: links) // MARK: TARGET IS A POINT IN THE SAFE AREA OF THE CLOSEST EDGE THAT LEAD TO THE DESTINATION IN LESS TIME.
+        
+            // MARK: CASE OUTSIDE
+            var target_on_edge_description = "u=\(closest_edge!.node_u)-v=\(closest_edge!.node_v)"
+            debug_point_of_return.text = "t_x: \(reduceResolution(value:target_x_map,100)) t_y: \(reduceResolution(value:target_y_map,100)) edge: \(target_on_edge_description)"
+            state_user.text="OUTSIDE"
+            nextTargetLabel.text="T: point on edge"
+            state = "outside"
+            inside_outside.text = "I/O: outside"
+            
+        }
+        else if flag {
             print("ENTER HERE")
             flag=false
             
@@ -845,20 +874,6 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
             nextTargetLabel.text = "T: \(nextNode)"
             inside_outside.text = "I/O: inside DEBUG POINT"
             debug_point_of_return.text = ""
-        } else
-        // OUTSIDE NAVIGATION AREA
-        if(edges_user.count==0 || (previous_state=="outside" && level2.checkIfUserIsEnteredAtLeastPercentageOfRadius(distance: abs(distanceFromCurrentEdge), radius: closest_edge!.radiusOfNavigationArea, percentage: percentage))){ // level2.checkIfUserIsEnteredAtLeastPercentageOfRadius(distance: abs(distance), radius: closest_edge!.radiusOfSafeArea, percentage: percentage))){
-            
-            //(target_x_map, target_y_map, x_return_map, y_return_map, closest_edge) = level2.getClosestPointInSafeArea(position_u: (px:currentX,py:currentY), input_Graph: level1!.graph, percentage: percentage, position_vertexes: level1!.position_vertexes, links: links) // MARK: TARGET IS A POINT IN THE SAFE AREA OF THE CLOSEST EDGE THAT LEAD TO THE DESTINATION IN LESS TIME.
-        
-            // MARK: CASE OUTSIDE
-            var target_on_edge_description = "u=\(closest_edge!.node_u)-v=\(closest_edge!.node_v)"
-            debug_point_of_return.text = "t_x: \(reduceResolution(value:target_x_map,100)) t_y: \(reduceResolution(value:target_y_map,100)) edge: \(target_on_edge_description)"
-            state_user.text="OUTSIDE"
-            nextTargetLabel.text="T: point on edge"
-            state = "outside"
-            inside_outside.text = "I/O: outside"
-            
         } else if(num_shared_edges_user_destination > 0){ // DESTINATION ON THE SAME EDGE OF THE USER POSITION
             if (distanceBetweenTwoPoints2D(p1x: currentX, p1y: currentY, p2x: level1!.destination_position["x"]!, p2y: level1!.destination_position["y"]!) < level1!.radius_destination) {
                 // MARK: CASE USER IS ARRIVED
@@ -950,7 +965,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                     }
                 }
             }
-            var nextTarget:String = ""
+            var nextTarget:String = previous_node
             var min:Float=Float(Int.max)
             for ptdist in path_distances {
                 print(ptdist.key,ptdist.value)
@@ -961,17 +976,20 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
             }
             //print("nextNode",nextNode,"min",min)
             
-            for e in edges_user{
+            
+            nextNode = nextTarget
+            
+            /*for e in edges_user{
                 if (nextTarget=="\(e.v)" || nextTarget=="\(e.u)") && Int(nextTarget) ?? 1 > Int(previous_node) ?? 0 {
                     nextNode = nextTarget
                 }
-            }
+            }*/
             
             if nextNode == "" {
                 nextNode="0"
             }
             
-            lastNode = last_nodes["\(nextNode)"] ?? "0"
+            lastNode = last_nodes["\(nextNode)"] ?? "6"
             lastNodeLabel.text = "L: \(lastNode)"
             //print("nextNode \(nextNode) , lastNode \(lastNode)")
             
@@ -984,6 +1002,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
             }
             //print("DEBUG2","previous_node",previous_node,"actual_node",nextNode)
             previous_node = nextNode
+            
+            
             
             // COMPUTE RUOTE AND SEE IF THE ROUTE IS CONTAINED INTO THE PATH THAT I'M FOLLOWING
             if nextNode != lastNode{
@@ -1274,12 +1294,12 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                         var p1scelto: (Float, Float) = (0.0,0.0)
                         var p2scelto: (Float, Float) = (0.0,0.0)
                         var maxAngle:Float = 0
-                        let p_user = (currentX_map,currentY_map)
+                        var p_user = (currentX_map,currentY_map)
                         
                         var currentEdge : Link = level2.getEdgeGivenTwoNodesIfExist(links: links, nodeA: nextNode, nodeB: "\((Int(nextNode) ?? 1)-1)") ?? links[0]
                         let radius_currentEdge:Float = currentEdge.radiusOfNavigationArea
                         
-                        if following_node != "" && state=="inside" { // && distance > radius_currentEdge {
+                        if following_node != "" && state=="inside" && Int(nextNode) ?? 0 > 0{ // && distance > radius_currentEdge {
                             if nextNode != "destination"{
                                 following_node = "\((Int(nextNode) ?? 1)+1)"
                                 
@@ -1287,12 +1307,12 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                                 var radius_nextEdge:Float = nextEdge.radiusOfNavigationArea
                                 
                                 //level1!.position_vertexes["\(nextNode)"]! // TODO: CHECK IT OUT!
+                                var nn:Int = Int(nextNode)! ?? 1
+                                var x_n1:Float = level1!.position_vertexes["\(nn-1)"]!["x"] ?? 0.0// TODO: CHANGE x punto precedente
+                                var y_n1:Float = level1!.position_vertexes["\(nn-1)"]!["y"] ?? 0.0// TODO: CHANGE y punto precedente
                                 
-                                var x_n1:Float = level1!.position_vertexes["\(Int(nextNode)!-1)"]!["x"] ?? 0.0// TODO: CHANGE x punto precedente
-                                var y_n1:Float = level1!.position_vertexes["\(Int(nextNode)!-1)"]!["y"] ?? 0.0// TODO: CHANGE y punto precedente
-                                
-                                var x_n2:Float = level1!.position_vertexes["\(nextNode)"]!["x"] ?? 0.0// TODO: CHANGE x punto target
-                                var y_n2:Float = level1!.position_vertexes["\(nextNode)"]!["y"] ?? 0.0// TODO: CHANGE y punto target
+                                var x_n2:Float = level1!.position_vertexes["\(nn)"]!["x"] ?? 0.0// TODO: CHANGE x punto target
+                                var y_n2:Float = level1!.position_vertexes["\(nn)"]!["y"] ?? 0.0// TODO: CHANGE y punto target
 
                                 var x_n3:Float = level1!.position_vertexes["\(following_node)"]!["x"] ?? 0.0// TODO: CHANGE x prossimo target
                                 var y_n3:Float = level1!.position_vertexes["\(following_node)"]!["y"] ?? 0.0// TODO: CHANGE y prossimo target
@@ -1447,16 +1467,18 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                                 }
                                 
                                 
-                                rangeR = max(rangeL,geometry.cosineTheorem(P1: (x_n2,y_n2), P2: p_user, P3: p1scelto),30.0)
-                                rangeL = max(rangeL,geometry.cosineTheorem(P1: (x_n2,y_n2), P2: p_user, P3: p2scelto),30.0)
+                                rangeR = max(rangeL,geometry.cosineTheorem(P1: (x_n2,y_n2), P2: p_user, P3: p1scelto)*180/Float.pi,30.0)
+                                rangeL = max(rangeL,geometry.cosineTheorem(P1: (x_n2,y_n2), P2: p_user, P3: p2scelto)*180/Float.pi,30.0)
+                                
+                                print("Range R",rangeR,"Range L",rangeL)
                                 
                             } else {
-                                //rangeL = 30.0
-                                //rangeR = 30.0
+                                rangeL = 30.0
+                                rangeR = 30.0
                             }
                         }else {
-                            //rangeL = 30.0
-                            //rangeR = 30.0
+                            rangeL = 30.0
+                            rangeR = 30.0
                         }
                         
                         print("maxAngle",maxAngle,"p1scelto",p1scelto,"p2scelto",p2scelto)
@@ -1467,7 +1489,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         
                         var radiusInCurrentTarget : Float = Float(Int.max)
-                        /*if E_u.count > 1 {
+                        if E_u.count > 1 {
                             for e in links{
                                 if (e.node_u==nextNode || e.node_v==nextNode) && e.radiusOfNavigationArea<radiusInCurrentTarget{
                                     radiusInCurrentTarget = e.radiusOfNavigationArea
@@ -1475,8 +1497,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                             }
                         } else {
                             radiusInCurrentTarget = closest_edge!.radiusOfNavigationArea
-                        }*/
-                        radiusInCurrentTarget = closest_edge!.radiusOfNavigationArea
+                        }
+                        //radiusInCurrentTarget = closest_edge!.radiusOfNavigationArea
                         var cateto = num_shared_edges_user_destination>=1 ? radius_destination : radiusInCurrentTarget
                         
                         var alpha = rad2degree(asin(cateto/abs(distance)))
@@ -1486,11 +1508,13 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                         print("alpha",alpha)
                         range = max(alpha,level3.alpha2_inside)
                         
-                        rangeL = num_shared_edges_user_destination>=1 ? range : rangeL
-                        rangeR = num_shared_edges_user_destination>=1 ? range : rangeR
+                        rangeL = range//num_shared_edges_user_destination>=1 ? range : rangeL
+                        rangeR = range//num_shared_edges_user_destination>=1 ? range : rangeR
                     } else {
                         // BASIC VERSION
                         range=level3.alpha2_inside
+                        rangeL=range
+                        rangeR=range
                     }
                     range_of_directions_debug.text="range: C\(reduceResolution(value: range, 1)), L\(reduceResolution(value: rangeL, 1)), R\(reduceResolution(value: rangeR, 1))"
                     
