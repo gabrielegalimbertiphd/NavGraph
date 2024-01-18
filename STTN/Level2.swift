@@ -271,7 +271,7 @@ class Level2 {
         return (closestEdge: result! ,distanceFromEdge: distance_result, x: x_point, y: y_point)
     }
     
-    func getCurrentEdge(position_u: (px:Float,py:Float), edges: [any Edge], percentage: Float, position_vertexes: [String : [String: Float]], links:[Link] , nextNode: String) -> (currentEdge:Link,distanceFromEdge:Float, x:Float, y:Float)  {
+    func getCurrentEdge(position_u: (px:Float,py:Float), edges: [any Edge], percentage: Float, position_vertexes: [String : [String: Float]], links:[Link] , nextNode: String) -> (currentEdge:Link?,distanceFromEdge:Float, x:Float, y:Float)  {
         var result : Link? = nil
         var x_point:Float = 0.0
         var y_point:Float = 0.0
@@ -283,28 +283,32 @@ class Level2 {
         
         var link_of_e : Link? = nil
         for e in edges {
-            for l in links {
-                if ((l.node_u == "\(e.u)" && l.node_v == "\(e.v)") || (l.node_u == "\(e.v)" &&   l.node_v == "\(e.u)")) && (l.node_u == nextNode || l.node_v == nextNode){
-                    link_of_e = l
-                    break
+            if "\(e.u)" == nextNode || "\(e.v)" == nextNode {
+                for l in links {
+                    print("nextnode",nextNode,"L",l,"edge",e)
+                    if ((l.node_u == "\(e.u)" && l.node_v == "\(e.v)") || (l.node_u == "\(e.v)" &&   l.node_v == "\(e.u)")){
+                        link_of_e = l
+                        break
+                    }
                 }
+                let vertex_u = position_vertexes["\(e.u)"]!
+                let vertex_v = position_vertexes["\(e.v)"]!
+                let p1X:Float = vertex_u["x"] ?? 0
+                let p1Y:Float = vertex_u["y"] ?? 0
+                let p2X:Float = vertex_v["x"] ?? 0
+                let p2Y:Float = vertex_v["y"] ?? 0
+                let p=getClosestPointOnEdge(position: position_u, p1X: p1X, p1Y: p1Y, p2X: p2X, p2Y: p2Y)
+                let d = distanceBetweenTwoPoints2D(p1x: position_u.px, p1y: position_u.py, p2x: p!.x_point, p2y: p!.y_point) // p2x: p2.p2x, p2y: p2.p2y)
+                if( result==nil ||
+                    d < distance_result){ // take the point at less distance
+                    result = link_of_e!
+                    distance_result = d
+                    x_point = p!.x_point
+                    y_point = p!.y_point
+                } // end if
             }
-            let vertex_u = position_vertexes["\(e.u)"]!
-            let vertex_v = position_vertexes["\(e.v)"]!
-            let p1X:Float = vertex_u["x"] ?? 0
-            let p1Y:Float = vertex_u["y"] ?? 0
-            let p2X:Float = vertex_v["x"] ?? 0
-            let p2Y:Float = vertex_v["y"] ?? 0
-            let p=getClosestPointOnEdge(position: position_u, p1X: p1X, p1Y: p1Y, p2X: p2X, p2Y: p2Y)
-            let d = distanceBetweenTwoPoints2D(p1x: position_u.px, p1y: position_u.py, p2x: p!.x_point, p2y: p!.y_point) // p2x: p2.p2x, p2y: p2.p2y)
-            if( result==nil || d < distance_result){ // take the point at less distance
-                result = link_of_e!
-                distance_result = d
-                x_point = p!.x_point
-                y_point = p!.y_point
-            } // end if
         } // end for
-        return (currentEdge: result! ,distanceFromEdge: distance_result, x: x_point, y: y_point)
+        return (currentEdge: result ,distanceFromEdge: distance_result, x: x_point, y: y_point)
     }
     
 

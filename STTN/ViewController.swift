@@ -415,6 +415,9 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     public var dxFromCurrentEdge : Float = 0.0
     public var dyFromCurrentEdge : Float = 0.0
     
+    public var temp_current_edge:Link? = nil
+    public var temp_distanceFromCurrentEdge : Float = 0.0
+    
     private var direction_lateral : String = ""
     
     public var taskTest : Bool = false
@@ -808,7 +811,12 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         if edges_user.count != 0 {
              //(closest_edge,distanceFromCurrentEdge, _, _) = level2.getClosestEdge(position_u: (px:currentX,py:currentY), edges: edges_user, percentage: percentage, position_vertexes: level1!.position_vertexes, links: links)
             // TODO: cosa succede se nextnode è la destination???? Fixare
-            (closest_edge,distanceFromCurrentEdge, _, _) = level2.getCurrentEdge(position_u: (px:currentX,py:currentY), edges: edges_user, percentage: percentage, position_vertexes: level1!.position_vertexes, links: links, nextNode: nextNode)
+            (temp_current_edge, temp_distanceFromCurrentEdge, _, _) = level2.getCurrentEdge(position_u: (px:currentX,py:currentY), edges: edges_user, percentage: percentage, position_vertexes: level1!.position_vertexes, links: links, nextNode: nextNode != "destination" ? nextNode : "\(position_vertexes.count-1)")
+            if temp_current_edge != nil{
+                closest_edge=temp_current_edge
+                distanceFromCurrentEdge=temp_distanceFromCurrentEdge
+            }
+            
         }
         print(closest_edge,distanceFromCurrentEdge)
         closest_edge_debug.text="\(closest_edge!.node_v)-\(closest_edge!.node_u), r=\(closest_edge!.radiusOfNavigationArea)"
@@ -841,7 +849,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         
         var flag : Bool = false
         if edges_user.count != 0 {
-            checkDistanceFromSnap(edges_user_strict, currentX, currentY, closest_edge ?? links[0], distanceFromCurrentEdge, &flag)
+            checkDistanceFromSnap(edges_user, currentX, currentY, closest_edge ?? links[0], distanceFromCurrentEdge, &flag)
         }
         //print("post if ",flag)
         // OUTSIDE NAVIGATION AREA
