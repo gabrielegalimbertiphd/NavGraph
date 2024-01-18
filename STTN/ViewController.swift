@@ -806,7 +806,9 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         // there's the need to find the width of the closest edge everytime to understand if the user is entered enough. This is because the width of the edge can change from a setup version (based and advanced). one code for both cases.
         //print(edges_user.count, edges_user)
         if edges_user.count != 0 {
-             (closest_edge,distanceFromCurrentEdge, _, _) = level2.getClosestEdge(position_u: (px:currentX,py:currentY), edges: edges_user, percentage: percentage, position_vertexes: level1!.position_vertexes, links: links)// MODIFICA USANDO STRICT NA
+             //(closest_edge,distanceFromCurrentEdge, _, _) = level2.getClosestEdge(position_u: (px:currentX,py:currentY), edges: edges_user, percentage: percentage, position_vertexes: level1!.position_vertexes, links: links)
+            // TODO: cosa succede se nextnode è la destination???? Fixare
+            (closest_edge,distanceFromCurrentEdge, _, _) = level2.getCurrentEdge(position_u: (px:currentX,py:currentY), edges: edges_user, percentage: percentage, position_vertexes: level1!.position_vertexes, links: links, nextNode: nextNode)
         }
         print(closest_edge,distanceFromCurrentEdge)
         closest_edge_debug.text="\(closest_edge!.node_v)-\(closest_edge!.node_u), r=\(closest_edge!.radiusOfNavigationArea)"
