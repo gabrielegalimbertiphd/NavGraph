@@ -322,6 +322,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     public var previous_node: String = "0"
     public var following_node: String = "1"
     
+    private var memUsage:UInt64 = 0
+    
     /*var E_u : [any Edge] = []
     //print(E_u)
     // GET DESTINATION EDGE
@@ -494,6 +496,14 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         
         log = Log()
         geometry = Geometry()
+        
+        let timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { _ in
+            self.memUsage = self.memoryUsage()
+        }
+        // Aggiungi il timer al main run loop
+        RunLoop.main.add(timer, forMode: .common)
+        // Avvia il timer
+        timer.fire()
         
         /*self.locationProvider = LocationProvider(arView: arView, jsonName: "test")
         self.locationProvider.addLocationObserver(locationObserver: self)
@@ -1607,7 +1617,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                         // which data: x, y, z, roll, pitch, yaw, ang error, ang target, dist next target, dist target, x_gap_correction, y_gap_correction, next node, direction, state, message, start log, start sonification
                         
                         var timestamp:String = "\(NSDate().timeIntervalSince1970 * 1000)"
-                        let text="\(timestamp);\(currentX_map);\(currentY_map);\(currentZ_map);\(currentROLL);\(currentPITCH);\(currentYAW);\(lastMarkerSeen);\(locationProvider.fixPosition);\(x_fixing_gap_map);\(y_fixing_gap_map);\(yaw_fixing_gap_map);\(rototraslFix);\(anglePath);\(rad2degree(currentYAW));\(angular_difference);\(direction_turn);\(range);\(nextNode);\(target_x_map);\(target_y_map);\(distance);\(closest_edge!.node_v);\(closest_edge!.node_u);\(closest_edge!.radiusOfNavigationArea);\(length_closest_edge);\(distanceFromCurrentEdge);\(dxFromCurrentEdge);\(dyFromCurrentEdge);\(direction_lateral);\(state);\(message);\(previous_message_label.text);\(startLog);\(level4.startSonification);\(level4.readInstruction);\(version_setup);\(percorso);\(level4.num_turn);\(level4.num_walk);\(level4.num_lateral)"
+                        let text="\(timestamp);\(currentX_map);\(currentY_map);\(currentZ_map);\(currentROLL);\(currentPITCH);\(currentYAW);\(lastMarkerSeen);\(locationProvider.fixPosition);\(x_fixing_gap_map);\(y_fixing_gap_map);\(yaw_fixing_gap_map);\(rototraslFix);\(anglePath);\(rad2degree(currentYAW));\(angular_difference);\(direction_turn);\(range);\(nextNode);\(target_x_map);\(target_y_map);\(distance);\(closest_edge!.node_v);\(closest_edge!.node_u);\(closest_edge!.radiusOfNavigationArea);\(length_closest_edge);\(distanceFromCurrentEdge);\(dxFromCurrentEdge);\(dyFromCurrentEdge);\(direction_lateral);\(state);\(message);\(previous_message_label.text);\(startLog);\(level4.startSonification);\(level4.readInstruction);\(version_setup);\(percorso);\(level4.num_turn);\(level4.num_walk);\(level4.num_lateral);\(memUsage)"
                         // TODO lastMarkerSeen--> Check se puoi migliorare questo dato
                         log.logAsync(logDescription: text)
                     }
@@ -2004,6 +2014,23 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         markerNameLabel.text = "Mark names: "
         markerNameLabel.textColor = UIColor.black
         view.addSubview(markerNameLabel)
+    }
+    
+    func memoryUsage() -> UInt64 {
+        var info = mach_task_basic_info()
+        var count = mach_msg_type_number_t(MemoryLayout<mach_task_basic_info>.size) / 4
+        let kerr: kern_return_t = withUnsafeMutablePointer(to: &info) {
+            $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
+                task_info(mach_task_self_, task_flavor_t(MACH_TASK_BASIC_INFO), $0, &count)
+            }
+        }
+
+        // Se l'operazione è riuscita, restituisci la dimensione della memoria
+        if kerr == KERN_SUCCESS {
+            return info.resident_size
+        } else {
+            return 0
+        }
     }
     
 }
