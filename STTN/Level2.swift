@@ -25,6 +25,24 @@ class Level2 {
         return link_of_e
     }
     
+    func getStrictedEdgesAtPosition(position: (px:Float,py:Float), input_Graph: any Graph, position_vertexes: [String : [String: Float]], links: [Link], strict: Bool, nextNode: String) -> [any Edge] {
+        var result : [Edge]  = []
+        var link_of_e : Link = Link(node_u: "0", node_v: "1", radiusOfNavigationArea: 1.0)
+        for e in input_Graph.edgeList() {
+            for l in links {
+                if l.node_u == "\(e.u)" && l.node_v == "\(e.v)"{
+                    link_of_e = l
+                    break
+                }
+            }
+            var r : Float = nextNode==link_of_e.node_v || nextNode==link_of_e.node_u ?  link_of_e.radiusOfNavigationArea : link_of_e.radiusOfNavigationArea/2
+            if(isInSafeAreaEdge(edge: e, position_u: position, radius: r, position_vertexes: position_vertexes)){ // CAMBIA IN BASE ALLA RADIUS DELL'EDGE.
+                result.append(e)
+            }
+        }
+        return result
+    }
+    
     func getEdgesAtPosition(position: (px:Float,py:Float), input_Graph: any Graph, position_vertexes: [String : [String: Float]], links: [Link], strict: Bool) -> [any Edge] {
         var result : [Edge]  = []
         var link_of_e : Link = Link(node_u: "0", node_v: "1", radiusOfNavigationArea: 1.0)

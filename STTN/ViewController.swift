@@ -353,6 +353,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     //lazy var roll_user = UILabel()
     lazy var approx_angle_debug = UILabel()
     
+    lazy var closest_edge_debug = UILabel()
+    
     lazy var x_fixing_gap_marker = UILabel()
     lazy var y_fixing_gap_marker = UILabel()
     
@@ -803,10 +805,11 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         
         // there's the need to find the width of the closest edge everytime to understand if the user is entered enough. This is because the width of the edge can change from a setup version (based and advanced). one code for both cases.
         //print(edges_user.count, edges_user)
-        if edges_user.count != 0{
+        if edges_user.count != 0 {
              (closest_edge,distanceFromCurrentEdge, _, _) = level2.getClosestEdge(position_u: (px:currentX,py:currentY), edges: edges_user, percentage: percentage, position_vertexes: level1!.position_vertexes, links: links)// MODIFICA USANDO STRICT NA
         }
         print(closest_edge,distanceFromCurrentEdge)
+        closest_edge_debug.text="\(closest_edge!.node_v)-\(closest_edge!.node_u), r=\(closest_edge!.radiusOfNavigationArea)"
         
         let vertex_u = position_vertexes["\(closest_edge!.node_u)"]!
         let vertex_v = position_vertexes["\(closest_edge!.node_v)"]!
@@ -908,7 +911,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                 }
                 previous_node = nextNode
             }
-        } else {
+        } else if edges_user_strict.count>0{
             // PROCEDURE: Finding next node and the route
             // finding the next node
             // but this algorithm compute only the next node and not the route. For this reason the code check later which is the most close node in E_d that lead to the destination passing from the nextnode. the code then save the route from next node to last node
@@ -989,7 +992,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                 nextNode="0"
             }
             
-            lastNode = last_nodes["\(nextNode)"] ?? "6"
+            lastNode = last_nodes["\(nextNode)"] ?? "\(position_vertexes.count-1)"
             lastNodeLabel.text = "L: \(lastNode)"
             //print("nextNode \(nextNode) , lastNode \(lastNode)")
             
@@ -1215,10 +1218,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                 
                 var previous_state = state
                 
-                
-                
                 E_u = level2.getEdgesAtPosition(position: (px:currentX_map,py:currentY_map), input_Graph: level1!.graph, position_vertexes: level1!.position_vertexes, links: links, strict: false)
-                E_u_strict = level2.getEdgesAtPosition(position: (px:currentX_map,py:currentY_map), input_Graph: level1!.graph, position_vertexes: level1!.position_vertexes, links: links, strict: true)
+                E_u_strict = level2.getStrictedEdgesAtPosition(position: (px:currentX_map,py:currentY_map), input_Graph: level1!.graph, position_vertexes: level1!.position_vertexes, links: links, strict: true,nextNode: nextNode)
                 //print(E_u)
                 // GET DESTINATION EDGE
                 print("dest:", destination_position["x"]!,destination_position["y"]!)
@@ -1891,6 +1892,11 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         approx_angle_debug.text = "APPROX ANGLE"
         approx_angle_debug.textColor = UIColor.green
         view.addSubview(approx_angle_debug)
+        
+        closest_edge_debug.frame = CGRect(x: 240, y: 0, width: 300, height: 650)
+        closest_edge_debug.text = "closest edge: "
+        closest_edge_debug.textColor = UIColor.green
+        view.addSubview(closest_edge_debug)
         
         /*x_fixing_gap_user.frame = CGRect(x: 10, y: 0, width: 300, height: 660)
          x_fixing_gap_user.text = "X GAP U"
