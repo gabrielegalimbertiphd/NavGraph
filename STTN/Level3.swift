@@ -36,14 +36,27 @@ class Level3 {
                 message = "lateral"
             }*/
             
-            if (abs(angular_error) >= alpha3_outside) {
+            if (abs(angular_error) >= alpha3_outside || (previous_message == "turn" && previous_state == "outside" && abs(angular_error)>alpha1)) {
                 message = "turn"
-            } else if (abs(angular_error) > alpha2_outside && abs(angular_error) < alpha3_outside && previous_message != "turn") {
+            } /*else if (abs(angular_error) > alpha2_outside && abs(angular_error) < alpha3_outside && previous_message != "turn") {
                 message = "lateral"
             } else if
                 (abs(angular_error) <= alpha2_outside && (previous_message == "walk")) || (abs(angular_error) <= alpha1 && (previous_message == "lateral")) {
                 message = "walk"
-            }
+            } */
+            
+               else if abs(angular_error) > alpha2_outside && abs(angular_error) < alpha3_outside || ((previous_message == "lateral" && previous_state == "outside" && abs(angular_error) > alpha1)) /* ||
+                    (previous_message != "turn" && previous_state != "outside") ||
+                    (previous_message == "walk" && previous_state == "outside") ||
+                    (previous_message == "turn" && previous_state == "inside")) */
+                     {
+                   message = "lateral"
+               } else if
+                   (abs(angular_error) <= alpha2_outside && (previous_message == "walk" || (previous_message == "turn" && previous_state == "inside"))) || (abs(angular_error) <= alpha1 && (previous_message != "walk")) {
+                   message = "walk"
+               }
+               
+               
             else {
                 message = "walk"
             }

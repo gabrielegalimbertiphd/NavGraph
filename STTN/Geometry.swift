@@ -157,9 +157,7 @@ class Geometry {
 
     func angleBetweenTwoPoints(x_n1: Float, x_n2: Float, y_n1: Float, y_n2: Float) -> Float {
         var dx = x_n2 - x_n1
-        print(dx)
         var dy = y_n2 - y_n1
-        print(dy)
         return atan2(dy, dx) - (Float.pi / 2)
     }
 

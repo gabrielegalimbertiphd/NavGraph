@@ -193,7 +193,10 @@ public class LocationProvider: NSObject, ARSessionDelegate {
     public func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
         // TODO: what happen if two or more Markers are recognized?
         
-        guard let imageAnchor = anchors[0] as? ARImageAnchor else { return }
+        guard let imageAnchor = anchors[0] as? ARImageAnchor else {
+            fixPosition = false
+            return
+        }
         print("didadd",anchors[0])
         if let imgId = imageAnchor.referenceImage.name {
             print("didadd",imgId)

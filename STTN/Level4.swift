@@ -38,6 +38,7 @@ class Level4 {
     public var other10meters:Bool = false
     
     public var previous_direction_turn:String = ""
+    public var previous_direction_lateral:String = ""
     public var previous_state:String = ""
     
     public var timerRepeatInstruction: Double = 0.0
@@ -85,6 +86,7 @@ class Level4 {
         var condition8 = false // changePath TODO just in case we use a different method
         
         //var condition9 = self.angleLength != nil && (angular_difference ?? 30)-(self.angleLength ?? 0) > 30 && angular_difference ?? 30 < 145 // ripeto solo se sono a 160-30/2 ... se no c'è rischio che venga ripetuta una istruzione di svolta e subito dopo una istruzione di voltati indietro.
+        //var condition10 = direction_lateral != previous_direction_lateral
         
         guard condition1 || condition2 || condition3 || condition4 || condition5 || condition6 || condition7 || condition8  else {
             // TODO: Level3().alpha3 non sarebbe corretto
@@ -111,7 +113,6 @@ class Level4 {
                     //self.angleLength = abs(angular_difference!)
                     self.startSonification=false // permette di cambiare l'angolo target perchè lo imposto a riga 70!!!!
                     playUpdateTargetAngleSound()
-                    print(changeNode, message, angular_difference, distanceFromTarget, lateralDistance)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2){ // Per 0.2 secondi non sonifico.
                         //Synth.shared.volume = 0.8
                         self.startSonification=true
@@ -157,6 +158,9 @@ class Level4 {
         
         self.speech_synthesizer.stopSpeaking(at: .immediate)
         
+        if changeNode {
+            self.playUpdateTargetAngleSound()
+        }
         
         if message.contains("walk") && distanceFromTarget != nil { // if the instruction is walk, set the distance to the target
             self.stretchLength = distanceFromTarget!
@@ -281,6 +285,7 @@ class Level4 {
             self.speech_synthesizer.speak(utterance)
         }
         previous_direction_turn = direction_turn ?? ""
+        previous_direction_lateral = direction_lateral ?? ""
         previous_state = state
         //print("EVALUATION")
         print()
@@ -337,7 +342,7 @@ class Level4 {
                 self.startTicking(rate: duration)
             }
             
-            if (distanceFromTurn ?? 0) < (safeAreaRadius ?? 0) && state != "outside" {
+            if (distanceFromTurn ?? 0) < (safeAreaRadius ?? 0)/2 && state != "outside" {
                 self.startSonification=false
                 Synth.shared.audioEngine.stop()
             }
@@ -362,6 +367,10 @@ class Level4 {
                 self.startTicking(rate: duration)
             }
             
+            /*if (lateralDistance ?? 0) < (safeAreaRadius ?? 0)/2 {
+                self.startSonification=false
+                Synth.shared.audioEngine.stop()
+            }*/
             /*switch selectedSonification{
                 case 1:
                     let duration = 1+14*pow(1-min(abs((distanceFromTurn!/stretchLength!)),1),4)
@@ -387,7 +396,7 @@ class Level4 {
         //print("tick", rate, "Hz", frequency, "volume", Synth.shared.volume)
         
         if Synth.shared.frequency != frequency {
-            print("tick", rate, "Hz", "volume", Synth.shared.volume)
+            //print("tick", rate, "Hz", "volume", Synth.shared.volume)
             Synth.shared.frequency = frequency
         }
     }
