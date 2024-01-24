@@ -363,6 +363,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     
     private var memUsage:UInt64 = 0
     
+    private var timestampStart : Double = 0.0
+    
     /*var E_u : [any Edge] = []
     //print(E_u)
     // GET DESTINATION EDGE
@@ -423,6 +425,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     lazy var directionLabel = UILabel()
     
     lazy var lateralDistanceLabel = UILabel()
+    
+    
     
     // DEBUG BUBBLE
     
@@ -638,6 +642,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
             self.startLog = true
             self.startBool = true
             self.taskTest = false
+            self.timestampStart = NSDate().timeIntervalSince1970 * 1000
         }
     }
     
@@ -1691,9 +1696,9 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                     
                         // LOG DATA
                         // which data: x, y, z, roll, pitch, yaw, ang error, ang target, dist next target, dist target, x_gap_correction, y_gap_correction, next node, direction, state, message, start log, start sonification
-                        
-                        var timestamp:String = "\(NSDate().timeIntervalSince1970 * 1000)"
-                        let text="\(timestamp);\(currentX_map);\(currentY_map);\(currentZ_map);\(currentROLL);\(currentPITCH);\(currentYAW);\(lastMarkerSeen);\(locationProvider.fixPosition);\(x_fixing_gap_map);\(y_fixing_gap_map);\(yaw_fixing_gap_map);\(rototraslFix);\(anglePath);\(rad2degree(currentYAW));\(angular_difference);\(direction_turn);\(rangeL);\(nextNode);\(target_x_map);\(target_y_map);\(distance);\(closest_edge!.node_v);\(closest_edge!.node_u);\(closest_edge!.radiusOfNavigationArea);\(length_closest_edge);\(distanceFromCurrentEdge);\(dxFromCurrentEdge);\(dyFromCurrentEdge);\(direction_lateral);\(state);\(sonifiedDistance);\(message);\(previous_message_label.text);\(startLog);\(level4.startSonification);\(level4.readInstruction);\(version_setup);\(percorso);\(level4.num_turn);\(level4.num_walk);\(level4.num_lateral);\(memUsage)"
+                        // MARK: SAVE DATA
+                        var timestamp:String = "\(NSDate().timeIntervalSince1970 * 1000 - timestampStart)"
+                        let text="\(timestamp);\(currentX_map);\(currentY_map);\(currentZ_map);\(currentROLL);\(currentPITCH);\(currentYAW);\(lastMarkerSeen);\(locationProvider.fixPosition);\(x_fixing_gap_map);\(y_fixing_gap_map);\(yaw_fixing_gap_map);\(rototraslFix);\(anglePath);\(rad2degree(currentYAW));\(angular_difference);\(direction_turn);\(rangeL);\(nextNode);\(target_x_map);\(target_y_map);\(distance);\(closest_edge!.node_v);\(closest_edge!.node_u);\(closest_edge!.radiusOfNavigationArea);\(length_closest_edge);\(distanceFromCurrentEdge);\(dxFromCurrentEdge);\(dyFromCurrentEdge);\(direction_lateral);\(state);\(sonifiedDistance);\(message);\(previous_message_label.text!);\(startLog);\(level4.startSonification);\(level4.readInstruction);\(version_setup);\(percorso);\(level4.num_turn);\(level4.num_walk);\(level4.num_lateral);\(memUsage)"
                         // TODO lastMarkerSeen--> Check se puoi migliorare questo dato
                         log.logAsync(logDescription: text)
                     }
@@ -1969,7 +1974,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         
         // DEBUG ROLL YAW PITCH ARKIT
         
-        // MARK: IMPORTANT
+        // MARK: VISUAL LOG
         yaw_user.frame = CGRect(x: 240, y: 0, width: 300, height: 500)
         yaw_user.text = "YAW USER"
         yaw_user.textColor = UIColor.red
