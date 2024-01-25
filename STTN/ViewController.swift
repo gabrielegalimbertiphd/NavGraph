@@ -191,7 +191,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     var links: [Link] = [
         Link( node_u :"0", node_v :"1", radiusOfNavigationArea :1),
         Link( node_u :"1", node_v :"2", radiusOfNavigationArea :2),
-        Link( node_u :"2", node_v :"3", radiusOfNavigationArea :1),
+        Link( node_u :"2", node_v :"3", radiusOfNavigationArea :1.5),
         Link( node_u :"3", node_v :"4", radiusOfNavigationArea :2),
         Link( node_u :"4", node_v :"5", radiusOfNavigationArea :1.5),
         Link( node_u :"5", node_v :"6", radiusOfNavigationArea :1)
@@ -201,7 +201,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         "Percorso1":[
             Link( node_u :"0", node_v :"1", radiusOfNavigationArea :1),
             Link( node_u :"1", node_v :"2", radiusOfNavigationArea :2),
-            Link( node_u :"2", node_v :"3", radiusOfNavigationArea :1),
+            Link( node_u :"2", node_v :"3", radiusOfNavigationArea :1.5),
             Link( node_u :"3", node_v :"4", radiusOfNavigationArea :2),
             Link( node_u :"4", node_v :"5", radiusOfNavigationArea :1.5),
             Link( node_u :"5", node_v :"6", radiusOfNavigationArea :1)
@@ -363,7 +363,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     
     private var memUsage:UInt64 = 0
     
-    private var timestampStart : Double = 0.0
+    public var timestampStart : Int = 0
+    private var num_path:String = "0"
     
     /*var E_u : [any Edge] = []
     //print(E_u)
@@ -559,6 +560,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         self.locationProvider.start()
         self.locationProvider.showFloorMap(CGRect(x: 5, y: 450, width: 230, height: 360))
         
+        num_path = percorso.replacingOccurrences(of: "Percorso", with: "")
+        
         customJsonParser = CustomJsonParser(forName: "\(percorso)")
         markers = customJsonParser.getMarkers()
         print(markers)
@@ -587,6 +590,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
             self.startLog = true
             self.startBool = true
             self.taskTest = true
+            self.timestampStart = Int(NSDate().timeIntervalSince1970 * 1000)
         }
     }
     
@@ -638,11 +642,12 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
             bubble_placed = false
         }
         
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.startLog = true
             self.startBool = true
             self.taskTest = false
-            self.timestampStart = NSDate().timeIntervalSince1970 * 1000
+            self.timestampStart = Int(NSDate().timeIntervalSince1970 * 1000)
         }
     }
     
@@ -1576,8 +1581,9 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                         }
                         
                         print("maxAngle",maxAngle,"p1scelto",p1scelto,"p2scelto",p2scelto)
-                        render.renderLimit1(x:p1scelto.0,y:p1scelto.1, arView: arView)
-                        render.renderLimit2(x:p2scelto.0,y:p2scelto.1, arView: arView)
+                        // MARK: PUÒ DARSI CHE SIA QUESTO IL PROBLEMA.
+                        // render.renderLimit1(x:p1scelto.0,y:p1scelto.1, arView: arView)
+                        // render.renderLimit2(x:p2scelto.0,y:p2scelto.1, arView: arView)
                         
                         
                         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1697,8 +1703,9 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                         // LOG DATA
                         // which data: x, y, z, roll, pitch, yaw, ang error, ang target, dist next target, dist target, x_gap_correction, y_gap_correction, next node, direction, state, message, start log, start sonification
                         // MARK: SAVE DATA
-                        var timestamp:String = "\(NSDate().timeIntervalSince1970 * 1000 - timestampStart)"
-                        let text="\(timestamp);\(currentX_map);\(currentY_map);\(currentZ_map);\(currentROLL);\(currentPITCH);\(currentYAW);\(lastMarkerSeen);\(locationProvider.fixPosition);\(x_fixing_gap_map);\(y_fixing_gap_map);\(yaw_fixing_gap_map);\(rototraslFix);\(anglePath);\(rad2degree(currentYAW));\(angular_difference);\(direction_turn);\(rangeL);\(nextNode);\(target_x_map);\(target_y_map);\(distance);\(closest_edge!.node_v);\(closest_edge!.node_u);\(closest_edge!.radiusOfNavigationArea);\(length_closest_edge);\(distanceFromCurrentEdge);\(dxFromCurrentEdge);\(dyFromCurrentEdge);\(direction_lateral);\(state);\(sonifiedDistance);\(message);\(previous_message_label.text!);\(startLog);\(level4.startSonification);\(level4.readInstruction);\(version_setup);\(percorso);\(level4.num_turn);\(level4.num_walk);\(level4.num_lateral);\(memUsage)"
+                        let timestamp:Int = Int(NSDate().timeIntervalSince1970*1000) - self.timestampStart //  milliseconds
+
+                        let text="\(timestamp);\(currentX_map);\(currentY_map);\(currentZ_map);\(currentROLL);\(currentPITCH);\(currentYAW);\(lastMarkerSeen);\(locationProvider.fixPosition);\(x_fixing_gap_map);\(y_fixing_gap_map);\(yaw_fixing_gap_map);\(rototraslFix.debugDescription.replacingOccurrences(of: "simd_float4x4(", with: "").replacingOccurrences(of: ")", with: "") );\(anglePath);\(rad2degree(currentYAW));\(angular_difference);\(direction_turn);\(rangeL);\(nextNode);\(target_x_map);\(target_y_map);\(distance);\(closest_edge!.node_v);\(closest_edge!.node_u);\(closest_edge!.radiusOfNavigationArea);\(length_closest_edge);\(distanceFromCurrentEdge);\(dxFromCurrentEdge);\(dyFromCurrentEdge);\(direction_lateral);\(state);\(sonifiedDistance);\(message);\(previous_message_label.text!);\(startLog);\(level4.startSonification);\(level4.readInstruction);adv;\(num_path);\(level4.num_turn);\(level4.num_walk);\(level4.num_lateral);\(memUsage)"
                         // TODO lastMarkerSeen--> Check se puoi migliorare questo dato
                         log.logAsync(logDescription: text)
                     }
