@@ -66,7 +66,7 @@ class Level4 {
         // 2- se cambia la direzione, sto svoltando e la sonificazione è stata attivata e non è maggiore di 160 gradi
         //let condition2 = (previous_direction_turn != direction_turn && message.contains("turn") && startSonification && abs(angular_difference ?? 0) >= range && abs(self.angleLength ?? 0) < 160)
         // abs(self.angleLength ?? 0) < 160) da tenere perchè evita che nell'alternanza tra 180 e -180 venga ripetuto "turn around"
-        let condition2 = false //(previous_direction_turn != direction_turn && message.contains("turn") && startSonification && abs(self.angleLength ?? 0) < 160) // condizione per identificare il cambio di direzione.
+        let condition2 = false // (previous_direction_turn != direction_turn && message.contains("turn") && startSonification && state=="inside") //&& abs(self.angleLength ?? 0) < 160) // condizione per identificare il cambio di direzione.
         // 3- se sono inside un istante prima ed outside un istante dopo e viceversa
         let condition3 = (previous_state=="inside" && state=="outside")
         // 4- se sono outside un istante prima ed inside un istante dopo e viceversa

@@ -1373,7 +1373,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                             if nextNode != "destination"{
                                 following_node = "\((Int(nextNode) ?? 1)+1)"
                                 
-                                print("nextNode",nextNode, "following node", following_node)
+                                //print("nextNode",nextNode, "following node", following_node)
                                 // MARK: parte che posso eseguire solo ad ogni nuovo nodo perchè i punti sono sempre gli stessi.
                                 let nextEdge : Link = level2.getEdgeGivenTwoNodesIfExist(links: links, nodeA: nextNode, nodeB: following_node) ?? links[1]
                                 var radius_nextEdge:Float = nextEdge.radiusOfNavigationArea
@@ -1382,11 +1382,11 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                                 if changeNode || locationProvider.fixPosition {
                                     print("SONO ENTRATO")
                                     nn = Int(nextNode)! ?? 1
-                                    x_n1 = level1!.position_vertexes["\(nn-1)"]!["x"] ?? 0.0// TODO: CHANGE x punto precedente
-                                    y_n1 = level1!.position_vertexes["\(nn-1)"]!["y"] ?? 0.0// TODO: CHANGE y punto precedente
+                                    x_n1 = level1!.position_vertexes["\(nn-1)"]!["x"] ?? 0.0
+                                    y_n1 = level1!.position_vertexes["\(nn-1)"]!["y"] ?? 0.0
                                     
-                                    x_n2 = level1!.position_vertexes["\(nn)"]!["x"] ?? 0.0// TODO: CHANGE x punto target
-                                    y_n2 = level1!.position_vertexes["\(nn)"]!["y"] ?? 0.0// TODO: CHANGE y punto target
+                                    x_n2 = level1!.position_vertexes["\(nn)"]!["x"] ?? 0.0
+                                    y_n2 = level1!.position_vertexes["\(nn)"]!["y"] ?? 0.0
 
                                     x_n3 = level1!.position_vertexes["\(following_node)"]!["x"] ?? 0.0// TODO: CHANGE x prossimo target
                                     y_n3 = level1!.position_vertexes["\(following_node)"]!["y"] ?? 0.0// TODO: CHANGE y prossimo target
@@ -1427,39 +1427,40 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                                     intersezione4 = geometry.trova_intersezione(p2x, p2y, p4x, p4y, p5x, p5y, p7x, p7y)
                                     
                                     center = (x_n2, y_n2)
-                                } else {
+                                    
+                                    punti_intersezione1.removeAll()
+                                    punti_intersezione2.removeAll()
+                                    
+                                    if radius_nextEdge < radius_currentEdge{
+                                        let line1 = geometry.computeMQline(x1: p1x,y1: p1y,x2: p3x,y2: p3y)
+                                        //m = line1[0]
+                                        //q = line1[1]
+                                        //center = (x_n2,y_n2)
+                                        punti_intersezione1 = geometry.intersezione_retta_cerchio(m: line1[0] ?? 0, q: line1[1] ?? 0, center: center, radius: radius_currentEdge)
+                                        
+                                        let line2 = geometry.computeMQline(x1: p2x,y1: p2y,x2: p4x,y2: p4y)
+                                        //m = line1[0]
+                                        //q = line1[1]
+                                        //center = (x_n2,y_n2)
+                                        punti_intersezione2 = geometry.intersezione_retta_cerchio(m: line2[0] ?? 0, q: line2[1] ?? 0, center: center, radius: radius_currentEdge)
+                                    }
+                                    else{
+                                        let line1 = geometry.computeMQline(x1: p5x,y1: p5y,x2: p7x,y2: p7y)
+                                        //m = line1[0]
+                                        //q = line1[1]
+                                        //center = (x_n2,y_n2)
+                                        punti_intersezione1 = geometry.intersezione_retta_cerchio(m: line1[0] ?? 0, q: line1[1] ?? 0, center: center, radius: radius_nextEdge)
+                                        
+                                        let line2 = geometry.computeMQline(x1: p6x,y1: p6y,x2: p8x,y2: p8y)
+                                        //m = line1[0]
+                                        //q = line1[1]
+                                        //center = (x_n2,y_n2)
+                                        punti_intersezione2 = geometry.intersezione_retta_cerchio(m: line2[0] ?? 0, q: line2[1] ?? 0, center: center, radius: radius_nextEdge)
+                                    }
+                                    
+                                }/* else {
                                     print("NON SONO ENTRATO")
-                                }
-                                
-                                punti_intersezione1.removeAll()
-                                punti_intersezione2.removeAll()
-                                
-                                if radius_nextEdge < radius_currentEdge{
-                                    let line1 = geometry.computeMQline(x1: p1x,y1: p1y,x2: p3x,y2: p3y)
-                                    //m = line1[0]
-                                    //q = line1[1]
-                                    //center = (x_n2,y_n2)
-                                    punti_intersezione1 = geometry.intersezione_retta_cerchio(m: line1[0] ?? 0, q: line1[1] ?? 0, center: center, radius: radius_currentEdge)
-                                    
-                                    let line2 = geometry.computeMQline(x1: p2x,y1: p2y,x2: p4x,y2: p4y)
-                                    //m = line1[0]
-                                    //q = line1[1]
-                                    //center = (x_n2,y_n2)
-                                    punti_intersezione2 = geometry.intersezione_retta_cerchio(m: line2[0] ?? 0, q: line2[1] ?? 0, center: center, radius: radius_currentEdge)
-                                }
-                                else{
-                                    let line1 = geometry.computeMQline(x1: p5x,y1: p5y,x2: p7x,y2: p7y)
-                                    //m = line1[0]
-                                    //q = line1[1]
-                                    //center = (x_n2,y_n2)
-                                    punti_intersezione1 = geometry.intersezione_retta_cerchio(m: line1[0] ?? 0, q: line1[1] ?? 0, center: center, radius: radius_nextEdge)
-                                    
-                                    let line2 = geometry.computeMQline(x1: p6x,y1: p6y,x2: p8x,y2: p8y)
-                                    //m = line1[0]
-                                    //q = line1[1]
-                                    //center = (x_n2,y_n2)
-                                    punti_intersezione2 = geometry.intersezione_retta_cerchio(m: line2[0] ?? 0, q: line2[1] ?? 0, center: center, radius: radius_nextEdge)
-                                }
+                                }*/
                                    
                                 // MARK: parte che devo ricalcolare ad ogni nuova posizione
                                 var angleCurrentEdgeUser = geometry.angleBetweenTwoPoints(x_n1: currentX_map,x_n2: x_n2,y_n1: currentY_map,y_n2: y_n2)
@@ -1470,16 +1471,17 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                                 if alpha1.isNaN{
                                     alpha1 = 90.0*Float.pi/180
                                 }
+                                
                                 var a1 = angleCurrentEdgeUser + alpha1
-                                var dxPN1 = distance * sin(a1)
-                                var dyPN1 = distance * cos(a1)
-                                var x_PN1 = currentX_map - dxPN1
-                                var y_PN1 = currentY_map + dyPN1
+                                //var dxPN1 = distance * sin(a1)
+                                //var dyPN1 = distance * cos(a1)
+                                var x_PN1 = currentX_map - distance * sin(a1) //dxPN1
+                                var y_PN1 = currentY_map + distance * cos(a1) //dyPN1
                                 var a2 = angleCurrentEdgeUser - alpha1
-                                var dxPN2 = distance * sin(a2)
-                                var dyPN2 = distance * cos(a2)
-                                var x_PN2 = currentX_map - dxPN2
-                                var y_PN2 = currentY_map + dyPN2
+                                //var dxPN2 = distance * sin(a2)
+                                //var dyPN2 = distance * cos(a2)
+                                var x_PN2 = currentX_map - distance * sin(a2) //dxPN2
+                                var y_PN2 = currentY_map + distance * cos(a2) //dyPN2
                                     
                                 var limit:Float = 0.15
                                 
@@ -1513,7 +1515,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                                     pointsIntersection.append(intersezione4 ?? (0,0))
                                 }
                                     
-                                print("angleBetweenEdges",angleBetweenEdges*180/Float.pi)
+                                //print("angleBetweenEdges",angleBetweenEdges*180/Float.pi)
                                 if 180-abs(angleBetweenEdges)*180/Float.pi < 90{
                                     for i in pointsIntersection{
                                         let distancei_edge1 = geometry.getDistanceOnPointOnEdge(position: i ,p1X: x_n1,p1Y: y_n1,p2X: x_n2,p2Y: y_n2)
@@ -1556,7 +1558,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                                         }
                                     }
                                 }
-                                print("angleR")
+                                /*print("angleR")
                                 print("cosT",geometry.cosineTheorem(P1: (x_n2,y_n2), P2: p_user, P3: p1scelto)*180/Float.pi)
                                 print("cosT",geometry.cosineTheorem(P1: p1scelto, P2: (x_n2,y_n2), P3: p_user)*180/Float.pi)
                                 print("cosT",geometry.cosineTheorem(P1: p_user, P2: p1scelto, P3: (x_n2,y_n2))*180/Float.pi)
@@ -1564,7 +1566,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                                 print("angleL")
                                 print("cosT",geometry.cosineTheorem(P1: (x_n2,y_n2), P2: p_user, P3: p2scelto)*180/Float.pi)
                                 print("cosT",geometry.cosineTheorem(P1: p2scelto, P2: (x_n2,y_n2), P3: p_user)*180/Float.pi)
-                                print("cosT",geometry.cosineTheorem(P1: p_user, P2: p2scelto, P3: (x_n2,y_n2))*180/Float.pi)
+                                print("cosT",geometry.cosineTheorem(P1: p_user, P2: p2scelto, P3: (x_n2,y_n2))*180/Float.pi)*/
                                 
                                 rangeR = max(geometry.cosineTheorem(P1: p_user, P2: p1scelto, P3: (x_n2,y_n2))*180/Float.pi,30)
                                 rangeL = max(geometry.cosineTheorem(P1: p_user, P2: p2scelto, P3: (x_n2,y_n2))*180/Float.pi,30)
