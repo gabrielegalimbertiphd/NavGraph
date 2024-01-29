@@ -703,7 +703,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         if ARWorldTrackingConfiguration.supportsSceneReconstruction(.mesh){
             configuration.sceneReconstruction = .mesh
         }
-        self.arView.debugOptions = [.showFeaturePoints, .showWorldOrigin]
+        //self.arView.debugOptions = [.showFeaturePoints, .showWorldOrigin]
         self.arView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
         self.arView.session.delegate = self
     }
