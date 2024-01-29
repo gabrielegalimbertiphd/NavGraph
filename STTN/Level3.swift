@@ -76,7 +76,8 @@ class Level3 {
             
             if ((abs(angular_error) <= alpha1 && previous_message=="turn") ||
                 previous_message=="lateral") ||
-                changeTargetNode(changeNode: changeNode, previous_message: previous_message, current_state: current_state, angular_error: abs(angular_error)) {
+                //changeTargetNode(changeNode: changeNode, previous_message: previous_message, current_state: current_state, angular_error: abs(angular_error))
+                changeTargetNode2(changeNode: changeNode, previous_message: previous_message, current_state: current_state, evaluateRange: evaluateRangeL==false && evaluateRangeR==false){
                 message = "walk"
             }
             /*else if (abs(angular_error) >= alpha2_inside && version_setup=="basic") || (abs(angular_error) >= range ?? alpha2_inside && version_setup=="advanced") {*/
@@ -108,5 +109,9 @@ class Level3 {
     func changeTargetNode(changeNode: Bool, previous_message: String, current_state: String, angular_error: Float) -> Bool{
         return changeNode && (previous_message == "turn" || previous_message == "lateral") && Synth.shared.volume != 0 && current_state == "inside" && angular_error <= alpha2_inside
         // TODO: angular_error <= alpha3 MAYBE IS NOT GOOD
+    }
+    
+    func changeTargetNode2(changeNode: Bool, previous_message: String, current_state: String, evaluateRange: Bool) -> Bool{
+        return changeNode && (previous_message == "turn" || previous_message == "lateral") && Synth.shared.volume != 0 && current_state == "inside" && evaluateRange
     }
 }

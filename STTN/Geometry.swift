@@ -35,22 +35,23 @@ class Geometry {
         }
 
         // Calcola le coordinate del punto di intersezione
-        var x_intersezione: Float
-        var y_intersezione: Float
+        //var x_intersezione: Float
+        //var y_intersezione: Float
 
         if m1 == Float.infinity {
-            x_intersezione = x1
-            y_intersezione = m2 * x1 + q2!
+            //x_intersezione = x1
+            //y_intersezione = m2 * x1 + q2!
+            return (x1, m2 * x1 + q2!)
         } else if m2 == Float.infinity {
-            x_intersezione = x3
-            y_intersezione = m1 * x3 + q1!
+            //x_intersezione = x3
+            //y_intersezione = m1 * x3 + q1!
+            return (x3, m1 * x3 + q1!)
         } else {
-            x_intersezione = (q2! - q1!) / (m1 - m2)
-            y_intersezione = m1 * x_intersezione + q1!
+            //x_intersezione = (q2! - q1!) / (m1 - m2)
+            //y_intersezione = m1 * x_intersezione + q1!
+            let x_intersezione = (q2! - q1!) / (m1 - m2)
+            return (x_intersezione, m1 * x_intersezione + q1!)
         }
-
-        return (x_intersezione, y_intersezione)
-
     }
     
     func retta_secante_al_cerchio(m: Float, q: Float, centro_x: Float, centro_y: Float, raggio_cerchio: Float) -> Bool {
@@ -156,16 +157,16 @@ class Geometry {
     }
 
     func angleBetweenTwoPoints(x_n1: Float, x_n2: Float, y_n1: Float, y_n2: Float) -> Float {
-        var dx = x_n2 - x_n1
-        var dy = y_n2 - y_n1
-        return atan2(dy, dx) - (Float.pi / 2)
+        //var dx = x_n2 - x_n1
+        //var dy = y_n2 - y_n1
+        return atan2(y_n2 - y_n1, x_n2 - x_n1) - (Float.pi / 2)
     }
 
     func findAngleBetweenTwoEdges(x_n1: Float, x_n2: Float, x_n3: Float, y_n1: Float, y_n2: Float, y_n3: Float) -> Float {
         let angleCurrentEdge = angleBetweenTwoPoints(x_n1: x_n1, x_n2: x_n2, y_n1: y_n1, y_n2: y_n2)
         let angleNextEdge = angleBetweenTwoPoints(x_n1: x_n2, x_n2: x_n3, y_n1: y_n2, y_n2: y_n3)
-        let angleBetweenEdges = angleCurrentEdge - angleNextEdge
-        return angleBetweenEdges
+        //let angleBetweenEdges = angleCurrentEdge - angleNextEdge
+        return angleCurrentEdge - angleNextEdge //angleBetweenEdges
     }
     
     

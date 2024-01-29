@@ -118,62 +118,61 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     
     public var currentEdge : Link? = nil
     
-    public var position_vertexes : [String : [String: Float]]=[
-    
-        "0": ["x": 61.05268927500583 ,"y": -87.40503094345331 ],
-        "1": ["x": 61.10780490835896 ,"y": -93.00988889113069 ],
-        "2": ["x": 92.2461984824622 ,"y": -93.87077672220767 ],
-        "3": ["x": 93.32804981659865 ,"y": -99.49849448073655 ],
-        "4": ["x": 149.334955506376 ,"y": -98.48757871426642 ],
-        "5": ["x": 149.3386826463975 ,"y": -96.30665448587388 ],
-        "6": ["x": 154.56880740838824 ,"y": -97.54318582266569 ]
-    
+    public var position_vertexes: [String: [String: Float]] = [
+        "0": ["x": 61.052689, "y": -87.405031],
+        "1": ["x": 61.107805, "y": -93.009889],
+        "2": ["x": 92.246198, "y": -93.870777],
+        "3": ["x": 93.32485, "y": -98.387528],
+        "4": ["x": 149.334956, "y": -98.487579],
+        "5": ["x": 149.338683, "y": -96.306654],
+        "6": ["x": 154.565596, "y": -96.43222]
     ]
-    
-    public var coordinates_position_vertexes : [String : [String: [String: Float]]]=[
-        "Percorso1":[
-            "0": ["x": 61.05268927500583 ,"y": -87.40503094345331 ],
-            "1": ["x": 61.10780490835896 ,"y": -93.00988889113069 ],
-            "2": ["x": 92.2461984824622 ,"y": -93.87077672220767 ],
-            "3": ["x": 93.32804981659865 ,"y": -99.49849448073655 ],
-            "4": ["x": 149.334955506376 ,"y": -98.48757871426642 ],
-            "5": ["x": 149.3386826463975 ,"y": -96.30665448587388 ],
-            "6": ["x": 154.56880740838824 ,"y": -97.54318582266569 ]
+
+    public var coordinates_position_vertexes: [String: [String: [String: Float]]] = [
+        "Percorso1": [
+            "0": ["x": 61.052689, "y": -87.405031],
+            "1": ["x": 61.107805, "y": -93.009889],
+            "2": ["x": 92.246198, "y": -93.870777],
+            "3": ["x": 93.32485, "y": -98.387528],
+            "4": ["x": 149.334956, "y": -98.487579],
+            "5": ["x": 149.338683, "y": -96.306654],
+            "6": ["x": 154.565596, "y": -96.43222],
         ],
 
-        "Percorso2":[
-            "0": ["x": 213.04729223815957 ,"y": -155.66430983599275 ],
-            "1": ["x": 213.48552564281272 ,"y": -152.19434828031808 ],
-            "2": ["x": 223.46639834909 ,"y": -153.85030070506036 ],
-            "3": ["x": 222.8217324456782 ,"y": -93.71006935089827 ],
-            "4": ["x": 203.12929557752796 ,"y": -94.45257009752095 ],
-            "5": ["x": 200.24905982101336 ,"y": -86.69898427370936 ],
-            "6": ["x": 209.63913857779698 ,"y": -86.16292759589851 ]
+        "Percorso2": [
+            "0": ["x": 221.325557, "y": -154.009634],
+            "1": ["x": 220.84338, "y": -149.456034],
+            "2": ["x": 224.74916, "y": -148.66702],
+            "3": ["x": 222.821732, "y": -93.710069],
+            "4": ["x": 203.129296, "y": -94.45257],
+            "5": ["x": 200.24906, "y": -86.698984],
+            "6": ["x": 209.639139, "y": -86.162928],
         ],
 
-        "Percorso3":[
-            "0": ["x": 95.52459793473827 ,"y": -49.106199827976525 ],
-            "1": ["x": 133.57879047567258 ,"y": -51.84501117374748 ],
-            "2": ["x": 136.4444538061507 ,"y": -34.84616987872869 ],
-            "3": ["x": 148.41477569681592 ,"y": -35.612271051853895 ],
-            "4": ["x": 145.7670785524533 ,"y": -26.91058216430247 ],
-            "5": ["x": 155.45753562415484 ,"y": -26.438189966604114 ],
-            "6": ["x": 155.20379131438676 ,"y": -19.77307043131441 ]
+        "Percorso3": [
+            "0": ["x": 94.743003, "y": -49.108451],
+            "1": ["x": 136.381989, "y": -51.934635],
+            "2": ["x": 136.447662, "y": -35.957136],
+            "3": ["x": 148.414776, "y": -35.612271],
+            "4": ["x": 145.767079, "y": -26.910582],
+            "5": ["x": 155.457536, "y": -26.43819],
+            "6": ["x": 155.203791, "y": -19.77307],
         ],
 
-        "Percorso4":[
-            "0": ["x": 268.44119424402015 ,"y": -263.5061126789078 ],
-            "1": ["x": 258.8044029310695 ,"y": -263.36662252806127 ],
-            "2": ["x": 259.03487276198575 ,"y": -248.28616621159017 ],
-            "3": ["x": 229.20075805281522 ,"y": -248.26711270678788 ],
-            "4": ["x": 229.96533631626517 ,"y": -225.87337458319962 ],
-            "5": ["x": 257.6415326591232 ,"y": -224.67331095878035 ],
-            "6": ["x": 257.4771368094953 ,"y": -221.89635066594929 ]
+        "Percorso4": [
+            "0": ["x": 268.441194, "y": -263.506113],
+            "1": ["x": 258.804403, "y": -263.366623],
+            "2": ["x": 259.034873, "y": -248.286166],
+            "3": ["x": 229.200758, "y": -248.267113],
+            "4": ["x": 229.965336, "y": -225.873375],
+            "5": ["x": 257.641533, "y": -224.673311],
+            "6": ["x": 257.477137, "y": -221.896351],
         ],
-        "Prova":[
-            "0":["x": 100 ,"y": -100 ],
-            "1":["x": 100 ,"y": -105 ],
-            "2":["x": 105 ,"y": -105 ]
+        
+        "Prova": [
+            "0": ["x": 100, "y": -100],
+            "1": ["x": 100, "y": -105],
+            "2": ["x": 105, "y": -105]
         ]
     ]
     public var destination_position : [String: Float] = [ "x": 105 ,"y": -105 ]
@@ -190,44 +189,44 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     
     var links: [Link] = [
         Link( node_u :"0", node_v :"1", radiusOfNavigationArea :1),
-        Link( node_u :"1", node_v :"2", radiusOfNavigationArea :2),
-        Link( node_u :"2", node_v :"3", radiusOfNavigationArea :1.5),
-        Link( node_u :"3", node_v :"4", radiusOfNavigationArea :2),
-        Link( node_u :"4", node_v :"5", radiusOfNavigationArea :1.5),
+        Link( node_u :"1", node_v :"2", radiusOfNavigationArea :3),
+        Link( node_u :"2", node_v :"3", radiusOfNavigationArea :2),
+        Link( node_u :"3", node_v :"4", radiusOfNavigationArea :3),
+        Link( node_u :"4", node_v :"5", radiusOfNavigationArea :2),
         Link( node_u :"5", node_v :"6", radiusOfNavigationArea :1)
     ]
     
     var linksOfPaths:[String:[Link]] = [
         "Percorso1":[
             Link( node_u :"0", node_v :"1", radiusOfNavigationArea :1),
-            Link( node_u :"1", node_v :"2", radiusOfNavigationArea :2),
-            Link( node_u :"2", node_v :"3", radiusOfNavigationArea :1.5),
-            Link( node_u :"3", node_v :"4", radiusOfNavigationArea :2),
-            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :1.5),
+            Link( node_u :"1", node_v :"2", radiusOfNavigationArea :3),
+            Link( node_u :"2", node_v :"3", radiusOfNavigationArea :2),
+            Link( node_u :"3", node_v :"4", radiusOfNavigationArea :3),
+            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :2),
             Link( node_u :"5", node_v :"6", radiusOfNavigationArea :1)
         ],
         "Percorso2":[
             Link( node_u :"0", node_v :"1", radiusOfNavigationArea :1),
-            Link( node_u :"1", node_v :"2", radiusOfNavigationArea :1.5),
-            Link( node_u :"2", node_v :"3", radiusOfNavigationArea :2),
-            Link( node_u :"3", node_v :"4", radiusOfNavigationArea :2),
+            Link( node_u :"1", node_v :"2", radiusOfNavigationArea :2),
+            Link( node_u :"2", node_v :"3", radiusOfNavigationArea :3),
+            Link( node_u :"3", node_v :"4", radiusOfNavigationArea :3),
             Link( node_u :"4", node_v :"5", radiusOfNavigationArea :1),
-            Link( node_u :"5", node_v :"6", radiusOfNavigationArea :1.5)
+            Link( node_u :"5", node_v :"6", radiusOfNavigationArea :2)
         ],
         "Percorso3":[
-            Link( node_u :"0", node_v :"1", radiusOfNavigationArea :2),
-            Link( node_u :"1", node_v :"2", radiusOfNavigationArea :1.5),
+            Link( node_u :"0", node_v :"1", radiusOfNavigationArea :3),
+            Link( node_u :"1", node_v :"2", radiusOfNavigationArea :2),
             Link( node_u :"2", node_v :"3", radiusOfNavigationArea :1),
-            Link( node_u :"3", node_v :"4", radiusOfNavigationArea :1.5),
-            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :2),
+            Link( node_u :"3", node_v :"4", radiusOfNavigationArea :2),
+            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :3),
             Link( node_u :"5", node_v :"6", radiusOfNavigationArea :1)
         ],
         "Percorso4":[
             Link( node_u :"0", node_v :"1", radiusOfNavigationArea :1),
-            Link( node_u :"1", node_v :"2", radiusOfNavigationArea :2),
-            Link( node_u :"2", node_v :"3", radiusOfNavigationArea :2),
-            Link( node_u :"3", node_v :"4", radiusOfNavigationArea :1.5),
-            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :1.5),
+            Link( node_u :"1", node_v :"2", radiusOfNavigationArea :3),
+            Link( node_u :"2", node_v :"3", radiusOfNavigationArea :3),
+            Link( node_u :"3", node_v :"4", radiusOfNavigationArea :2),
+            Link( node_u :"4", node_v :"5", radiusOfNavigationArea :2),
             Link( node_u :"5", node_v :"6", radiusOfNavigationArea :1)
         ],
         "Prova":[
@@ -298,8 +297,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     var angleCurrentEdge:Float = 0.0
     var angleNextEdge:Float = 0.0
     var angleBetweenEdges:Float = 0.0
-    var dx1:Float = 0.0
-    var dy2:Float = 0.0
+    //var dx1:Float = 0.0
+    //var dy2:Float = 0.0
     var p1x:Float = 0.0
     var p1y:Float = 0.0
     var p2x:Float = 0.0
@@ -308,8 +307,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     var p3y:Float = 0.0
     var p4x:Float = 0.0
     var p4y:Float = 0.0
-    var dx3:Float = 0.0
-    var dy4:Float = 0.0
+    //var dx3:Float = 0.0
+    //var dy4:Float = 0.0
     var p5x:Float = 0.0
     var p5y:Float = 0.0
     var p6x:Float = 0.0
@@ -1219,14 +1218,14 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
             if startBool && state != "arrived"{ 
                 isStarted = true
                 
-                var currentX_map = Float(newLocation.coordinates.x)
-                var currentY_map = -Float(newLocation.coordinates.y)
-                var currentYAW = Float(newLocation.heading)
+                let currentX_map = Float(newLocation.coordinates.x)
+                let currentY_map = -Float(newLocation.coordinates.y)
+                let currentYAW = Float(newLocation.heading)
                 //print(currentX_map, currentY_map, currentYAW)
                 
-                var currentZ_map = 0.0
-                var currentROLL = 0.0
-                var currentPITCH = 0.0
+                //let currentZ_map = 0.0
+                //let currentROLL = 0.0
+                //let currentPITCH = 0.0
                 
                 var t = CFAbsoluteTimeGetCurrent() - timerRepeatInstruction
                 
@@ -1396,26 +1395,26 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                                     angleNextEdge = geometry.angleBetweenTwoPoints(x_n1: x_n2,x_n2: x_n3,y_n1: y_n2,y_n2: y_n3)
                                     angleBetweenEdges = angleCurrentEdge-angleNextEdge
                                     
-                                    dx1 = radius_nextEdge * cos(angleNextEdge)
-                                    dy2 = radius_nextEdge * sin(angleNextEdge)
+                                    let dx1 = radius_nextEdge * cos(angleNextEdge)
+                                    let dy2 = radius_nextEdge * sin(angleNextEdge)
                                     p1x = x_n2+dx1
-                                    p1y = y_n2+dy2
                                     p2x = x_n2-dx1
-                                    p2y = y_n2-dy2
                                     p3x = x_n3+dx1
-                                    p3y = y_n3+dy2
                                     p4x = x_n3-dx1
+                                    p1y = y_n2+dy2
+                                    p2y = y_n2-dy2
+                                    p3y = y_n3+dy2
                                     p4y = y_n3-dy2
                                     
-                                    dx3 = radius_currentEdge * cos(angleCurrentEdge)
-                                    dy4 = radius_currentEdge * sin(angleCurrentEdge)
+                                    let dx3 = radius_currentEdge * cos(angleCurrentEdge)
+                                    let dy4 = radius_currentEdge * sin(angleCurrentEdge)
                                     p5x = x_n1+dx3
-                                    p5y = y_n1+dy4
                                     p6x = x_n1-dx3
-                                    p6y = y_n1-dy4
                                     p7x = x_n2+dx3
-                                    p7y = y_n2+dy4
                                     p8x = x_n2-dx3
+                                    p5y = y_n1+dy4
+                                    p6y = y_n1-dy4
+                                    p7y = y_n2+dy4
                                     p8y = y_n2-dy4
                                     
                                     intersezione1 = geometry.trova_intersezione(p1x, p1y, p3x, p3y, p5x, p5y, p7x, p7y)
@@ -1542,19 +1541,20 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                                     }
                                 }
                                 maxAngle = 0.0
-                                for p1 in points{
+                                /*for p1 in points{
                                     for p2 in points{
-                                        if p1 != p2 {
-                                            var kAngle = geometry.cosineTheorem(P1: p_user, P2: p1, P3: p2)*180/Float.pi
-                                            print("--p_user p1 p2",geometry.cosineTheorem(P1: p_user, P2: p1, P3: p2)*180/Float.pi, maxAngle)
-                                            print()
-                                            if kAngle.isNaN==false && kAngle>maxAngle{
-                                                maxAngle = kAngle
-                                                p1scelto=p1
-                                                p2scelto=p2
-                                            }
-                                        } else {
-                                            print(p1,p2)
+                                        if p1 != p2 {*/
+                                for i in 0..<points.count {
+                                    for j in (i + 1)..<points.count {
+                                        let p1 = points[i]
+                                        let p2 = points[j]
+                                        var kAngle = geometry.cosineTheorem(P1: p_user, P2: p1, P3: p2)*180/Float.pi
+                                        print("--p_user p1 p2",geometry.cosineTheorem(P1: p_user, P2: p1, P3: p2)*180/Float.pi, maxAngle)
+                                        print()
+                                        if kAngle.isNaN==false && kAngle>maxAngle{
+                                            maxAngle = kAngle
+                                            p1scelto=p1
+                                            p2scelto=p2
                                         }
                                     }
                                 }
@@ -1582,7 +1582,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                             rangeR = 30.0
                         }
                         
-                        print("maxAngle",maxAngle,"p1scelto",p1scelto,"p2scelto",p2scelto)
+                        print("p1scelto",p1scelto,"p2scelto",p2scelto)
                         // MARK: PUÒ DARSI CHE SIA QUESTO IL PROBLEMA.
                         // render.renderLimit1(x:p1scelto.0,y:p1scelto.1, arView: arView)
                         // render.renderLimit2(x:p2scelto.0,y:p2scelto.1, arView: arView)
@@ -1707,7 +1707,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                         // MARK: SAVE DATA
                         let timestamp:Int = Int(NSDate().timeIntervalSince1970*1000) - self.timestampStart //  milliseconds
 
-                        let text="\(timestamp);\(currentX_map);\(currentY_map);\(currentZ_map);\(currentROLL);\(currentPITCH);\(currentYAW);\(lastMarkerSeen);\(locationProvider.fixPosition);\(x_fixing_gap_map);\(y_fixing_gap_map);\(yaw_fixing_gap_map);\(rototraslFix.debugDescription.replacingOccurrences(of: "simd_float4x4(", with: "").replacingOccurrences(of: ")", with: "") );\(anglePath);\(rad2degree(currentYAW));\(angular_difference);\(direction_turn);\(rangeL);\(nextNode);\(target_x_map);\(target_y_map);\(distance);\(closest_edge!.node_v);\(closest_edge!.node_u);\(closest_edge!.radiusOfNavigationArea);\(length_closest_edge);\(distanceFromCurrentEdge);\(dxFromCurrentEdge);\(dyFromCurrentEdge);\(direction_lateral);\(state);\(sonifiedDistance);\(message);\(previous_message_label.text!);\(startLog);\(level4.startSonification);\(level4.readInstruction);adv;\(num_path);\(level4.num_turn);\(level4.num_walk);\(level4.num_lateral);\(memUsage)"
+                        // (currentZ_map);\(currentROLL);\(currentPITCH); = 0.0
+                        let text="\(timestamp);\(currentX_map);\(currentY_map);0.0;0.0;0.0;\(rad2degree(currentYAW));\(lastMarkerSeen);\(locationProvider.fixPosition);\(x_fixing_gap_map);\(y_fixing_gap_map);\(yaw_fixing_gap_map);\(rototraslFix.debugDescription.replacingOccurrences(of: "simd_float4x4(", with: "").replacingOccurrences(of: ")", with: "") );\(anglePath);\(rad2degree(currentYAW));\(angular_difference);\(direction_turn);\(rangeL);\(nextNode);\(target_x_map);\(target_y_map);\(distance);\(closest_edge!.node_v);\(closest_edge!.node_u);\(closest_edge!.radiusOfNavigationArea);\(length_closest_edge);\(distanceFromCurrentEdge);\(dxFromCurrentEdge);\(dyFromCurrentEdge);\(direction_lateral);\(state);\(sonifiedDistance);\(message);\(previous_message_label.text!);\(startLog);\(level4.startSonification);\(level4.readInstruction);adv;\(num_path);\(level4.num_turn);\(level4.num_walk);\(level4.num_lateral);\(memUsage)"
                         // TODO lastMarkerSeen--> Check se puoi migliorare questo dato
                         log.logAsync(logDescription: text)
                     }
