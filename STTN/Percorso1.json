@@ -23,122 +23,144 @@
         {
             "id": "init1",
             "image": "init1",
-            "physicalWidth": 0.19,
+            "physicalWidth": 0.40,
             "location":  {
-                "x": 60.27108971844427 , "y": 87.4072782555595      ,
-                "heading": 4.71,
+                "x": 61.83428883360466 , "y": 87.4027835354209  , "heading": 1.57 ,
                 "floor": "cortile"
             }
         },
         {
             "id": "M1",
             "image": "M1",
-            "physicalWidth": 0.19,
+            "physicalWidth": 0.80,
             "location":  {
-                "x": 61.110999311029445 , "y": 94.12085497938097      ,
-                "heading": 3.14,
+                "x": 61.110999311029445 , "y": 94.12085497938097  , "heading": 3.14 ,
                 "floor": "cortile"
             }
         },
         {
             "id": "M2",
             "image": "M2",
-            "physicalWidth": 0.19,
+            "physicalWidth": 0.745,
             "location":  {
-                "x": 93.02779885643395 , "y": 93.86852543521672      ,
-                "heading": 1.57,
+                "x": 93.02779885643395 , "y": 93.86852543521672  , "heading": 1.57 ,
                 "floor": "cortile"
             }
         },
         {
             "id": "M3",
             "image": "M3",
-            "physicalWidth": 0.19,
+            "physicalWidth": 0.80,
             "location":  {
-                "x": 93.32484972110251 , "y": 98.38752839993685  , "heading": 3.14,
+                "x": 93.32804981659865 , "y": 99.49849448073655  , "heading": 3.14 ,
                 "floor": "cortile"
             }
         },
         {
             "id": "M4",
             "image": "M4",
-            "physicalWidth": 0.19,
+            "physicalWidth": 0.74.5,
             "location":  {
-                "x": 150.11655647470616 , "y": 98.48532032500952      ,
-                "heading": 1.57,
+                "x": 150.11655647470616 , "y": 98.48532032500952  , "heading": 1.57 ,
                 "floor": "cortile"
             }
         },
         {
             "id": "M5",
             "image": "M5",
-            "physicalWidth": 0.19,
+            "physicalWidth": 0.80,
             "location":  {
-                "x": 149.3354726410471 , "y": 95.19568840228021      ,
-                "heading": 0,
+                "x": 149.3354726410471 , "y": 95.19568840228021  , "heading": 0.0 ,
                 "floor": "cortile"
             }
         },
         {
             "id": "finish1",
             "image": "finish1",
-            "physicalWidth": 0.19,
+            "physicalWidth": 0.4,
             "location":  {
-                "x": 155.35040826105978 , "y": 97.540926781483  , "heading": 1.57,
+                "x": 155.34719719359418 , "y": 96.42996069882065  , "heading": 1.57 ,
                 "floor": "cortile"
             }
         },
         {
             "id": "M6",
             "image": "M6",
-            "physicalWidth": 0.19,
+            "physicalWidth": 0.297,
             "location":  {
-                "x": 82.18978842179058 , "y": 94.67587963677943      , "heading": 2.355,
+                "x": 82.18978842179058 , "y": 94.67587963677943  , "heading": 2.355 ,
                 "floor": "cortile"
             }
         },
         {
             "id": "M7",
             "image": "M7",
-            "physicalWidth": 0.19,
+            "physicalWidth": 0.297,
             "location":  {
-                "x": 88.27949802222429 , "y": 88.73973657935858      , "heading": 0.785,
+                "x": 88.27949802222429 , "y": 88.73973657935858  , "heading": 0.785 ,
                 "floor": "cortile"
             }
         },
         {
             "id": "M8",
             "image": "M8",
-            "physicalWidth": 0.19,
+            "physicalWidth": 0.297,
             "location":  {
-                "x": 96.35626717109699 , "y": 101.2505065118894      , "heading": 2.355,
+                "x": 96.35626717109699 , "y": 101.2505065118894  , "heading": 2.355 ,
                 "floor": "cortile"
             }
         },
         {
             "id": "M9",
             "image": "M9",
-            "physicalWidth": 0.19,
+            "physicalWidth": 0.297,
             "location":  {
-                "x": 105.38238758628722 , "y": 97.95709220506251      , "heading": 0.785,
+                "x": 105.38238758628722 , "y": 97.95709220506251  , "heading": 0.785 ,
                 "floor": "cortile"
             }
         },
         {
             "id": "M10",
             "image": "M10",
-            "physicalWidth": 0.19,
+            "physicalWidth": 0.297,
             "location":  {
-                "x": 113.82073745765956 , "y": 97.76674815267324      , "heading": 0.785,
+                "x": 105.3912104430492 , "y": 101.01805297657847  , "heading": 2.355 ,
                 "floor": "cortile"
             }
         },
         {
             "id": "M11",
             "image": "M11",
-            "physicalWidth": 0.19,
+            "physicalWidth": 0.297,
             "location":  {
-                "x": 134.59276455634972 , "y": 97.7140047531575      , "heading": 0.785,
+                "x": 113.82073745765956 , "y": 97.76674815267324  , "heading": 0.785 ,
+                "floor": "cortile"
+            }
+        },
+        {
+            "id": "M12",
+            "image": "M12",
+            "physicalWidth": 0.297,
+            "location":  {
+                "x": 113.93453358573606 , "y": 100.77122699189931  , "heading": 2.355 ,
+                "floor": "cortile"
+            }
+        },
+        {
+            "id": "M13",
+            "image": "M13",
+            "physicalWidth": 0.297,
+            "location":  {
+                "x": 134.59276455634972 , "y": 97.7140047531575  , "heading": 0.785 ,
+                "floor": "cortile"
+            }
+        },
+        {
+            "id": "M14",
+            "image": "M14",
+            "physicalWidth": 0.297,
+            "location":  {
+                "x": 134.88048455672106 , "y": 100.37749676592648  , "heading": 2.355 , 
                 "floor": "cortile"
             }
         }
