@@ -59,7 +59,7 @@
         {
             "id": "M4",
             "image": "M4",
-            "physicalWidth": 0.74.5,
+            "physicalWidth": 0.745,
             "location":  {
                 "x": 150.11655647470616 , "y": 98.48532032500952  , "heading": 1.57 ,
                 "floor": "cortile"
