@@ -25,8 +25,8 @@
             "image": "Prova",
             "physicalWidth": 0.19,
             "location":  {
-                "x": 100    , "y": 99,
-                "heading": 180,
+                "x": 100    , "y": 99.5,
+                "heading": 90,
                 "floor": "cortile"
             }
         }
