@@ -63,7 +63,7 @@ class Render {
         print("position_vertexes",position_vertexes)
         for index in 1...position_vertexes.count {
             print(index)
-            let sphere_radius: CGFloat = 1
+            let sphere_radius: CGFloat = 2
             let pathSphere = position_vertexes["\(index-1)"]
             let x = pathSphere!["x"]!
             let z = -pathSphere!["y"]!
