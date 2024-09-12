@@ -67,14 +67,14 @@ class Render {
             let pathSphere = position_vertexes["\(index-1)"]
             let x = pathSphere!["x"]!
             let z = -pathSphere!["y"]!
-            let red: CGFloat = 30.0 / 255.0
+            let red: CGFloat = 240.0 / 255.0 //30.0 / 255.0
             let green: CGFloat = 90.0 / 255.0
-            let blue: CGFloat = 240.0 / 255.0
+            let blue: CGFloat = 30.0 / 255.0 //240.0 / 255.0
             let alpha: CGFloat = 0.8
             let sphereNode = createVirtualSphere(sphere_radius:sphere_radius, x:x, z:z, red: red, green: green, blue: blue, alpha: alpha)
             var nodeEntity = AnchorEntity()
             let model_02 = ModelEntity(mesh: .generateSphere(radius: virtualSphere_radius))
-            let material = SimpleMaterial(color: .blue, isMetallic: false)
+            let material = SimpleMaterial(color: .red, isMetallic: false)
             model_02.model?.materials = [material]
             model_02.position = SIMD3<Float>(x, 0, z)
             nodeEntity.addChild(model_02)
