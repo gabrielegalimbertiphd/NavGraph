@@ -6,8 +6,10 @@ Running the code:
 1. Download the code
 2. Open the file "STTN.xcodeproj" with XCode
 3. Change the spatial representation in the file "data.json" and insert all the position of the markers in each path "PercorsoX.json"
-4. Run the code
-5. Frame one marker in the path and start the navigation towards the destination.
+4. The code uses the library "PositioningLibrary" available at the link https://github.com/tirannosario/PositioningLibrary. Import the library as external dependency if it is not in the main folder of the project.
+5. Import the Package Dependencies "Drops" (version 1.6.1) and "SwiftGraph" (version 3.1.0).
+6. Run the code
+7. Frame one marker in the path and start the navigation towards the destination.
 
 Specification of the spatial representation:
 The four routes used for the experiments as well as the images of the visual markers used in these routes are contained in the folder "STTN".
