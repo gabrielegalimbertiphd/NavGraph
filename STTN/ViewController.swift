@@ -15,35 +15,6 @@ import PositioningLibrary
 import MapKit
 import Drops
 
-// TODO:
-/*preparare spiegazione e protocollo di test, debug suono quando cambia target (no quando c’è rerouting)
-Sistemare bottone
-Mostrare i dati di log
-
-Preparare 4 task date le condizioni:
-- 2 percorsi
-- 2 sistemi di navigazione
-
-Basic
-Advanced
-Advanced
-Basic
-Advanced
-Basic
-Basic
-Advanced*/
-
-/*struct Link {
-    var node_u : String
-    var node_v : String
-    var widthOfSafeArea : Float = 1.0
-}*/
-
-// TODO: JSON vertexes [position_vertexes{x,y,yaw}]  links [{u,v,widthOfSafeAreaBySide}] markers[{marker,x,y,yaw}]
-// put destination settable on the links and radius with check
-// put possibility to insert
-
-// TODO: split the concepts radius*percentage and width
 
 struct Map: Decodable{
     
@@ -80,8 +51,22 @@ struct Map: Decodable{
     }
 }
 
+struct Position: Codable {
+    let x: Float
+    let y: Float
+}
 
-// class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, LocationObserver  {
+struct GraphData: Codable {
+    let vertexes: [String]
+    let position_vertexes: [String: Position]
+    let coordinates_position_vertexes: [String: [String: Position]]
+    let destination_position: Position
+    let links: [Link]
+    let linksOfPaths: [String: [Link]]
+    let fixedWidthSafeArea: [Float]
+}
+
+
 class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     
     // location provider
@@ -105,18 +90,25 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     // RENDER VIRTUAL OBJECTS
     private var render: Render!
     
-    // MAP TEST FLOOR 4
-    // MARK: OFFICIAL REFACTORED
-    
-    public var vertexes : [String] = ["0", "1","2", "3","4","5","6"]
-    public var graph: WeightedGraph<String, Int> = WeightedGraph<String, Int>(vertices: ["0", "1", "2", "3", "4", "5","6"])
-    
     private let resolution: Float = 100.0
     
     var destination: String = "A"
     var percorso = "Percorso1"
     
     public var currentEdge : Link? = nil
+    
+    public var vertexes : [String] = []
+    public var graph: WeightedGraph<String, Int> = WeightedGraph<String, Int>(vertices: [])
+    public var position_vertexes: [String: [String: Float]] = [:]
+    public var coordinates_position_vertexes: [String: [String: [String: Float]]] = [:]
+    public var destination_position : [String: Float] = [:]
+    public var links: [Link] = []
+    public var linksOfPaths:[String:[Link]] = [:]
+    public var fixedWidthSafeArea: [Float] = []
+    public var radius_destination : Float = 0.0
+    
+    /*public var vertexes : [String] = ["0", "1","2", "3","4","5","6"]
+    public var graph: WeightedGraph<String, Int> = WeightedGraph<String, Int>(vertices: ["0", "1", "2", "3", "4", "5","6"])
     
     public var position_vertexes: [String: [String: Float]] = [
         "0": ["x": 61.058759, "y": -89.515867],
@@ -177,17 +169,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     ]
     public var destination_position : [String: Float] = [ "x": 105 ,"y": -105 ]
     
-    public var radius_destination : Float = 1.0
-    /*var links: [Link] = [
-        Link( node_u :"0", node_v :"1", radiusOfNavigationArea :1),
-        Link( node_u :"1", node_v :"2", radiusOfNavigationArea :1.5),
-        Link( node_u :"2", node_v :"3", radiusOfNavigationArea :1.5),
-        Link( node_u :"3", node_v :"4", radiusOfNavigationArea :1.5),
-        Link( node_u :"4", node_v :"5", radiusOfNavigationArea :1.5),
-        Link( node_u :"5", node_v :"6", radiusOfNavigationArea :1)
-    ]*/
-    
     var links: [Link] = [
+        
         Link( node_u :"0", node_v :"1", radiusOfNavigationArea :1),
         Link( node_u :"1", node_v :"2", radiusOfNavigationArea :3),
         Link( node_u :"2", node_v :"3", radiusOfNavigationArea :2),
@@ -236,8 +219,12 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     ]
     
     public var fixedWidthSafeArea: [Float] = [1.0,1.5,1.5,1.5,1.5,1.0,1.5]
+    
+    public var radius_destination : Float = 1.0*/
+    
+    
     /*
-    // JAMES FLOOR 4 SKERI
+    // FLOOR 4 BUILDING
      
      public var vertexes : [String] = ["0", "1", "2", "3", "4", "5", "6", "7","8"]
      public var graph: WeightedGraph<String, Int> = WeightedGraph<String, Int>(vertices: ["0", "1", "2", "3", "4", "5", "6", "7","8"])
@@ -255,8 +242,8 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         "8":["x":6,"y":-20.22]
     ]
     
-    public var destination_position : [String: Float] = ["x": 5.6, "y": -28.8] // near node 7 // init at 0,0
-    public var radius_destination : Float = 1.0 // raggio della destinazione
+    public var destination_position : [String: Float] = ["x": 5.6, "y": -28.8]
+    public var radius_destination : Float = 1.0
     
     var links: [Link] = [
         Link( node_u :"0", node_v :"1", radiusOfSafeArea :1.0),
@@ -297,8 +284,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     var angleCurrentEdge:Float = 0.0
     var angleNextEdge:Float = 0.0
     var angleBetweenEdges:Float = 0.0
-    //var dx1:Float = 0.0
-    //var dy2:Float = 0.0
+
     var p1x:Float = 0.0
     var p1y:Float = 0.0
     var p2x:Float = 0.0
@@ -307,8 +293,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     var p3y:Float = 0.0
     var p4x:Float = 0.0
     var p4y:Float = 0.0
-    //var dx3:Float = 0.0
-    //var dy4:Float = 0.0
+
     var p5x:Float = 0.0
     var p5y:Float = 0.0
     var p6x:Float = 0.0
@@ -317,6 +302,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     var p7y:Float = 0.0
     var p8x:Float = 0.0
     var p8y:Float = 0.0
+    
     var center: (Float, Float) = (0.0,0.0)
     var punti_intersezione1:[(Float, Float)?] = []
     var punti_intersezione2:[(Float, Float)?] = []
@@ -364,12 +350,6 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     
     public var timestampStart : Int = 0
     private var num_path:String = "0"
-    
-    /*var E_u : [any Edge] = []
-    //print(E_u)
-    // GET DESTINATION EDGE
-    var E_d : [any Edge] = []
-    var num_shared_edges_user_destination: Int = 0*/
     
     // DEBUG LABELS ON VIDEO
     lazy var debug_dx_dy_point_of_return = UILabel()
@@ -454,7 +434,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     private var log : Log = Log()
     
     // SET VERSION
-    public var version_setup = "advanced" // it can change to "basic"
+    public var version_setup = "advanced" // it can change to "SOTA"
     public var closest_edge:Link? = nil
     public var distanceFromCurrentEdge : Float = 0.0
     public var dxFromCurrentEdge : Float = 0.0
@@ -467,13 +447,42 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
     
     public var taskTest : Bool = false
     
+    func loadGraphData() {
+        guard let url = Bundle.main.url(forResource: "data", withExtension: "json"),
+              let data = try? Data(contentsOf: url) else {
+            print("Error loading the JSON")
+            return
+        }
+        
+        let decoder = JSONDecoder()
+        do {
+            let decodedData = try decoder.decode(GraphData.self, from: data)
+            self.vertexes = decodedData.vertexes
+            self.position_vertexes = decodedData.position_vertexes.mapValues { ["x": $0.x, "y": $0.y] }
+            self.coordinates_position_vertexes = decodedData.coordinates_position_vertexes.mapValues { innerDict in
+                innerDict.mapValues { ["x": $0.x, "y": $0.y] }
+            }
+            self.destination_position = ["x": decodedData.destination_position.x, "y": decodedData.destination_position.y]
+            self.links = decodedData.links
+            self.linksOfPaths = decodedData.linksOfPaths
+            self.fixedWidthSafeArea = decodedData.fixedWidthSafeArea
+            
+            self.graph = WeightedGraph<String, Int>(vertices: self.vertexes)
+        } catch {
+            print("Errore nella decodifica: \(error)")
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // IMPORT DATA
+        loadGraphData()
         
         // CREATE THE AR SESSION
         setupARConfiguration()
                 
-        debugLabels()
+        //debugLabels()
         
         
         //Map floor4SKERI = readJSONFile(forName name: "floor4SKERI")
@@ -573,7 +582,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
         //createDirectory(self.log.sessionName) // TODO: insert and check directory creation.
         render = Render()
         // message: percorso
-        level4.speak(message: "inizio percorso",state: "",changeNode: changeNode, changePath: changePath, repeatInstructionFlag: repeatInstructionFlag)
+        level4.speak(message: "Start",state: "",changeNode: changeNode, changePath: changePath, repeatInstructionFlag: repeatInstructionFlag)
         
         bubble_placed = true
         isStarted = false
@@ -1379,7 +1388,6 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                                 
                                 //level1!.position_vertexes["\(nextNode)"]! // TODO: CHECK IT OUT!
                                 if changeNode || locationProvider.fixPosition {
-                                    print("SONO ENTRATO")
                                     nn = Int(nextNode)! ?? 1
                                     x_n1 = level1!.position_vertexes["\(nn-1)"]!["x"] ?? 0.0
                                     y_n1 = level1!.position_vertexes["\(nn-1)"]!["y"] ?? 0.0
@@ -1716,7 +1724,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                 }
                 else {
                     if !saidArrived {
-                        message = "destinazione raggiunta"//"Destination Reached"
+                        message = "destination reached"//"Destination Reached"
                         level4.speak(message: message, state: state,changeNode: changeNode, changePath: changePath, repeatInstructionFlag: repeatInstructionFlag)
                     }
                     Synth.shared.volume = 0
@@ -1733,7 +1741,7 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                 Synth.shared.volume = 0
                 Synth.shared.frequency = 0
                 if message != "destinazione raggiunta" { //}"Destination Reached"{
-                    message = "destinazione raggiunta"//"Destination Reached"
+                    message = "destination reached"//"Destination Reached"
                     level4.speak(message: message, state: state,changeNode: changeNode, changePath: changePath, repeatInstructionFlag: repeatInstructionFlag)
                     if taskTest{
                         saveData()
@@ -1884,12 +1892,12 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
             version_setup = "advanced"
             let setup_message : String = "advance VERSION"
             Toast.show(message: setup_message, bgColor: UIColor.yellow, textColor: .black,labelFont: .boldSystemFont(ofSize: 14),showIn: .top,controller: self)
-            level4.feedback("A")
+            level4.feedback("SOTA")
         } else if version_setup == "advanced" {
             version_setup = "basic"
             let setup_message : String = "basic VERSION"
             Toast.show(message: setup_message, bgColor: UIColor.yellow, textColor: .black,labelFont: .boldSystemFont(ofSize: 14),showIn: .top,controller: self)
-            level4.feedback("B")
+            level4.feedback("NavGraph")
         }
     }
     

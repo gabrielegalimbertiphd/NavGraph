@@ -16,7 +16,7 @@ class Level4 {
     private var jumpPlayer = try! AVAudioPlayer(contentsOf: URL(fileURLWithPath: Bundle.main.path(forResource: "repositioning", ofType: "wav")!))
     private var emergencyPlayer = try! AVAudioPlayer(contentsOf: URL(fileURLWithPath: Bundle.main.path(forResource: "emergency", ofType: "wav")!))
     
-    private let voice = AVSpeechSynthesisVoice(language: "it-IT")!//"it-IT")!
+    private let voice = AVSpeechSynthesisVoice(language: "en-US")!//"it-IT")!
     private var speech_synthesizer = AVSpeechSynthesizer()
     var lastText = ""
     private var beeping = false
@@ -44,7 +44,7 @@ class Level4 {
     public var timerRepeatInstruction: Double = 0.0
     public var t:Double = 0.0
     
-    public var debugConditions = ""
+    public var debugConditions = "" 
     
     public var ttsspeed : Float = 0.5
     
@@ -190,9 +190,9 @@ class Level4 {
                     if message.contains("turn"){
                         Synth.shared.setWaveformTo(Oscillator.square)
                     } else if message.contains("walk"){
-                        Synth.shared.setWaveformTo(Oscillator.IS_Walk)
+                        Synth.shared.setWaveformTo(Oscillator.square)
                     } else if message.contains("lateral"){
-                        Synth.shared.setWaveformTo(Oscillator.IS_Lateral)
+                        Synth.shared.setWaveformTo(Oscillator.square)
                     } else {
                         Synth.shared.setWaveformTo(Oscillator.square)
                     }
@@ -232,33 +232,32 @@ class Level4 {
             //instruction = message.contains("walk") ? "walk" : ""
             if message.contains("walk") {
                 if state == "inside"{
-                    instruction = distanceFromTarget ?? 1<2 ? "Prosegui dritto per circa un metro":"Prosegui dritto per \(Int(distanceFromTarget ?? 1)) metri"
+                    instruction = distanceFromTarget ?? 1<2 ? "Go ahead for one meter":"Go ahead for \(Int(distanceFromTarget ?? 1)) meters"
                 }
                 else if state == "outside"{
-                    instruction = lateralDistance ?? 1 < 2 ? "Prosegui dritto per circa un metro":"Prosegui dritto per \(Int(lateralDistance ?? 1)) metri"
+                    instruction = lateralDistance ?? 1 < 2 ? "Go ahead for one meter":"Go ahead for  \(Int(lateralDistance ?? 1)) meters"
                 }
             }
             // LATERAL STRIDE INSTRUCTION
             //instruction = message.contains("lateral") ? "lateral" : ""
             else if message.contains("lateral"){ // C'è SOLO OUTSIDE
                 if direction_lateral! == "Left" {
-                    instruction = "Spostati a sinistra"
+                    instruction = "Move on Left"
                 } else if direction_lateral! == "Right"{ // era "right"
-                    instruction = "Spostati a destra"
+                    instruction = "Move on Right"
                 }
             }
             // TURN AROUND INSTRUCTION + TURN INSTRUCTION
             //instruction = message.contains("turn") && abs(self.angleLength ?? 0) >= 160 ? "\(message) around" : instruction
             else if message.contains("turn")  {
-                var direzione : String = direction_turn!=="Left" ? "sinistra" : "destra"
-                instruction = message.contains("turn") ? "Gira a \(direzione)" : ""
+                var direzione : String = direction_turn!=="Left" ? "Left" : "Right"
+                instruction = message.contains("turn") ? "Turn \(direzione)" : ""
                 //instruction = message.contains("turn") && abs(self.angleLength ?? 0) >= 160 ? "Girati indietro" : instruction // era Girati
             }
             //instruction = changePath ? "Rerouting, \(instruction)" : instruction // TODO decide if use or not "Rerouting"
             // ANY OTHER INSTRUCTION
             else if message.contains("walk")==false && message.contains("lateral")==false &&  message.contains("turn")==false {
                 instruction=message
-                print("QUI")
             }
             
             if previous_state == "outside" && state == "inside"{
@@ -447,19 +446,18 @@ class Level4 {
     
     // earcon per indicare che è cambiato il nodo durante una svolta e quindi avviso l'utente dell'avvenuto cambio
     func playUpdateTargetAngleSound(description: String? = nil){
-        updateTargetAnglePlayer.play()
+        //updateTargetAnglePlayer.play()
     }
     
     func jumpSound(description: String? = nil){
-        jumpPlayer.play()
+        //jumpPlayer.play()
     }
     
     func emergencySound(description: String? = nil){
-        emergencyPlayer.play()
+        //emergencyPlayer.play()
     }
     
     func feedback(_ message: String){
-        print("dovrei parlare 2")
         let utterance = AVSpeechUtterance(string: message )
         utterance.rate = ttsspeed
         utterance.pitchMultiplier = 0.8

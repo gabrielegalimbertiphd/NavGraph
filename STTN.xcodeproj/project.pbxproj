@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9789B8D72DC3775C0067C3BF /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = 9789B8D62DC3775C0067C3BF /* data.json */; };
 		D5036C212AB84D4500DA501B /* Render.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5036C202AB84D4500DA501B /* Render.swift */; };
 		D506158B2B4C2629009A5C34 /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D506158A2B4C2629009A5C34 /* Geometry.swift */; };
 		D514C7E82AE026F80092F4F4 /* Percorso1.json in Resources */ = {isa = PBXBuildFile; fileRef = D514C7E42AE026F80092F4F4 /* Percorso1.json */; };
@@ -58,6 +59,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9789B8D62DC3775C0067C3BF /* data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
 		D5036C202AB84D4500DA501B /* Render.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Render.swift; sourceTree = "<group>"; };
 		D506158A2B4C2629009A5C34 /* Geometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
 		D50D74A02B07767D00631267 /* PositioningLibrary */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PositioningLibrary; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 				D5A475682B0F81E300F9258F /* Percorso4.json */,
 				D5AF4F652B0B7BE5001F6068 /* Prova.json */,
 				D5D140F22A62308A00E57A61 /* test.json */,
+				9789B8D62DC3775C0067C3BF /* data.json */,
 			);
 			path = STTN;
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5A4756A2B0F81E300F9258F /* Percorso3.json in Resources */,
+				9789B8D72DC3775C0067C3BF /* data.json in Resources */,
 				D56E46842A24113C000703A1 /* LaunchScreen.storyboard in Resources */,
 				D56E46812A24113C000703A1 /* Assets.xcassets in Resources */,
 				D5B973212A40D2E80046AC55 /* ShortDing.mp3 in Resources */,
@@ -566,7 +570,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ewlab.STTN18;
+				PRODUCT_BUNDLE_IDENTIFIER = ewlab.STTN19;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -602,7 +606,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ewlab.STTN18;
+				PRODUCT_BUNDLE_IDENTIFIER = ewlab.STTN19;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftGraph
 
-struct Link : Equatable {
+struct Link : Equatable, Codable {
     var node_u : String
     var node_v : String
     var radiusOfNavigationArea : Float
