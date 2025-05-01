@@ -2,7 +2,7 @@
 NavGraph: enhancing blind travelers’ navigation experience and
 safety
 
-Running the code:
+## Running the code:
 1. Download the code
 2. Open the file "STTN.xcodeproj" with XCode
 3. Change the spatial representation in the file "data.json" and insert all the positions of the markers in each path "PercorsoX.json"
@@ -11,7 +11,7 @@ Running the code:
 6. Run the code
 7. Frame the first marker in the path "PercorsoX" (name of the image "initX") and start the navigation towards the destination. The code is set to work from the first turning point.
 
-Specification of the spatial representation:
+## Specification of the spatial representation:
 The four routes used for the experiments as well as the images of the visual markers used in these routes are contained in the folder "STTN".
 
 The file "data.json" contains all the information of the navigation graph.
@@ -24,6 +24,7 @@ The file "data.json" contains all the information of the navigation graph.
 - The field "fixedWidthSafeArea" contains the navigation area sizes just in case the designer forgot to set them.
 - The restricted navigation area are half of the navigation area size. It is not necessary define the restricted navigation areas in this code.
 
+## Markers
 The file "PercorsoX.json" (X as the name of the path) define the position of each marker in the environment. The markers are used to correct the drift of the navigation system.
 - the field "buildings" defines the name of the building with ID, latitude, longitude and name.
 - the field "floors" defines the name of the building floor with ID, number, id of the building, maxwidth and maxheight in the map, name of the floormap and comments.
