@@ -27,9 +27,9 @@ The file "PercorsoX.json" (X as the name of the path) define the position of eac
 - the field "floors" defines the name of the building floor with ID, number, id of the building, maxwidth and maxheight in the map, name of the floormap and comments.
 - For each marker there is an id, name of the image, physical width of the image, and location of the image ("x" and "y" in meters, "heading" in radiant, "floor" is the name of the floor").
 
-  All the images of the markers are contained in the folder "Assets.xcassets/Percorso.arresourcegroup".
 
-  The image of the floor is contained in the folder "Assets.xcassets/cortile.imageset".
+All the images of the markers are contained in the folder "Assets.xcassets/Percorso.arresourcegroup".
+The image of the floor is contained in the folder "Assets.xcassets/cortile.imageset".
 
   
 
