@@ -6,7 +6,7 @@ Running the code:
 1. Download the code
 2. Open the file "STTN.xcodeproj" with XCode
 3. Change the spatial representation in the file "data.json" and insert all the positions of the markers in each path "PercorsoX.json"
-4. The code uses the library "PositioningLibrary" available at the link https://github.com/tirannosario/PositioningLibrary. Import the library as external dependency if it is not in the main folder of the project.
+4. The code uses the library "PositioningLibrary" available at the link https://github.com/tirannosario/PositioningLibrary. Import the library as external dependency if it is not in the main folder of the project. In this project, the library "PositioningLibrary" is already in the main folder.
 5. Import the Package Dependencies "Drops" (version 1.6.1) and "SwiftGraph" (version 3.1.0).
 6. Run the code
 7. Frame the first marker in the path "PercorsoX" (name of the image "initX") and start the navigation towards the destination. The code is set to work from the first turning point.
