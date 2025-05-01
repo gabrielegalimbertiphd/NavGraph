@@ -1238,7 +1238,6 @@ class ViewController: UIViewController, LocationObserver, ARSessionDelegate{
                 
                 var t = CFAbsoluteTimeGetCurrent() - timerRepeatInstruction
                 
-                // TODO: CHECK JUMP
                 if (abs(previous_currentX_map - currentX_map)>1 || abs(previous_currentY_map - currentY_map)>1) && previous_currentX_map != 0 && previous_currentY_map != 0 {
                     //level4.speak(message: "update", state: state, changeNode: false, changePath: false, repeatInstructionFlag: false)
                     //level4.playUpdateSound()
