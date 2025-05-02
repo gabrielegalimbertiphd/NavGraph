@@ -15,7 +15,7 @@ safety
 The four routes used for the experiments as well as the images of the visual markers used in these routes are contained in the folder "STTN".
 
 The file "data.json" contains all the information of the navigation graph.
-- The "vertexes" field contain all the vertexes names (eg. "1","2",...).
+- The "vertexes" field contains all the vertexes names (eg. "1","2",...).
 - The "coordinates_position_vertexes" field contains the coordinate of each node ("x" and "y") of all of yours navigation graphs.
 - The "position_vertexes" field contains the coordinate of each node ("x" and "y") of one of yours navigation graph (it is usefull for initialization).
 - The "destination_position" field contains the coordinate of the destination of one of yours navigation graph.
