@@ -24,7 +24,7 @@ The "linksOfPaths" field contains all the edges (connections) of your navigation
 - The "fixedWidthSafeArea" field contains the navigation area sizes just in case the designer forgot to set them.
 - The restricted navigation area are half of the navigation area size. It is not necessary define the restricted navigation areas in this code.
 
-## Markers
+## Marker's position
 The file "PercorsoX.json" (X as the name of the path) define the position of each marker in the environment. The markers are used to correct the drift of the navigation system.
 - The "buildings" field defines the name of the building with ID, latitude, longitude and name.
 - The "floors" field defines the name of the building floor with ID, number, id of the building, maxwidth and maxheight in the map, name of the floormap and comments.
